@@ -50,15 +50,17 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
   /** Gets all assertions added to the field. */
   @CheckResult fun assertions(): List<Assertion<V>> = assertions
 
-  /** Wraps assertions in a common condition. */
+  /** Makes inner assertions optional based on a condition. */
   fun conditional(
     condition: Condition,
     builder: F.() -> Unit
   ) {
+    val previousCondition = this.currentCondition
     currentCondition = condition
     @Suppress("UNCHECKED_CAST")
     builder(this as F)
-    currentCondition = null
+    // We restore the previous condition to correctly support nesting.
+    currentCondition = previousCondition
   }
 
   /** Sets custom logic for displaying errors for the field. */

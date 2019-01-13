@@ -19,65 +19,70 @@ import android.widget.Spinner
 
 /** @author Aidan Follestad (@afollestad) */
 internal class PositionExactlyAssertion(
-  private val index: Int
+  private val index: Int,
+  private val description: String?
 ) : Assertion<Spinner>() {
   override fun isValid(view: Spinner): Boolean {
     return view.selectedItemPosition == index
   }
 
   override fun description(): String {
-    return "position $index should be selected"
+    return description ?: "position $index should be selected"
   }
 }
 
 /** @author Aidan Follestad (@afollestad) */
 internal class PositionLessThanAssertion(
-  private val ceil: Int
+  private val ceil: Int,
+  private val description: String?
 ) : Assertion<Spinner>() {
   override fun isValid(view: Spinner): Boolean {
     return view.selectedItemPosition < ceil
   }
 
   override fun description(): String {
-    return "selection should be less than $ceil"
+    return description ?: "selection should be less than $ceil"
   }
 }
 
 /** @author Aidan Follestad (@afollestad) */
 internal class PositionAtMostAssertion(
-  private val ceil: Int
+  private val ceil: Int,
+  private val description: String?
 ) : Assertion<Spinner>() {
   override fun isValid(view: Spinner): Boolean {
     return view.selectedItemPosition <= ceil
   }
 
   override fun description(): String {
-    return "selection should be at most $ceil"
+    return description ?: "selection should be at most $ceil"
   }
 }
 
 /** @author Aidan Follestad (@afollestad) */
 internal class PositionAtLeastAssertion(
-  private val floor: Int
+  private val floor: Int,
+  private val description: String?
 ) : Assertion<Spinner>() {
   override fun isValid(view: Spinner): Boolean {
     return view.selectedItemPosition >= floor
   }
 
   override fun description(): String {
-    return "selection should be at least $floor"
+    return description ?: "selection should be at least $floor"
   }
 }
 
 /** @author Aidan Follestad (@afollestad) */
 internal class PositionGreaterThanAssertion(
-  private val floor: Int
+  private val floor: Int,
+  private val description: String?
 ) : Assertion<Spinner>() {
   override fun isValid(view: Spinner): Boolean {
     return view.selectedItemPosition > floor
   }
 
   override fun description(): String {
-    return "selection should be greater than $floor"
+    return description ?: "selection should be greater than $floor"
   }
 }

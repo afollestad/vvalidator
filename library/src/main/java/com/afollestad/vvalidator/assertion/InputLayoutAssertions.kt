@@ -194,6 +194,6 @@ internal class InputLayoutRegexAssertion(
   }
 }
 
-private fun TextInputLayout.text(): String {
+internal fun TextInputLayout.text(): String {
   return editText?.toString() ?: ""
 }

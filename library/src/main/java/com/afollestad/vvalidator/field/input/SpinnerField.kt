@@ -45,19 +45,34 @@ class SpinnerField internal constructor(
   )
 
   /** Asserts the spinner's position is at an index. */
-  fun selectedPositionExactly(index: Int) = assert(PositionExactlyAssertion(index))
+  fun selectedPositionExactly(
+    index: Int,
+    description: String? = null
+  ) = assert(PositionExactlyAssertion(index, description))
 
   /** Asserts the spinner's position is less than an index. */
-  fun selectedPositionLessThan(index: Int) = assert(PositionLessThanAssertion(index))
+  fun selectedPositionLessThan(
+    index: Int,
+    description: String? = null
+  ) = assert(PositionLessThanAssertion(index, description))
 
   /** Asserts the spinner's position is at most an index. */
-  fun selectedPositionAtMost(index: Int) = assert(PositionAtMostAssertion(index))
+  fun selectedPositionAtMost(
+    index: Int,
+    description: String? = null
+  ) = assert(PositionAtMostAssertion(index, description))
 
   /** Asserts the spinner's position is at least an index. */
-  fun selectedPositionAtLeast(index: Int) = assert(PositionAtLeastAssertion(index))
+  fun selectedPositionAtLeast(
+    index: Int,
+    description: String? = null
+  ) = assert(PositionAtLeastAssertion(index, description))
 
   /** Asserts the spinner's position is greater than an index. */
-  fun selectedPositionGreaterThan(index: Int) = assert(PositionGreaterThanAssertion(index))
+  fun selectedPositionGreaterThan(
+    index: Int,
+    description: String? = null
+  ) = assert(PositionGreaterThanAssertion(index, description))
 
   /** Adds a custom inline assertion for the spinner. */
   fun assert(

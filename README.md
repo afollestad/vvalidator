@@ -1,6 +1,6 @@
 ## VValidator (BETA)
 
-View Validator, an easy-to-use form validation library for Kotlin & Android.
+*View Validator*, an easy-to-use form validation library for Kotlin & Android.
 
 [ ![jCenter](https://api.bintray.com/packages/drummer-aidan/maven/vvalidator/images/download.svg) ](https://bintray.com/drummer-aidan/maven/vvalidator/_latestVersion)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d1f2118793443ecbf2df4d7af7d6fec)](https://www.codacy.com/app/drummeraidan_50/vvalidator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=afollestad/vvalidator&amp;utm_campaign=Badge_Grade)
@@ -294,25 +294,32 @@ val message = error.toString()
 ## Conditionals
 
 You can apply assertions conditionally. This could be useful in many cases, one example would be 
-for fields that are optionally visible. If a field is not visible, it shouldn't be validated. 
-Such as if a dropdown option changes a form to need different types of input.
+for fields that are optionally visible. *If a field is not visible, it shouldn't be validated*. You 
+can nest conditions as well. **Anything outside of a `conditional` block is still always executed.**
 
 This is in the sample project:
 
 ```kotlin
 form {
   input(R.id.input_site, name = "Site") {
+ 
     conditional({ spinner.selectedItemPosition > 1 }) {
-      isNotEmpty()
-      isUrl()
+      isEmptyOr {
+        isUrl()
+      }
     }
   }
 }
 ```
 
-An input field, which should be non-empty and contain a URL, is only validated if a given spinner's 
-selection is greater than 1. If it's not greater than 1, the assertions inside of `conditional` are 
-not executed. **Anything outside of a `conditional` block is still executed.**
+An input field, which should be non-empty and contain a URL, is only validated if a spinner's 
+selection is greater than 1. If it's not greater than 1, the code inside of `conditional` is 
+not executed. If it is greater than 1, we than assert that the input contains a URL if the text is 
+not empty. This effectively makes the URL an optional field even if the spinner allows the field to 
+be visible. 
+
+Under the hood, `isEmptyOr(...)` is just a wrapper around `conditional(...)` that only executes its 
+contents if the input text is not empty. 
 
 ---
 

@@ -32,6 +32,7 @@ import com.afollestad.vvalidator.assertion.InputLayoutNumberAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutRegexAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutUriAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutUrlAssertion
+import com.afollestad.vvalidator.assertion.text
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
 import com.google.android.material.textfield.TextInputLayout
@@ -63,6 +64,21 @@ class InputLayoutField internal constructor(
 
   /** Asserts that the input text is not empty. */
   fun isNotEmpty() = assert(InputLayoutNotEmptyAssertion())
+
+  /**
+   * A wrapper around [conditional] which applies inner assertions only if the
+   * input text is not empty.
+   */
+  fun isEmptyOr(builder: InputLayoutField.() -> Unit) {
+    conditional(
+        condition = {
+          view.text()
+              .trim()
+              .isNotEmpty()
+        },
+        builder = builder
+    )
+  }
 
   /** Asserts that the input text is a valid URL. */
   fun isUrl() = assert(InputLayoutUrlAssertion())

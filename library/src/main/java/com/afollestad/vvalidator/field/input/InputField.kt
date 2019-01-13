@@ -20,8 +20,8 @@ package com.afollestad.vvalidator.field.input
 import android.widget.EditText
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.assertion.EditTextContainsAssertion
 import com.afollestad.vvalidator.assertion.CustomAssertion
+import com.afollestad.vvalidator.assertion.EditTextContainsAssertion
 import com.afollestad.vvalidator.assertion.EditTextEmailAssertion
 import com.afollestad.vvalidator.assertion.EditTextLengthAtLeastAssertion
 import com.afollestad.vvalidator.assertion.EditTextLengthAtMostAssertion
@@ -60,6 +60,20 @@ class InputField internal constructor(
 
   /** Asserts that the input text is not empty. */
   fun isNotEmpty() = assert(EditTextNotEmptyAssertion())
+
+  /**
+   * A wrapper around [conditional] which applies inner assertions only if the
+   * input text is not empty.
+   */
+  fun isEmptyOr(builder: InputField.() -> Unit) {
+    conditional(
+        condition = {
+          view.text.trim()
+              .isNotEmpty()
+        },
+        builder = builder
+    )
+  }
 
   /** Asserts that the input text is a valid URL. */
   fun isUrl() = assert(EditTextUrlAssertion())

@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
       }
 
       spinner(R.id.input_spinner, name = "Have a website") {
-        selectedPositionAtLeast(1)
+        selectedPositionAtLeast(1, "Please make a selection")
         onErrors { _, errors ->
           val firstError = errors.firstOrNull()
           spinnerError.showOrHide(firstError != null)
@@ -75,8 +75,9 @@ class MainActivity : AppCompatActivity() {
 
       input(R.id.input_site, name = "Site") {
         conditional({ spinner.selectedItemPosition > 1 }) {
-          isNotEmpty()
-          isUrl()
+          isEmptyOr {
+            isUrl()
+          }
         }
       }
 
