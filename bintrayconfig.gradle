@@ -37,10 +37,10 @@ publish {
   bintrayKey = key
   userOrg = 'drummer-aidan'
   groupId = 'com.afollestad'
-  artifactId = 'rxkprefs'
+  artifactId = 'vvalidator'
   publishVersion = versions.publishVersion
   desc =
-      'A small, Rx-powered shared preferences library for Kotlin.'
-  website = 'https://github.com/afollestad/rxkprefs'
+      'An easy to use form validator for Kotlin & Android.'
+  website = 'https://github.com/afollestad/vvalidator'
   dryRun = false
 }
