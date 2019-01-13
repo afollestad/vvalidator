@@ -23,11 +23,11 @@ import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.field.FieldBuilder
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.field.input.CheckableField
+import com.afollestad.vvalidator.field.checkable.CheckableField
 import com.afollestad.vvalidator.field.input.InputField
 import com.afollestad.vvalidator.field.input.InputLayoutField
-import com.afollestad.vvalidator.field.input.SeekField
-import com.afollestad.vvalidator.field.input.SpinnerField
+import com.afollestad.vvalidator.field.seeker.SeekField
+import com.afollestad.vvalidator.field.spinner.SpinnerField
 import com.afollestad.vvalidator.util.resName
 
 typealias FormBuilder = Form.() -> Unit

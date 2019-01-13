@@ -43,8 +43,9 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
   private var onErrors: OnError<V>? = null
 
   /** Adds an assertion to the field to be used during validation. */
-  fun assert(assertion: Assertion<V>) {
+  fun <T : Assertion<V>> assert(assertion: T): T {
     assertions.add(assertion.apply { condition(currentCondition) })
+    return assertion
   }
 
   /** Gets all assertions added to the field. */

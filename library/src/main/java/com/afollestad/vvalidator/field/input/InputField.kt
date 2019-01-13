@@ -20,19 +20,19 @@ package com.afollestad.vvalidator.field.input
 import android.widget.EditText
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.assertion.CustomAssertion
-import com.afollestad.vvalidator.assertion.EditTextContainsAssertion
-import com.afollestad.vvalidator.assertion.EditTextEmailAssertion
-import com.afollestad.vvalidator.assertion.EditTextLengthAtLeastAssertion
-import com.afollestad.vvalidator.assertion.EditTextLengthAtMostAssertion
-import com.afollestad.vvalidator.assertion.EditTextLengthExactlyAssertion
-import com.afollestad.vvalidator.assertion.EditTextLengthGreaterThanAssertion
-import com.afollestad.vvalidator.assertion.EditTextLengthLessThanAssertion
-import com.afollestad.vvalidator.assertion.EditTextNotEmptyAssertion
-import com.afollestad.vvalidator.assertion.EditTextNumberAssertion
-import com.afollestad.vvalidator.assertion.EditTextRegexAssertion
-import com.afollestad.vvalidator.assertion.EditTextUriAssertion
-import com.afollestad.vvalidator.assertion.EditTextUrlAssertion
+import com.afollestad.vvalidator.assertion.CustomViewAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.LengthAtLeastAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.LengthAtMostAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.LengthExactlyAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.LengthGreaterThanAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.LengthLessThanAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
 
@@ -59,7 +59,7 @@ class InputField internal constructor(
   )
 
   /** Asserts that the input text is not empty. */
-  fun isNotEmpty() = assert(EditTextNotEmptyAssertion())
+  fun isNotEmpty() = assert(NotEmptyAssertion())
 
   /**
    * A wrapper around [conditional] which applies inner assertions only if the
@@ -76,41 +76,41 @@ class InputField internal constructor(
   }
 
   /** Asserts that the input text is a valid URL. */
-  fun isUrl() = assert(EditTextUrlAssertion())
+  fun isUrl() = assert(UrlAssertion())
 
   /** Asserts that the input text is a valid URI, optionally with a specific scheme. */
-  fun isUri(vararg schemes: String = emptyArray()) = assert(EditTextUriAssertion(schemes))
+  fun isUri(vararg schemes: String = emptyArray()) = assert(UriAssertion(schemes))
 
   /** Asserts that the input text is a valid email address. */
-  fun isEmail() = assert(EditTextEmailAssertion())
+  fun isEmail() = assert(EmailAssertion())
 
   /** Asserts that the input text is a valid number. */
-  fun isNumber() = assert(EditTextNumberAssertion())
+  fun isNumber() = assert(NumberAssertion())
 
   /** Asserts that the input text is shorter (<) than a specified length. */
-  fun lengthLessThan(length: Int) = assert(EditTextLengthLessThanAssertion(length))
+  fun lengthLessThan(length: Int) = assert(LengthLessThanAssertion(length))
 
   /** Asserts that the input text is at most (<=) a specified length. */
-  fun lengthAtMost(length: Int) = assert(EditTextLengthAtMostAssertion(length))
+  fun lengthAtMost(length: Int) = assert(LengthAtMostAssertion(length))
 
   /** Asserts that the input text is an exact (==) length. */
-  fun lengthExactly(length: Int) = assert(EditTextLengthExactlyAssertion(length))
+  fun lengthExactly(length: Int) = assert(LengthExactlyAssertion(length))
 
   /** Asserts that the input text is at least (>=) a specified length. */
-  fun lengthAtLeast(length: Int) = assert(EditTextLengthAtLeastAssertion(length))
+  fun lengthAtLeast(length: Int) = assert(LengthAtLeastAssertion(length))
 
   /** Asserts that the input text is greater (>) than a specified length. */
-  fun lengthGreaterThan(length: Int) = assert(EditTextLengthGreaterThanAssertion(length))
+  fun lengthGreaterThan(length: Int) = assert(LengthGreaterThanAssertion(length))
 
   /** Asserts that the input text contains a string. */
-  fun contains(text: String) = assert(EditTextContainsAssertion(text))
+  fun contains(text: String) = assert(ContainsAssertion(text))
 
   /** Asserts that the input text matches a regular expression. */
   fun matches(
     description: String,
     regex: String
   ) = assert(
-      EditTextRegexAssertion(
+      RegexAssertion(
           regexString = regex,
           description = description
       )
@@ -120,5 +120,5 @@ class InputField internal constructor(
   fun assert(
     description: String,
     matcher: (EditText) -> Boolean
-  ) = assert(CustomAssertion(description, matcher))
+  ) = assert(CustomViewAssertion(description, matcher))
 }

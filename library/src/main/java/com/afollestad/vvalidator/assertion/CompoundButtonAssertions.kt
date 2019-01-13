@@ -13,23 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("unused")
+
 package com.afollestad.vvalidator.assertion
 
 import android.widget.CompoundButton
 
 /** @author Aidan Follestad (@afollestad) */
-internal class CheckedStateAssertion(
-  private val checked: Boolean
-) : Assertion<CompoundButton>() {
-  override fun isValid(view: CompoundButton): Boolean {
-    return view.isChecked == checked
-  }
+sealed class CompoundButtonAssertions {
 
-  override fun description(): String {
-    return if (checked) {
-      "should be checked"
-    } else {
-      "should not be checked"
+  /** @author Aidan Follestad (@afollestad) */
+  class CheckedStateAssertion(
+    private val checked: Boolean
+  ) : Assertion<CompoundButton>() {
+    override fun isValid(view: CompoundButton): Boolean {
+      return view.isChecked == checked
+    }
+
+    override fun description(): String {
+      return if (checked) {
+        "should be checked"
+      } else {
+        "should not be checked"
+      }
     }
   }
 }

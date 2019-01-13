@@ -15,6 +15,7 @@
  */
 package com.afollestad.vvalidator.assertion
 
+import android.view.View
 import com.afollestad.vvalidator.field.Condition
 
 /** @author Aidan Follestad (@afollestad) */
@@ -37,10 +38,10 @@ abstract class Assertion<in T> {
 }
 
 /** @author Aidan Follestad (@afollestad) */
-internal class CustomAssertion<in T>(
+class CustomViewAssertion<in T>(
   private val description: String,
   private val assertion: (T) -> Boolean
-) : Assertion<T>() {
+) : Assertion<T>() where T : View {
 
   init {
     if (description.trim().isEmpty()) {

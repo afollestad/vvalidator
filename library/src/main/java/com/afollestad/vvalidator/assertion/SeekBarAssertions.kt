@@ -13,71 +13,77 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("unused")
+
 package com.afollestad.vvalidator.assertion
 
 import android.widget.AbsSeekBar
 
 /** @author Aidan Follestad (@afollestad) */
-internal class SeekProgressExactlyAssertion(
-  private val progress: Int
-) : Assertion<AbsSeekBar>() {
-  override fun isValid(view: AbsSeekBar): Boolean {
-    return view.progress == progress
+sealed class SeekBarAssertions {
+
+  /** @author Aidan Follestad (@afollestad) */
+  class ProgressExactlyAssertion(
+    private val progress: Int
+  ) : Assertion<AbsSeekBar>() {
+    override fun isValid(view: AbsSeekBar): Boolean {
+      return view.progress == progress
+    }
+
+    override fun description(): String {
+      return "selection should be exactly $progress"
+    }
   }
 
-  override fun description(): String {
-    return "selection should be exactly $progress"
-  }
-}
+  /** @author Aidan Follestad (@afollestad) */
+  class ProgressLessThanAssertion(
+    private val ceil: Int
+  ) : Assertion<AbsSeekBar>() {
+    override fun isValid(view: AbsSeekBar): Boolean {
+      return view.progress < ceil
+    }
 
-/** @author Aidan Follestad (@afollestad) */
-internal class SeekProgressLessThanAssertion(
-  private val ceil: Int
-) : Assertion<AbsSeekBar>() {
-  override fun isValid(view: AbsSeekBar): Boolean {
-    return view.progress < ceil
-  }
-
-  override fun description(): String {
-    return "selection should be less than $ceil"
-  }
-}
-
-/** @author Aidan Follestad (@afollestad) */
-internal class SeekProgressAtMostAssertion(
-  private val ceil: Int
-) : Assertion<AbsSeekBar>() {
-  override fun isValid(view: AbsSeekBar): Boolean {
-    return view.progress <= ceil
+    override fun description(): String {
+      return "selection should be less than $ceil"
+    }
   }
 
-  override fun description(): String {
-    return "selection should be at most $ceil"
-  }
-}
+  /** @author Aidan Follestad (@afollestad) */
+  class ProgressAtMostAssertion(
+    private val ceil: Int
+  ) : Assertion<AbsSeekBar>() {
+    override fun isValid(view: AbsSeekBar): Boolean {
+      return view.progress <= ceil
+    }
 
-/** @author Aidan Follestad (@afollestad) */
-internal class SeekProgressAtLeastAssertion(
-  private val floor: Int
-) : Assertion<AbsSeekBar>() {
-  override fun isValid(view: AbsSeekBar): Boolean {
-    return view.progress >= floor
-  }
-
-  override fun description(): String {
-    return "selection should be at least $floor"
-  }
-}
-
-/** @author Aidan Follestad (@afollestad) */
-internal class SeekProgressGreaterThanAssertion(
-  private val floor: Int
-) : Assertion<AbsSeekBar>() {
-  override fun isValid(view: AbsSeekBar): Boolean {
-    return view.progress > floor
+    override fun description(): String {
+      return "selection should be at most $ceil"
+    }
   }
 
-  override fun description(): String {
-    return "selection should be greater than $floor"
+  /** @author Aidan Follestad (@afollestad) */
+  class ProgressAtLeastAssertion(
+    private val floor: Int
+  ) : Assertion<AbsSeekBar>() {
+    override fun isValid(view: AbsSeekBar): Boolean {
+      return view.progress >= floor
+    }
+
+    override fun description(): String {
+      return "selection should be at least $floor"
+    }
+  }
+
+  /** @author Aidan Follestad (@afollestad) */
+  class ProgressGreaterThanAssertion(
+    private val floor: Int
+  ) : Assertion<AbsSeekBar>() {
+    override fun isValid(view: AbsSeekBar): Boolean {
+      return view.progress > floor
+    }
+
+    override fun description(): String {
+      return "selection should be greater than $floor"
+    }
   }
 }

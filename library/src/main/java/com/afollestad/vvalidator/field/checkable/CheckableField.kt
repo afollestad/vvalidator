@@ -15,13 +15,13 @@
  */
 @file:Suppress("unused")
 
-package com.afollestad.vvalidator.field.input
+package com.afollestad.vvalidator.field.checkable
 
 import android.widget.CompoundButton
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.assertion.CheckedStateAssertion
-import com.afollestad.vvalidator.assertion.CustomAssertion
+import com.afollestad.vvalidator.assertion.CompoundButtonAssertions.CheckedStateAssertion
+import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
 
@@ -50,5 +50,5 @@ class CheckableField internal constructor(
   fun assert(
     description: String,
     matcher: (CompoundButton) -> Boolean
-  ) = assert(CustomAssertion(description, matcher))
+  ) = assert(CustomViewAssertion(description, matcher))
 }

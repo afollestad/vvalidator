@@ -15,17 +15,17 @@
  */
 @file:Suppress("unused")
 
-package com.afollestad.vvalidator.field.input
+package com.afollestad.vvalidator.field.spinner
 
 import android.widget.Spinner
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.assertion.CustomAssertion
-import com.afollestad.vvalidator.assertion.PositionAtLeastAssertion
-import com.afollestad.vvalidator.assertion.PositionAtMostAssertion
-import com.afollestad.vvalidator.assertion.PositionExactlyAssertion
-import com.afollestad.vvalidator.assertion.PositionGreaterThanAssertion
-import com.afollestad.vvalidator.assertion.PositionLessThanAssertion
+import com.afollestad.vvalidator.assertion.CustomViewAssertion
+import com.afollestad.vvalidator.assertion.SpinnerAssertions.PositionAtLeastAssertion
+import com.afollestad.vvalidator.assertion.SpinnerAssertions.PositionAtMostAssertion
+import com.afollestad.vvalidator.assertion.SpinnerAssertions.PositionExactlyAssertion
+import com.afollestad.vvalidator.assertion.SpinnerAssertions.PositionGreaterThanAssertion
+import com.afollestad.vvalidator.assertion.SpinnerAssertions.PositionLessThanAssertion
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
 
@@ -78,5 +78,5 @@ class SpinnerField internal constructor(
   fun assert(
     description: String,
     matcher: (Spinner) -> Boolean
-  ) = assert(CustomAssertion(description, matcher))
+  ) = assert(CustomViewAssertion(description, matcher))
 }

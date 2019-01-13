@@ -19,19 +19,19 @@ package com.afollestad.vvalidator.field.input
 
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.assertion.CustomAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutContainsAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutEmailAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutLengthAtLeastAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutLengthAtMostAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutLengthExactlyAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutLengthGreaterThanAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutLengthLessThanAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutNotEmptyAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutNumberAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutRegexAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutUriAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutUrlAssertion
+import com.afollestad.vvalidator.assertion.CustomViewAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAtLeastAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAtMostAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthExactlyAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthGreaterThanAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthLessThanAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UrlAssertion
 import com.afollestad.vvalidator.assertion.text
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
@@ -63,7 +63,7 @@ class InputLayoutField internal constructor(
   )
 
   /** Asserts that the input text is not empty. */
-  fun isNotEmpty() = assert(InputLayoutNotEmptyAssertion())
+  fun isNotEmpty() = assert(NotEmptyAssertion())
 
   /**
    * A wrapper around [conditional] which applies inner assertions only if the
@@ -81,41 +81,41 @@ class InputLayoutField internal constructor(
   }
 
   /** Asserts that the input text is a valid URL. */
-  fun isUrl() = assert(InputLayoutUrlAssertion())
+  fun isUrl() = assert(UrlAssertion())
 
   /** Asserts that the input text is a valid URI, optionally with a specific scheme. */
-  fun isUri(vararg schemes: String = emptyArray()) = assert(InputLayoutUriAssertion(schemes))
+  fun isUri(vararg schemes: String = emptyArray()) = assert(UriAssertion(schemes))
 
   /** Asserts that the input text is a valid email address. */
-  fun isEmail() = assert(InputLayoutEmailAssertion())
+  fun isEmail() = assert(EmailAssertion())
 
   /** Asserts that the input text is a valid number. */
-  fun isNumber() = assert(InputLayoutNumberAssertion())
+  fun isNumber() = assert(NumberAssertion())
 
   /** Asserts that the input text is shorter (<) than a specified length. */
-  fun lengthLessThan(length: Int) = assert(InputLayoutLengthLessThanAssertion(length))
+  fun lengthLessThan(length: Int) = assert(LengthLessThanAssertion(length))
 
   /** Asserts that the input text is at most (<=) a specified length. */
-  fun lengthAtMost(length: Int) = assert(InputLayoutLengthAtMostAssertion(length))
+  fun lengthAtMost(length: Int) = assert(LengthAtMostAssertion(length))
 
   /** Asserts that the input text is an exact (==) length. */
-  fun lengthExactly(length: Int) = assert(InputLayoutLengthExactlyAssertion(length))
+  fun lengthExactly(length: Int) = assert(LengthExactlyAssertion(length))
 
   /** Asserts that the input text is at least (>=) a specified length. */
-  fun lengthAtLeast(length: Int) = assert(InputLayoutLengthAtLeastAssertion(length))
+  fun lengthAtLeast(length: Int) = assert(LengthAtLeastAssertion(length))
 
   /** Asserts that the input text is greater (>) than a specified length. */
-  fun lengthGreaterThan(length: Int) = assert(InputLayoutLengthGreaterThanAssertion(length))
+  fun lengthGreaterThan(length: Int) = assert(LengthGreaterThanAssertion(length))
 
   /** Asserts that the input text contains a string. */
-  fun contains(text: String) = assert(InputLayoutContainsAssertion(text))
+  fun contains(text: String) = assert(ContainsAssertion(text))
 
   /** Asserts that the input text matches a regular expression. */
   fun matches(
     description: String,
     regex: String
   ) = assert(
-      InputLayoutRegexAssertion(
+      RegexAssertion(
           regexString = regex,
           description = description
       )
@@ -125,5 +125,5 @@ class InputLayoutField internal constructor(
   fun assert(
     description: String,
     matcher: (TextInputLayout) -> Boolean
-  ) = assert(CustomAssertion(description, matcher))
+  ) = assert(CustomViewAssertion(description, matcher))
 }
