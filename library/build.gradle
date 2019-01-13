@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply from: '../dependencies.gradle'
+
+apply from: '../bintrayconfig.gradle'
+
+android {
+  compileSdkVersion versions.compileSdk
+  buildToolsVersion versions.buildTools
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.publishVersionCode
+    versionName versions.publishVersion
+  }
+}
+
+dependencies {
+  implementation 'androidx.annotation:annotation:' + versions.androidxAnnotations
+  implementation 'androidx.appcompat:appcompat:' + versions.androidxCore
+  implementation 'com.google.android.material:material:' + versions.googleMaterial
+
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + versions.kotlin
+  implementation 'com.jakewharton.timber:timber:' + versions.timber
+}
+
+apply from: '../spotless.gradle'

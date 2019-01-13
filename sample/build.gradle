@@ -1,0 +1,29 @@
+apply from: '../dependencies.gradle'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+  compileSdkVersion versions.compileSdk
+  buildToolsVersion versions.buildTools
+
+  defaultConfig {
+    applicationId "com.afollestad.vvalidatorsample"
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.publishVersionCode
+    versionName versions.publishVersion
+  }
+}
+
+dependencies {
+  implementation project(':library')
+
+  implementation 'androidx.annotation:annotation:' + versions.androidxAnnotations
+  implementation 'androidx.appcompat:appcompat:' + versions.androidxCore
+  implementation 'com.google.android.material:material:' + versions.googleMaterial
+
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + versions.kotlin
+}
+
+apply from: '../spotless.gradle'

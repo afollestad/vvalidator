@@ -1,0 +1,59 @@
+<resources>
+
+  <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="Form"/>
+
+  <style name="Form.Label" parent="TextAppearance.MaterialComponents.Overline">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+
+    <item name="android:textColor">?colorAccent</item>
+    <item name="android:layout_marginTop">@dimen/content_inset</item>
+  </style>
+
+  <style name="Form.Error" parent="TextAppearance.MaterialComponents.Caption">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">#f44336</item>
+    <item name="android:layout_marginBottom">@dimen/content_inset_quarter</item>
+  </style>
+
+  <style name="Form.Dropdown">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+
+    <item name="android:layout_marginTop">@dimen/content_inset_less</item>
+  </style>
+
+  <style name="Form.InputLayout">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+
+    <item name="android:layout_marginLeft">-4dp</item>
+    <item name="android:layout_marginRight">-4dp</item>
+  </style>
+
+  <style name="Form.InputField" parent="TextAppearance.MaterialComponents.Body1">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+
+    <item name="android:layout_marginTop">@dimen/content_inset_quarter</item>
+    <item name="android:layout_marginLeft">-4dp</item>
+    <item name="android:layout_marginRight">-4dp</item>
+  </style>
+
+  <style name="Form.Button" parent="Widget.MaterialComponents.Button">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+
+    <item name="android:layout_marginTop">@dimen/content_inset_more</item>
+    <item name="android:layout_marginLeft">-4dp</item>
+    <item name="android:layout_marginRight">-4dp</item>
+  </style>
+
+</resources>

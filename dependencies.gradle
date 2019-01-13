@@ -1,0 +1,24 @@
+ext.versions = [
+    minSdk             : 16,
+    compileSdk         : 28,
+    buildTools         : '28.0.3',
+    publishVersion     : '0.1.0',
+    publishVersionCode : 1,
+
+    gradlePlugin       : '3.2.1',
+    kotlin             : '1.3.11',
+    spotlessPlugin     : '3.16.0',
+    versionsPlugin     : '0.20.0',
+    bintrayRelease     : '0.9',
+
+    androidxAnnotations: '1.0.1',
+    androidxCore       : '1.0.2',
+    googleMaterial      : '1.0.0',
+
+    timber             : '4.7.1',
+
+    junit              : '4.12',
+    mockito            : '2.23.0',
+    mockitoKotlin      : '2.0.0-RC1',
+    truth              : '0.42'
+]

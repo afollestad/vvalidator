@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    >
+
+  <LinearLayout
+      xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:paddingBottom="@dimen/content_inset_double"
+      android:paddingLeft="@dimen/content_inset"
+      android:paddingRight="@dimen/content_inset"
+      android:paddingTop="@dimen/content_inset_less"
+      tools:ignore="HardcodedText,Autofill"
+      >
+
+    <!-- Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_name"
+        android:hint="Your Name"
+        style="@style/Form.InputLayout"
+        >
+
+      <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:inputType="text|textPersonName"
+          />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Email -->
+    <TextView
+        android:text="Email"
+        style="@style/Form.Label"
+        />
+
+    <EditText
+        android:id="@+id/input_email"
+        android:hint="Your email address"
+        android:inputType="text|textEmailAddress"
+        style="@style/Form.InputField"
+        />
+
+    <!-- Age -->
+    <TextView
+        android:text="Age"
+        style="@style/Form.Label"
+        />
+
+    <EditText
+        android:id="@+id/input_age"
+        android:hint="Your age"
+        android:inputType="number"
+        style="@style/Form.InputField"
+        />
+
+    <!-- Spinner -->
+    <Spinner
+        android:id="@+id/input_spinner"
+        style="@style/Form.Dropdown"
+        />
+
+    <TextView
+        android:id="@+id/error_spinner"
+        android:visibility="gone"
+        style="@style/Form.Error"
+        />
+
+    <!-- Website -->
+    <TextView
+        android:id="@+id/label_site"
+        android:text="Website"
+        style="@style/Form.Label"
+        />
+
+    <EditText
+        android:id="@+id/input_site"
+        android:hint="Your site's URL"
+        android:inputType="text|textUri"
+        style="@style/Form.InputField"
+        />
+
+    <!-- Biography -->
+    <TextView
+        android:text="Biography"
+        style="@style/Form.Label"
+        />
+
+    <EditText
+        android:id="@+id/input_bio"
+        android:gravity="top|start"
+        android:hint="A short bio"
+        android:inputType="text|textAutoCorrect|textCapSentences"
+        android:minLines="3"
+        style="@style/Form.InputField"
+        />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-8dp"
+        android:layout_marginRight="-8dp"
+        android:layout_marginTop="@dimen/content_inset"
+        android:max="100"
+        android:progress="25"
+        />
+
+    <TextView
+        android:id="@+id/error_seekBar"
+        android:visibility="gone"
+        style="@style/Form.Error"
+        />
+
+    <!-- Agree -->
+    <CheckBox
+        android:id="@+id/check_terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginRight="-4dp"
+        android:layout_marginTop="@dimen/content_inset"
+        android:text="I agree to the terms &amp; conditions"
+        />
+
+    <TextView
+        android:id="@+id/error_checkBox"
+        android:visibility="gone"
+        style="@style/Form.Error"
+        />
+
+    <!-- Submit -->
+    <Button
+        android:id="@+id/submit"
+        android:text="Submit"
+        style="@style/Form.Button"
+        />
+
+  </LinearLayout>
+
+</ScrollView>
