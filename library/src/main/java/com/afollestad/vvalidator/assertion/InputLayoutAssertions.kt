@@ -50,29 +50,49 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UriAssertion(
-    private val schemes: Array<out String>
-  ) : Assertion<TextInputLayout>() {
+  class UriAssertion : Assertion<TextInputLayout>() {
 
-    override fun isValid(view: TextInputLayout): Boolean {
-      return try {
-        val uri = Uri.parse(view.text())
-        return if (schemes.isNotEmpty()) {
-          uri.scheme in schemes
-        } else {
-          true
-        }
-      } catch (_: Exception) {
-        false
-      }
+    private var schemes: Array<out String> = emptyArray()
+    private var that: ((Uri) -> Boolean)? = null
+    private var thatDescription: String? = null
+    private var description: String? = null
+
+    /** Asserts that the URI has a scheme within the given values. */
+    fun hasScheme(vararg schemes: String) {
+      this.schemes = schemes
     }
 
-    override fun description(): String {
-      return if (schemes.isNotEmpty()) {
-        "must be a valid URI with scheme in ${schemes.joinToString(prefix = "[", postfix = "]")}"
-      } else {
-        "must be a valid URI"
+    /** Makes a custom assertion on the Uri. */
+    fun that(
+      description: String,
+      that: (Uri) -> Boolean
+    ) {
+      this.thatDescription = description
+      this.that = that
+    }
+
+    override fun isValid(view: TextInputLayout): Boolean {
+      try {
+        val uri = Uri.parse(view.text())
+        if (schemes.isNotEmpty() && uri.scheme !in schemes) {
+          description = "Scheme ${uri.scheme} not in ${schemes.displayString()}"
+          return false
+        }
+        val thatResult = that?.invoke(uri) ?: true
+        if (!thatResult) {
+          description = thatDescription
+          return false
+        }
+      } catch (_: Exception) {
+        return false
       }
+      return true
+    }
+
+    override fun description() = description ?: "must be a valid Uri"
+
+    private fun Array<out String>.displayString(): String {
+      return joinToString(prefix = "[", postfix = "]")
     }
   }
 

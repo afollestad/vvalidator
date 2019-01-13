@@ -79,7 +79,7 @@ class InputField internal constructor(
   fun isUrl() = assert(UrlAssertion())
 
   /** Asserts that the input text is a valid URI, optionally with a specific scheme. */
-  fun isUri(vararg schemes: String = emptyArray()) = assert(UriAssertion(schemes))
+  fun isUri() = assert(UriAssertion())
 
   /** Asserts that the input text is a valid email address. */
   fun isEmail() = assert(EmailAssertion())

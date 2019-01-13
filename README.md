@@ -83,7 +83,9 @@ form {
   input(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
     isUrl()
-    isUri("file", "content")
+    isUri()
+      .hasScheme("file", "content")
+      .that("custom assertion") { true }
     isEmail()
     isNumber()
     
@@ -117,7 +119,9 @@ form {
   inputLayout(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
     isUrl()
-    isUri("file", "content")
+    isUri()
+      .hasScheme("file", "content")
+      .that("custom assertion") { true }
     isEmail()
     isNumber()
     
