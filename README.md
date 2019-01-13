@@ -87,7 +87,13 @@ form {
       .hasScheme("file", "content")
       .that("custom assertion") { true }
     isEmail()
+    
     isNumber()
+    isNumber().lessThan(5)
+    isNumber().atMost(5)
+    isNumber().exactly(5)
+    isNumber().atLeast(5)
+    isNumber().greaterThan(5)
     
     length().lessThan(5)
     length().atMost(5)
@@ -123,7 +129,13 @@ form {
       .hasScheme("file", "content")
       .that("custom assertion") { true }
     isEmail()
+    
     isNumber()
+    isNumber().lessThan(5)
+    isNumber().atMost(5)
+    isNumber().exactly(5)
+    isNumber().atLeast(5)
+    isNumber().greaterThan(5)
     
     length().lessThan(5)
     length().atMost(5)

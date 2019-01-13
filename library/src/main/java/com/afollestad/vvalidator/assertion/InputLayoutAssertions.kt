@@ -112,14 +112,62 @@ sealed class InputLayoutAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
   class NumberAssertion : Assertion<TextInputLayout>() {
+    private var exactly: Int? = null
+    private var lessThan: Int? = null
+    private var atMost: Int? = null
+    private var atLeast: Int? = null
+    private var greaterThan: Int? = null
+
+    /** Asserts the number is an exact (=) value. */
+    fun exactly(length: Int) {
+      exactly = length
+    }
+
+    /** Asserts the number is less than (<) a value. */
+    fun lessThan(length: Int) {
+      lessThan = length
+    }
+
+    /** Asserts the number is at most (<=) a value. */
+    fun atMost(length: Int) {
+      atMost = length
+    }
+
+    /** Asserts the number is at least (>=) a value. */
+    fun atLeast(length: Int) {
+      atLeast = length
+    }
+
+    /** Asserts the number is greater (>) than a value. */
+    fun greaterThan(length: Int) {
+      greaterThan = length
+    }
+
     override fun isValid(view: TextInputLayout): Boolean {
-      val text = view.text()
-      if (text.isEmpty()) return false
-      return text.toIntOrNull() != null
+      val intValue = view.text().toIntOrNull() ?: return false
+      if (exactly != null && intValue != exactly!!) {
+        return false
+      } else if (lessThan != null && intValue >= lessThan!!) {
+        return false
+      } else if (atMost != null && intValue > atMost!!) {
+        return false
+      } else if (atLeast != null && intValue < atLeast!!) {
+        return false
+      } else if (greaterThan != null && intValue <= greaterThan!!) {
+        return false
+      }
+      return true
     }
 
     override fun description(): String {
-      return "must be a number"
+      return when {
+        exactly != null -> "must equal $exactly"
+        lessThan != null -> "must be less than $lessThan"
+        atMost != null -> "must be at most $atMost"
+        atLeast != null -> "must be at least $atLeast"
+        greaterThan != null -> "must be greater than $greaterThan"
+        else -> "must be a number"
+      }
     }
   }
 

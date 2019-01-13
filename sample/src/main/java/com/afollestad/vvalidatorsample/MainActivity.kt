@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     form {
       inputLayout(R.id.input_layout_name, name = "Name") {
         isNotEmpty()
-        lengthAtLeast(3)
+        length().atLeast(3)
       }
 
       input(R.id.input_email, name = "Email") {
@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
       input(R.id.input_bio, name = "Biography") {
         isNotEmpty()
-        lengthAtLeast(20)
+        length().atLeast(20)
       }
 
       seeker(R.id.seek_bar, name = "Seek Bar") {
