@@ -31,15 +31,6 @@
 
 ## Gradle Dependency
 
-Until jCenter approves my request, you'll need to add this to your repositories:
-
-```gradle
-repositories {
-
-  maven { url "https://dl.bintray.com/drummer-aidan/maven/" }
-}
-```
-
 Add this to your module's `build.gradle` file:
 
 ```gradle
