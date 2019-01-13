@@ -3,6 +3,7 @@
 View Validator, an easy-to-use form validation library for Kotlin & Android.
 
 [ ![jCenter](https://api.bintray.com/packages/drummer-aidan/maven/vvalidator/images/download.svg) ](https://bintray.com/drummer-aidan/maven/vvalidator/_latestVersion)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d1f2118793443ecbf2df4d7af7d6fec)](https://www.codacy.com/app/drummeraidan_50/vvalidator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=afollestad/vvalidator&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/afollestad/vvalidator.svg)](https://travis-ci.org/afollestad/vvalidator)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
