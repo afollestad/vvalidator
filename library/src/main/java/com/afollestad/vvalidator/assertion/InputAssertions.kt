@@ -125,67 +125,59 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class LengthExactlyAssertion(
-    private val length: Int
-  ) : Assertion<EditText>() {
+  class LengthAssertion : Assertion<EditText>() {
+    private var exactly: Int? = null
+    private var lessThan: Int? = null
+    private var atMost: Int? = null
+    private var atLeast: Int? = null
+    private var greaterThan: Int? = null
+
+    /** Asserts the length is an exact (=) value. */
+    fun exactly(length: Int) {
+      exactly = length
+    }
+
+    /** Asserts the length is less than (<) a value. */
+    fun lessThan(length: Int) {
+      lessThan = length
+    }
+
+    /** Asserts the length is at most (<=) a value. */
+    fun atMost(length: Int) {
+      atMost = length
+    }
+
+    /** Asserts the length is at least (>=) a value. */
+    fun atLeast(length: Int) {
+      atLeast = length
+    }
+
+    /** Asserts the length is greater (>) than a value. */
+    fun greaterThan(length: Int) {
+      greaterThan = length
+    }
+
     override fun isValid(view: EditText): Boolean {
-      return view.text.length == length
+      val length = view.text.length
+      return when {
+        exactly != null -> length == exactly!!
+        lessThan != null -> length < lessThan!!
+        atMost != null -> length <= atMost!!
+        atLeast != null -> length >= atLeast!!
+        greaterThan != null -> length > greaterThan!!
+        else -> false
+      }
     }
 
     override fun description(): String {
-      return "must be exactly $length characters"
-    }
-  }
-
-  /** @author Aidan Follestad (@afollestad) */
-  class LengthLessThanAssertion(
-    private val ceil: Int
-  ) : Assertion<EditText>() {
-    override fun isValid(view: EditText): Boolean {
-      return view.text.length < ceil
-    }
-
-    override fun description(): String {
-      return "must be less than $ceil characters"
-    }
-  }
-
-  /** @author Aidan Follestad (@afollestad) */
-  class LengthAtMostAssertion(
-    private val ceil: Int
-  ) : Assertion<EditText>() {
-    override fun isValid(view: EditText): Boolean {
-      return view.text.length <= ceil
-    }
-
-    override fun description(): String {
-      return "can only be $ceil characters at most"
-    }
-  }
-
-  /** @author Aidan Follestad (@afollestad) */
-  class LengthAtLeastAssertion(
-    private val floor: Int
-  ) : Assertion<EditText>() {
-    override fun isValid(view: EditText): Boolean {
-      return view.text.length >= floor
-    }
-
-    override fun description(): String {
-      return "must be at least $floor characters"
-    }
-  }
-
-  /** @author Aidan Follestad (@afollestad) */
-  class LengthGreaterThanAssertion(
-    private val floor: Int
-  ) : Assertion<EditText>() {
-    override fun isValid(view: EditText): Boolean {
-      return view.text.length > floor
-    }
-
-    override fun description(): String {
-      return "must be greater than $floor characters"
+      return when {
+        exactly != null -> "must be exactly $exactly characters"
+        lessThan != null -> "must be less than $lessThan characters"
+        atMost != null -> "must be at most $atMost characters"
+        atLeast != null -> "must be at least $atLeast characters"
+        greaterThan != null -> "must be greater than $greaterThan characters"
+        else -> "no length bound set"
+      }
     }
   }
 

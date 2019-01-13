@@ -89,11 +89,11 @@ form {
     isEmail()
     isNumber()
     
-    lengthLessThan(5)
-    lengthAtMost(5)
-    lengthExactly(5)
-    lengthAtLeast(5)
-    lengthGreaterThan(5)
+    length().lessThan(5)
+    length().atMost(5)
+    length().exactly(5)
+    length().atLeast(5)
+    length().greaterThan(5)
     
     contains("Hello, World!", ignoreCase = true)
     
@@ -125,11 +125,11 @@ form {
     isEmail()
     isNumber()
     
-    lengthLessThan(5)
-    lengthAtMost(5)
-    lengthExactly(5)
-    lengthAtLeast(5)
-    lengthGreaterThan(5)
+    length().lessThan(5)
+    length().atMost(5)
+    length().exactly(5)
+    length().atLeast(5)
+    length().greaterThan(5)
     
     contains("Hello, World!", ignoreCase = true)
     

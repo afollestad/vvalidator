@@ -22,11 +22,7 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutAssertions.ContainsAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAtLeastAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAtMostAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthExactlyAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthGreaterThanAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthLessThanAssertion
+import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.InputLayoutAssertions.RegexAssertion
@@ -83,8 +79,8 @@ class InputLayoutField internal constructor(
   /** Asserts that the input text is a valid URL. */
   fun isUrl() = assert(UrlAssertion())
 
-  /** Asserts that the input text is a valid URI, optionally with a specific scheme. */
-  fun isUri(vararg schemes: String = emptyArray()) = assert(UriAssertion(schemes))
+  /** Asserts that the input text is a valid URI. */
+  fun isUri() = assert(UriAssertion())
 
   /** Asserts that the input text is a valid email address. */
   fun isEmail() = assert(EmailAssertion())
@@ -92,23 +88,14 @@ class InputLayoutField internal constructor(
   /** Asserts that the input text is a valid number. */
   fun isNumber() = assert(NumberAssertion())
 
-  /** Asserts that the input text is shorter (<) than a specified length. */
-  fun lengthLessThan(length: Int) = assert(LengthLessThanAssertion(length))
-
-  /** Asserts that the input text is at most (<=) a specified length. */
-  fun lengthAtMost(length: Int) = assert(LengthAtMostAssertion(length))
-
-  /** Asserts that the input text is an exact (==) length. */
-  fun lengthExactly(length: Int) = assert(LengthExactlyAssertion(length))
-
-  /** Asserts that the input text is at least (>=) a specified length. */
-  fun lengthAtLeast(length: Int) = assert(LengthAtLeastAssertion(length))
-
-  /** Asserts that the input text is greater (>) than a specified length. */
-  fun lengthGreaterThan(length: Int) = assert(LengthGreaterThanAssertion(length))
+  /** Asserts that the input text contains a string. */
+  fun length() = assert(LengthAssertion())
 
   /** Asserts that the input text contains a string. */
-  fun contains(text: String) = assert(ContainsAssertion(text))
+  fun contains(
+    text: String,
+    ignoreCase: Boolean = false
+  ) = assert(ContainsAssertion(text, ignoreCase))
 
   /** Asserts that the input text matches a regular expression. */
   fun matches(
