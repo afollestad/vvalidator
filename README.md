@@ -7,6 +7,8 @@
 [![Build Status](https://travis-ci.org/afollestad/vvalidator.svg)](https://travis-ci.org/afollestad/vvalidator)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
+<img src="https://raw.githubusercontent.com/afollestad/vvalidator/master/images/showcase2.png" width="600" />
+
 ---
 
 ## Table of Contents
@@ -28,6 +30,15 @@
 ---
 
 ## Gradle Dependency
+
+Until jCenter approves my request, you'll need to add this to your repositories:
+
+```gradle
+repositories {
+
+  maven { url "https://dl.bintray.com/drummer-aidan/maven/" }
+}
+```
 
 Add this to your module's `build.gradle` file:
 
