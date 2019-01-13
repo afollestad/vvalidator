@@ -27,6 +27,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.annotation.IntRange
 
+/** Listens for an EditText's text changes and sends them into a callback. */
 fun EditText.onTextChanged(
   @IntRange(from = 0, to = 10000) debounce: Int = 0,
   cb: (String) -> Unit
@@ -61,6 +62,7 @@ fun EditText.onTextChanged(
   })
 }
 
+/** Listens for item selection in a Spinner, sending the position to a callback. */
 fun Spinner.onItemSelected(cb: (Int) -> Unit) {
   onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) = Unit
@@ -74,12 +76,14 @@ fun Spinner.onItemSelected(cb: (Int) -> Unit) {
   }
 }
 
+/** Sets a view's visible to [VISIBLE]. */
 fun View.show() {
   visibility = VISIBLE
 }
-
+/** Sets a view's visible to [GONE]. */
 fun View.hide() {
   visibility = GONE
 }
 
+/** If [show] is true, calls [show] on the receiving view, else [hide]. */
 fun View.showOrHide(show: Boolean) = if (show) show() else hide()

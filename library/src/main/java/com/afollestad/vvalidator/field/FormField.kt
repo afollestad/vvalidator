@@ -72,7 +72,7 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
     val result = FieldResult()
 
     for (assertion in assertions()) {
-      if (!assertion.conditionsMet()) {
+      if (!assertion.isConditionMet()) {
         // If conditions aren't met, the assertion is ignored
         continue
       } else if (!assertion.isValid(v)) {

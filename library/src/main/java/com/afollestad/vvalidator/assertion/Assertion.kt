@@ -21,15 +21,19 @@ import com.afollestad.vvalidator.field.Condition
 abstract class Assertion<in T> {
   private var condition: Condition? = null
 
+  /** Returns true if the given view passes the assertion. */
   abstract fun isValid(view: T): Boolean
 
+  /** A short description of what the assertion tests. */
   abstract fun description(): String
 
+  /** Sets a condition delegate which must return true for the assertion to be executed. */
   fun condition(condition: Condition?) {
     this.condition = condition
   }
 
-  internal fun conditionsMet() = condition?.invoke() ?: true
+  /** Returns true if the assertion's condition returns true, or if there is no condition. */
+  internal fun isConditionMet() = condition?.invoke() ?: true
 }
 
 /** @author Aidan Follestad (@afollestad) */

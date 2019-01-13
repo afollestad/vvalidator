@@ -27,8 +27,10 @@ import com.afollestad.vvalidator.form.FormBuilder
 
 /** @author Aidan Follestad (@afollestad) */
 interface ValidationContainer {
+  /** Returns the Context, which in an Activity is itself, else the Activity of a Fragment. */
   fun context(): Context
 
+  /** Retrieves a view from the container view by its ID. */
   fun <T : View> findViewById(@IdRes id: Int): T?
 }
 

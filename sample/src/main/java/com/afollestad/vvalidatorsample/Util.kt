@@ -21,6 +21,7 @@ import android.widget.Toast.LENGTH_SHORT
 
 private var toast: Toast? = null
 
+/** Shows a toast in the receiving Activity, cancelling any currently visible one. */
 fun Activity.toast(message: String) {
   toast?.cancel()
   toast = Toast.makeText(this, message, LENGTH_SHORT)
