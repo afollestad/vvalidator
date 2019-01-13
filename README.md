@@ -95,7 +95,7 @@ form {
     lengthAtLeast(5)
     lengthGreaterThan(5)
     
-    contains("Hello, World!")
+    contains("Hello, World!", ignoreCase = true)
     
     // Regex assertions, with description of what it does
     matches("Country code", "/^(\+?\d{1,3}|\d{1,4})$/")
@@ -131,7 +131,7 @@ form {
     lengthAtLeast(5)
     lengthGreaterThan(5)
     
-    contains("Hello, World!")
+    contains("Hello, World!", ignoreCase = true)
     
     // Regex assertions, with description of what it does
     matches("Country code", "/^(\+?\d{1,3}|\d{1,4})$/")

@@ -190,11 +190,12 @@ sealed class InputLayoutAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
   class ContainsAssertion(
-    private val text: String
+    private val text: String,
+    private val ignoreCase: Boolean = false
   ) : Assertion<TextInputLayout>() {
     override fun isValid(view: TextInputLayout): Boolean {
       return view.text()
-          .contains(text)
+          .contains(text, ignoreCase)
     }
 
     override fun description(): String {

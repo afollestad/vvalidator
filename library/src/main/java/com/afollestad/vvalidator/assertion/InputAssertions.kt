@@ -191,10 +191,11 @@ sealed class InputAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
   class ContainsAssertion(
-    private val text: String
+    private val text: String,
+    private val ignoreCase: Boolean = false
   ) : Assertion<EditText>() {
     override fun isValid(view: EditText): Boolean {
-      return view.text.contains(text)
+      return view.text.contains(text, ignoreCase)
     }
 
     override fun description(): String {
