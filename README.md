@@ -111,7 +111,7 @@ from the child `TextInputEditText` rather than the parent.
 ```kotlin
 form {
 
-  input(R.id.view_id, name = "Optional Name") {
+  inputLayout(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
     isUrl()
     isUri("file", "content")
