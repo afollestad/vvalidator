@@ -21,11 +21,7 @@ import android.widget.AbsSeekBar
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAtLeastAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAtMostAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressExactlyAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressGreaterThanAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressLessThanAssertion
+import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAssertion
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
 
@@ -44,20 +40,8 @@ class SeekField internal constructor(
       "Didn't find view by ID ${id.resName(container.context())} in $container"
   )
 
-  /** Asserts the seek bar's progress is at an exact position. */
-  fun progressExactly(index: Int) = assert(ProgressExactlyAssertion(index))
-
-  /** Asserts the seek bar's progress is less than a position. */
-  fun progressLessThan(index: Int) = assert(ProgressLessThanAssertion(index))
-
-  /** Asserts the seek bar's progress is at most a position. */
-  fun progressAtMost(index: Int) = assert(ProgressAtMostAssertion(index))
-
-  /** Asserts the seek bar's progress is at least a position. */
-  fun progressAtLeast(index: Int) = assert(ProgressAtLeastAssertion(index))
-
-  /** Asserts the seek bar's progress is greater than a position. */
-  fun progressGreaterThan(index: Int) = assert(ProgressGreaterThanAssertion(index))
+  /** Asserts on the seeker's progress. */
+  fun progress() = assert(ProgressAssertion())
 
   /** Adds a custom inline assertion for the seek bar. */
   fun assert(

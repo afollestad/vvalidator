@@ -181,11 +181,11 @@ adapter, and shows a list of options when tapped.
 form {
   
   spinner(R.id.view_id, name = "Optional Name") {
-    selectedPositionExactly(1)
-    selectedPositionLessThan(1)
-    selectedPositionAtMost(1)
-    selectedPositionAtLeast(1)
-    selectedPositionGreaterThan(1)
+    selection().exactly(1)
+    selection().lessThan(1)
+    selection().atMost(1)
+    selection().atLeast(1)
+    selection().greaterThan(1)
     
     // Custom assertions
     assert("Do something") { view -> true }
@@ -202,11 +202,11 @@ a number either with a horizontally sliding view or with horizontal icons.
 form {
 
   seeker(R.id.view_id, name = "Optional Name") {
-    progressExactly(1)
-    progressLessThan(1)
-    progressAtMost(1)
-    progressAtLeast(1)
-    progressGreaterThan(1)
+    progress().exactly(1)
+    progress().lessThan(1)
+    progress().atMost(1)
+    progress().atLeast(1)
+    progress().greaterThan(1)
     
     // Custom assertions
     assert("Do something") { view -> true }
