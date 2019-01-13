@@ -213,8 +213,9 @@ form {
     isChecked() 
     onErrors { view, errors ->
       // `view` here is a CompoundButton.
-      // `errors` here is a List<FieldError>...
-      // Generally you'd want to take the first() error and display it.
+      // `errors` here is a List<FieldError>, which can be empty to notify that there are no longer 
+      // any validation errors.
+      // Generally you'd want to take the firstOrNull() error and display it.
     }
   }
 }
