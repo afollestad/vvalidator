@@ -52,13 +52,18 @@ sealed class InputLayoutAssertions {
   /** @author Aidan Follestad (@afollestad) */
   class UriAssertion : Assertion<TextInputLayout>() {
 
-    private var schemes: Array<out String> = emptyArray()
+    private var schemes: List<String> = emptyList()
+    private var schemesDescription: String? = null
     private var that: ((Uri) -> Boolean)? = null
     private var thatDescription: String? = null
     private var description: String? = null
 
     /** Asserts that the URI has a scheme within the given values. */
-    fun hasScheme(vararg schemes: String): UriAssertion {
+    fun hasScheme(
+      description: String,
+      schemes: List<String>
+    ): UriAssertion {
+      this.schemesDescription = description
       this.schemes = schemes
       return this
     }
@@ -76,13 +81,15 @@ sealed class InputLayoutAssertions {
     override fun isValid(view: TextInputLayout): Boolean {
       try {
         val uri = Uri.parse(view.text())
-        if (schemes.isNotEmpty() && uri.scheme !in schemes) {
-          description = "Scheme '${uri.scheme}' not in ${schemes.displayString()}"
+        val uriScheme = uri.scheme ?: ""
+        if (schemes.isNotEmpty() && uriScheme !in schemes) {
+          description = schemesDescription
+              ?: "scheme '$uriScheme' not in ${schemes.displayString()}"
           return false
         }
         val thatResult = that?.invoke(uri) ?: true
         if (!thatResult) {
-          description = thatDescription
+          description = thatDescription ?: "didn't pass custom validation"
           return false
         }
       } catch (_: Exception) {
@@ -93,7 +100,7 @@ sealed class InputLayoutAssertions {
 
     override fun description() = description ?: "must be a valid Uri"
 
-    private fun Array<out String>.displayString(): String {
+    private fun List<String>.displayString(): String {
       return joinToString(
           prefix = "[",
           postfix = "]",

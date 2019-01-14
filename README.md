@@ -84,7 +84,7 @@ form {
     isNotEmpty()
     isUrl()
     isUri()
-      .hasScheme("file", "content")
+      .hasScheme("must be a file Uri", listOf("file"))
       .that("custom assertion") { true }
     isEmail()
     
@@ -105,10 +105,10 @@ form {
     contains("Hello, World!").ignoreCase()
     
     // Regex assertions, with description of what it does
-    matches("Country code", "/^(\+?\d{1,3}|\d{1,4})$/")
+    matches("must be a country code", "/^(\+?\d{1,3}|\d{1,4})$/")
     
     // Custom assertions
-    assert("Do something") { view -> true }
+    assert("expected something") { view -> true }
   }
 }
 ```
@@ -127,7 +127,7 @@ form {
     isNotEmpty()
     isUrl()
     isUri()
-      .hasScheme("file", "content")
+      .hasScheme("must be a file Uri", listOf("file"))
       .that("custom assertion") { true }
     isEmail()
     
@@ -148,10 +148,10 @@ form {
     contains("Hello, World!").ignoreCase()
     
     // Regex assertions, with description of what it does
-    matches("Country code", "/^(\+?\d{1,3}|\d{1,4})$/")
+    matches("must be a country code", "/^(\+?\d{1,3}|\d{1,4})$/")
     
     // Custom assertions
-    assert("Do something") { view -> true }
+    assert("expected something") { view -> true }
   }
 }
 ```
@@ -169,7 +169,7 @@ form {
     isNotChecked()
     
     // Custom assertions
-    assert("Do something") { view -> true }
+    assert("expected something") { view -> true }
   }
 }
 ```
@@ -190,7 +190,7 @@ form {
     selection().greaterThan(1)
     
     // Custom assertions
-    assert("Do something") { view -> true }
+    assert("expected something") { view -> true }
   }
 }
 ```
@@ -211,7 +211,7 @@ form {
     progress().greaterThan(1)
     
     // Custom assertions
-    assert("Do something") { view -> true }
+    assert("expected something") { view -> true }
   }
 }
 ```
@@ -233,7 +233,8 @@ form {
       // `view` here is a CompoundButton.
       // `errors` here is a List<FieldError>, which can be empty to notify that there are no longer 
       // any validation errors.
-      // Generally you'd want to take the firstOrNull() error and display it.
+      val firstError = errors.firstOrNull()
+      // TODO: show firstError.toString() in the UI.
     }
   }
 }
@@ -411,7 +412,6 @@ Now, you can use it:
 
 ```kotlin
 form {
-
   myView(R.id.seek_bar, name = "Optional Name") {
     myAssertion()
   }
