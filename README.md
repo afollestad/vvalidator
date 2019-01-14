@@ -316,33 +316,48 @@ val message = error.toString()
 
 ## Conditionals
 
-You can apply assertions conditionally. This could be useful in many cases, one example would be 
-for fields that are optionally visible. *If a field is not visible, it shouldn't be validated*. You 
-can nest conditions as well. **Anything outside of a `conditional` block is still always executed.**
+You can apply assertions conditionally. **Anything outside of a `conditional` block is still always 
+executed during validation.** This could be useful in many cases.
 
-This is in the sample project:
+One use case would be on fields that are optionally visible. *If a field is not visible, it 
+should not be validated.* 
 
 ```kotlin
 form {
   input(R.id.input_site, name = "Site") {
- 
     conditional({ spinner.selectedItemPosition > 1 }) {
+      isUrl()
+    }
+  }
+  
+  input(R.id.input_age, name = "Age") {
+    isEmptyOr { isNumber().greaterThan(0) }
+  }
+}
+```
+
+The `conditional(..)` block above only asserts the field is a URL if a spinner's selection is greater 
+than 1. Say the spinner makes the `input_site` field visible if it's selection is > 1.
+
+Down further, we use `isEmptyOr` which under the hood, is just a wrapper around `conditional(...)`. 
+This only applies its inner assertions if the input text is not empty. This effectively makes the 
+age field optional, but if it's filled it it *must* be a number and greater than 0.
+
+You can nest conditionals, as well:
+
+```kotlin
+form {
+  input(...) {
+    conditional(...) {
       isEmptyOr {
-        isUrl()
+        conditional(...) {
+          isNotEmpty()
+        }
       }
     }
   }
 }
 ```
-
-An input field, which should be non-empty and contain a URL, is only validated if a spinner's 
-selection is greater than 1. If it's not greater than 1, the code inside of `conditional` is 
-not executed. If it is greater than 1, we than assert that the input contains a URL if the text is 
-not empty. This effectively makes the URL an optional field even if the spinner allows the field to 
-be visible. 
-
-Under the hood, `isEmptyOr(...)` is just a wrapper around `conditional(...)` that only executes its 
-contents if the input text is not empty. 
 
 ---
 
