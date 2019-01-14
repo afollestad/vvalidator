@@ -27,7 +27,8 @@ sealed class InputAssertions {
   /** @author Aidan Follestad (@afollestad) */
   class NotEmptyAssertion : Assertion<EditText>() {
     override fun isValid(view: EditText): Boolean {
-      return view.text.isNotEmpty()
+      return view.text()
+          .isNotEmpty()
     }
 
     override fun description(): String {
@@ -40,7 +41,7 @@ sealed class InputAssertions {
     private val regex = Patterns.WEB_URL
 
     override fun isValid(view: EditText): Boolean {
-      return regex.matcher(view.text)
+      return regex.matcher(view.text())
           .matches()
     }
 
@@ -75,9 +76,9 @@ sealed class InputAssertions {
 
     override fun isValid(view: EditText): Boolean {
       try {
-        val uri = Uri.parse(view.text.toString())
+        val uri = Uri.parse(view.text())
         if (schemes.isNotEmpty() && uri.scheme !in schemes) {
-          description = "Scheme ${uri.scheme} not in ${schemes.displayString()}"
+          description = "Scheme '${uri.scheme}' not in ${schemes.displayString()}"
           return false
         }
         val thatResult = that?.invoke(uri) ?: true
@@ -94,7 +95,11 @@ sealed class InputAssertions {
     override fun description() = description ?: "must be a valid Uri"
 
     private fun Array<out String>.displayString(): String {
-      return joinToString(prefix = "[", postfix = "]")
+      return joinToString(
+          prefix = "[",
+          postfix = "]",
+          transform = { "'$it'" }
+      )
     }
   }
 
@@ -103,7 +108,7 @@ sealed class InputAssertions {
     private val regex = Patterns.EMAIL_ADDRESS
 
     override fun isValid(view: EditText): Boolean {
-      return regex.matcher(view.text)
+      return regex.matcher(view.text())
           .matches()
     }
 
@@ -146,7 +151,7 @@ sealed class InputAssertions {
     }
 
     override fun isValid(view: EditText): Boolean {
-      val intValue = view.text.toString()
+      val intValue = view.text()
           .toIntOrNull() ?: return false
       if (exactly != null && intValue != exactly!!) {
         return false
@@ -208,7 +213,8 @@ sealed class InputAssertions {
     }
 
     override fun isValid(view: EditText): Boolean {
-      val length = view.text.length
+      val length = view.text()
+          .length
       return when {
         exactly != null -> length == exactly!!
         lessThan != null -> length < lessThan!!
@@ -221,23 +227,28 @@ sealed class InputAssertions {
 
     override fun description(): String {
       return when {
-        exactly != null -> "must be exactly $exactly characters"
-        lessThan != null -> "must be less than $lessThan characters"
-        atMost != null -> "must be at most $atMost characters"
-        atLeast != null -> "must be at least $atLeast characters"
-        greaterThan != null -> "must be greater than $greaterThan characters"
+        exactly != null -> "length must be exactly $exactly"
+        lessThan != null -> "length must be less than $lessThan"
+        atMost != null -> "length must be at most $atMost"
+        atLeast != null -> "length must be at least $atLeast"
+        greaterThan != null -> "length must be greater than $greaterThan"
         else -> "no length bound set"
       }
     }
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class ContainsAssertion(
-    private val text: String,
-    private val ignoreCase: Boolean = false
-  ) : Assertion<EditText>() {
+  class ContainsAssertion(private val text: String) : Assertion<EditText>() {
+    private var ignoreCase: Boolean = false
+
+    /** Case is ignored when checking if the input contains the string. */
+    fun ignoreCase() {
+      ignoreCase = true
+    }
+
     override fun isValid(view: EditText): Boolean {
-      return view.text.contains(text, ignoreCase)
+      return view.text()
+          .contains(text, ignoreCase)
     }
 
     override fun description(): String {
@@ -253,11 +264,16 @@ sealed class InputAssertions {
     private val regex = Regex(regexString)
 
     override fun isValid(view: EditText): Boolean {
-      return view.text.matches(regex)
+      return view.text()
+          .matches(regex)
     }
 
     override fun description(): String {
       return description
     }
   }
+}
+
+private fun EditText.text(): String {
+  return text.toString()
 }

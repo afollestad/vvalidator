@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/afollestad/vvalidator.svg)](https://travis-ci.org/afollestad/vvalidator)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-<img src="https://raw.githubusercontent.com/afollestad/vvalidator/master/images/showcase2.png" width="600" />
+<img src="https://raw.githubusercontent.com/afollestad/vvalidator/master/images/showcase3.png" width="600" />
 
 ---
 
@@ -101,7 +101,8 @@ form {
     length().atLeast(5)
     length().greaterThan(5)
     
-    contains("Hello, World!", ignoreCase = true)
+    contains("Hello, World!")
+    contains("Hello, World!").ignoreCase()
     
     // Regex assertions, with description of what it does
     matches("Country code", "/^(\+?\d{1,3}|\d{1,4})$/")
@@ -143,7 +144,8 @@ form {
     length().atLeast(5)
     length().greaterThan(5)
     
-    contains("Hello, World!", ignoreCase = true)
+    contains("Hello, World!")
+    contains("Hello, World!").ignoreCase()
     
     // Regex assertions, with description of what it does
     matches("Country code", "/^(\+?\d{1,3}|\d{1,4})$/")

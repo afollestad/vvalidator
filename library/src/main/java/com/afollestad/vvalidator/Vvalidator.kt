@@ -42,10 +42,11 @@ interface ValidationContainer {
 fun Activity.form(
   builder: FormBuilder
 ): Form {
+  val activity = this
   val container = object : ValidationContainer {
-    override fun context(): Context = this@form
+    override fun context(): Context = activity
 
-    override fun <T : View> findViewById(id: Int): T? = this@form.findViewById(id)
+    override fun <T : View> findViewById(id: Int): T? = activity.findViewById(id)
   }
   val newForm = Form(container)
   builder(newForm)
@@ -60,12 +61,14 @@ fun Activity.form(
 fun Fragment.form(
   builder: FormBuilder
 ): Form {
+  val activity = this.activity
+  val view = this.view
   val container = object : ValidationContainer {
     override fun context(): Context {
-      return this@form.activity ?: throw IllegalStateException("Fragment is not attached.")
+      return activity ?: throw IllegalStateException("Fragment is not attached.")
     }
 
-    override fun <T : View> findViewById(id: Int): T? = this@form.view?.findViewById(id)
+    override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
   }
   val newForm = Form(container)
   builder(newForm)

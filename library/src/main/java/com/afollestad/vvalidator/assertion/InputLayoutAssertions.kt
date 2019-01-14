@@ -58,24 +58,26 @@ sealed class InputLayoutAssertions {
     private var description: String? = null
 
     /** Asserts that the URI has a scheme within the given values. */
-    fun hasScheme(vararg schemes: String) {
+    fun hasScheme(vararg schemes: String): UriAssertion {
       this.schemes = schemes
+      return this
     }
 
     /** Makes a custom assertion on the Uri. */
     fun that(
       description: String,
       that: (Uri) -> Boolean
-    ) {
+    ): UriAssertion {
       this.thatDescription = description
       this.that = that
+      return this
     }
 
     override fun isValid(view: TextInputLayout): Boolean {
       try {
         val uri = Uri.parse(view.text())
         if (schemes.isNotEmpty() && uri.scheme !in schemes) {
-          description = "Scheme ${uri.scheme} not in ${schemes.displayString()}"
+          description = "Scheme '${uri.scheme}' not in ${schemes.displayString()}"
           return false
         }
         val thatResult = that?.invoke(uri) ?: true
@@ -92,7 +94,11 @@ sealed class InputLayoutAssertions {
     override fun description() = description ?: "must be a valid Uri"
 
     private fun Array<out String>.displayString(): String {
-      return joinToString(prefix = "[", postfix = "]")
+      return joinToString(
+          prefix = "[",
+          postfix = "]",
+          transform = { "'$it'" }
+      )
     }
   }
 
@@ -219,21 +225,25 @@ sealed class InputLayoutAssertions {
 
     override fun description(): String {
       return when {
-        exactly != null -> "must be exactly $exactly characters"
-        lessThan != null -> "must be less than $lessThan characters"
-        atMost != null -> "must be at most $atMost characters"
-        atLeast != null -> "must be at least $atLeast characters"
-        greaterThan != null -> "must be greater than $greaterThan characters"
+        exactly != null -> "length must be exactly $exactly"
+        lessThan != null -> "length must be less than $lessThan"
+        atMost != null -> "length must be at most $atMost"
+        atLeast != null -> "length must be at least $atLeast"
+        greaterThan != null -> "length must be greater than $greaterThan"
         else -> "no length bound set"
       }
     }
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class ContainsAssertion(
-    private val text: String,
-    private val ignoreCase: Boolean = false
-  ) : Assertion<TextInputLayout>() {
+  class ContainsAssertion(private val text: String) : Assertion<TextInputLayout>() {
+    private var ignoreCase: Boolean = false
+
+    /** Case is ignored when checking if the input contains the string. */
+    fun ignoreCase() {
+      ignoreCase = true
+    }
+
     override fun isValid(view: TextInputLayout): Boolean {
       return view.text()
           .contains(text, ignoreCase)
@@ -263,5 +273,5 @@ sealed class InputLayoutAssertions {
 }
 
 internal fun TextInputLayout.text(): String {
-  return editText?.toString() ?: ""
+  return editText?.text?.toString() ?: ""
 }

@@ -92,10 +92,7 @@ class InputLayoutField internal constructor(
   fun length() = assert(LengthAssertion())
 
   /** Asserts that the input text contains a string. */
-  fun contains(
-    text: String,
-    ignoreCase: Boolean = false
-  ) = assert(ContainsAssertion(text, ignoreCase))
+  fun contains(text: String) = assert(ContainsAssertion(text))
 
   /** Asserts that the input text matches a regular expression. */
   fun matches(
