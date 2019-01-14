@@ -32,7 +32,7 @@ abstract class Assertion<in T> {
   abstract fun description(): String
 
   /** Sets a condition delegate which must return true for the assertion to be executed. */
-  fun condition(condition: Condition?) {
+  internal fun condition(condition: Condition?) {
     this.condition = condition
   }
 
