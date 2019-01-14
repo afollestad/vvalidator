@@ -21,6 +21,8 @@ import android.view.View
 import android.view.View.NO_ID
 import androidx.annotation.CheckResult
 import androidx.annotation.IdRes
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.assertion.Assertion
 
 typealias FieldBuilder<T> = T.() -> Unit
@@ -92,7 +94,8 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
     return result
   }
 
-  private fun propagateErrors(errors: List<FieldError>) {
+  @VisibleForTesting(otherwise = PRIVATE)
+  fun propagateErrors(errors: List<FieldError>) {
     view?.let {
       onErrors?.invoke(it, errors)
     }

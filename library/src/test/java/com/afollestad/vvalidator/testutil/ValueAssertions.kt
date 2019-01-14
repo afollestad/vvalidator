@@ -29,13 +29,13 @@ fun <T : Any?> T.assertNotNull() {
   }
 }
 
-fun <T : Any> T.assertEqualTo(value: T?) {
+fun <T : Any> T?.assertEqualTo(value: T?) {
   if (this != value) {
     throw AssertionError("Expected value: \"$value\"\nActual: \"$this\"")
   }
 }
 
-fun <T : Any> T.assertNotEqualTo(value: T?) {
+fun <T : Any> T?.assertNotEqualTo(value: T?) {
   if (this == value) {
     throw AssertionError("Expected value to not be \"$value\", but it was")
   }

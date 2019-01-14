@@ -16,11 +16,14 @@
 package com.afollestad.vvalidator.assertion
 
 import android.view.View
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.field.Condition
 
 /** @author Aidan Follestad (@afollestad) */
 abstract class Assertion<in T> {
-  private var condition: Condition? = null
+  @VisibleForTesting(otherwise = PRIVATE)
+  var condition: Condition? = null
 
   /** Returns true if the given view passes the assertion. */
   abstract fun isValid(view: T): Boolean

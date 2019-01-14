@@ -343,22 +343,6 @@ Down further, we use `isEmptyOr` which under the hood, is just a wrapper around 
 This only applies its inner assertions if the input text is not empty. This effectively makes the 
 age field optional, but if its filled then it *must* be a number and greater than 0.
 
-You can nest conditionals, as well:
-
-```kotlin
-form {
-  input(...) {
-    conditional(...) {
-      isEmptyOr {
-        conditional(...) {
-          isNotEmpty()
-        }
-      }
-    }
-  }
-}
-```
-
 ---
 
 ## Supporting Additional Views
