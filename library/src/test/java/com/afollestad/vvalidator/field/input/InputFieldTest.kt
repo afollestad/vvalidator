@@ -158,7 +158,8 @@ class InputFieldTest {
         FieldError(
             id = ID_INPUT,
             name = "Input",
-            description = "must not be empty"
+            description = "must not be empty",
+            assertionType = NotEmptyAssertion::class
         )
     )
     field.propagateErrors(errors)

@@ -307,6 +307,8 @@ val id: Int = error.id
 val name: String = error.name
 // assertion description
 val description: String = error.description
+// the class of the assertion that failed
+val assertionType: KClass<out Assertion<*>> = error.assertionType
 
 // name + description, can generally be shown to users
 val message = error.toString()

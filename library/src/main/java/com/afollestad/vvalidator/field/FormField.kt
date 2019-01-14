@@ -84,7 +84,8 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
         val error = FieldError(
             id = id,
             name = name,
-            description = assertion.description()
+            description = assertion.description(),
+            assertionType = assertion::class
         )
         result.addError(error)
       }

@@ -159,7 +159,8 @@ class InputLayoutFieldTest {
         FieldError(
             id = ID_INPUT_LAYOUT,
             name = "Input layout",
-            description = "must not be empty"
+            description = "must not be empty",
+            assertionType = NotEmptyAssertion::class
         )
     )
     field.propagateErrors(errors)

@@ -18,6 +18,8 @@
 package com.afollestad.vvalidator.field
 
 import androidx.annotation.IdRes
+import com.afollestad.vvalidator.assertion.Assertion
+import kotlin.reflect.KClass
 
 /** @author Aidan Follestad (@afollestad) */
 data class FieldError(
@@ -26,7 +28,9 @@ data class FieldError(
   /** The name of the field that the error is for. */
   val name: String,
   /** The description of the error. */
-  val description: String
+  val description: String,
+  /** The type of assertion that created this error. */
+  val assertionType: KClass<out Assertion<*>>
 ) {
   /** A combination of [name] and [description] to display to a user. */
   override fun toString(): String {

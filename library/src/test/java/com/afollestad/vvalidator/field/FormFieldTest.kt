@@ -103,6 +103,7 @@ class FormFieldTest {
           error.id.assertEqualTo(ID_INPUT)
           error.name.assertEqualTo("Test Input")
           error.description.assertEqualTo(assertion.description())
+          error.assertionType.assertEqualTo(NotEmptyAssertion::class)
 
           onErrorsCalled.assertEqualTo(error)
         }
