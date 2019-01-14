@@ -23,7 +23,6 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CompoundButtonAssertions.CheckedStateAssertion
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.util.resName
 
 /**
  * Represents a compound button field, like a checkbox or radio button.
@@ -36,9 +35,7 @@ class CheckableField internal constructor(
   override val name: String
 ) : FormField<CheckableField, CompoundButton>() {
 
-  override val view = container.findViewById<CompoundButton>(id) ?: throw IllegalArgumentException(
-      "Didn't find view by ID ${id.resName(container.context())} in $container"
-  )
+  override val view = container.getViewOrThrow<CompoundButton>(id)
 
   /** Asserts the view is checked. */
   fun isChecked() = assert(CheckedStateAssertion(true))

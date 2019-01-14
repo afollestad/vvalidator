@@ -24,14 +24,28 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.form.FormBuilder
+import com.afollestad.vvalidator.util.resName
 
 /** @author Aidan Follestad (@afollestad) */
-interface ValidationContainer {
-  /** Returns the Context, which in an Activity is itself, else the Activity of a Fragment. */
-  fun context(): Context
+abstract class ValidationContainer(val context: Context) {
 
-  /** Retrieves a view from the container view by its ID. */
-  fun <T : View> findViewById(@IdRes id: Int): T?
+  /** Retrieves a view from the container view by its ID, which can be null.. */
+  abstract fun <T : View> findViewById(@IdRes id: Int): T?
+
+  /** Returns the result [findViewById] or throws with a useful exception if it's null. */
+  fun <T : View> getViewOrThrow(@IdRes id: Int): T {
+    return findViewById(id) ?: throw IllegalStateException(
+        "Unable to find a view by ID ${id.resName(context)} in the container."
+    )
+  }
+
+  /** Returns [name], unless its null in which case we return the name of the ID. */
+  fun getFieldName(@IdRes id: Int, name: String?): String {
+    return name ?: run {
+      val res = context.resources
+      return res.getResourceEntryName(id)
+    }
+  }
 }
 
 /**
@@ -43,9 +57,7 @@ fun Activity.form(
   builder: FormBuilder
 ): Form {
   val activity = this
-  val container = object : ValidationContainer {
-    override fun context(): Context = activity
-
+  val container = object : ValidationContainer(activity) {
     override fun <T : View> findViewById(id: Int): T? = activity.findViewById(id)
   }
   val newForm = Form(container)
@@ -61,14 +73,9 @@ fun Activity.form(
 fun Fragment.form(
   builder: FormBuilder
 ): Form {
-  val activity = this.activity
-  val view = this.view
-  val container = object : ValidationContainer {
-    override fun context(): Context {
-      return activity ?: throw IllegalStateException("Fragment is not attached.")
-    }
-
-    override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
+  val activity = this.activity ?: throw IllegalStateException("Fragment is not attached.")
+  val container = object : ValidationContainer(activity) {
+    override fun <T : View> findViewById(id: Int): T? = getView()?.findViewById(id)
   }
   val newForm = Form(container)
   builder(newForm)

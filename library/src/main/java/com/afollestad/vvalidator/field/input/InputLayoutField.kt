@@ -51,11 +51,9 @@ class InputLayoutField internal constructor(
     }
   }
 
-  override val view = container.findViewById<TextInputLayout>(id) ?: throw IllegalArgumentException(
-      "Didn't find view by ID ${id.resName(container.context())} in $container"
-  )
+  override val view = container.getViewOrThrow<TextInputLayout>(id)
   val editText = view.editText ?: throw IllegalStateException(
-      "TextInputLayout ${id.resName(container.context())} should have a child EditText."
+      "TextInputLayout ${id.resName(container.context)} should have a child EditText."
   )
 
   /** Asserts that the input text is not empty. */

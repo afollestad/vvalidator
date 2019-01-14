@@ -397,8 +397,7 @@ class MyField(
     }
   }
 
-  // May not want to use !! here, and handle null with ?: operator
-  override val view = container.findViewById<MyView>(id)!!
+  override val view = container.getViewOrThrow<MyView>(id)
   
   // Your first custom assertion
   fun myAssertion() = assert(MyAssertion())
@@ -413,11 +412,10 @@ fun Form.myView(
   name: String? = null,
   builder: FieldBuilder<MyField>
 ) {
-  val fieldName = name ?: id.resName(container.context())
   val newField = MyField(
       container = container,
       id = id,
-      name = fieldName
+      name = container.getFieldName(id, name)
   )
   builder(newField)
   appendField(newField)

@@ -30,7 +30,6 @@ import com.afollestad.vvalidator.assertion.InputAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.InputAssertions.UriAssertion
 import com.afollestad.vvalidator.assertion.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.util.resName
 
 /**
  * Represents an edit text field.
@@ -50,9 +49,7 @@ class InputField internal constructor(
     }
   }
 
-  override val view = container.findViewById<EditText>(id) ?: throw IllegalArgumentException(
-      "Didn't find view by ID ${id.resName(container.context())} in $container"
-  )
+  override val view = container.getViewOrThrow<EditText>(id)
 
   /** Asserts that the input text is not empty. */
   fun isNotEmpty() = assert(NotEmptyAssertion())

@@ -23,7 +23,6 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAssertion
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.util.resName
 
 /**
  * Represents an AbsSeekBar field.
@@ -36,9 +35,7 @@ class SeekField internal constructor(
   override val name: String
 ) : FormField<SeekField, AbsSeekBar>() {
 
-  override val view = container.findViewById<AbsSeekBar>(id) ?: throw IllegalArgumentException(
-      "Didn't find view by ID ${id.resName(container.context())} in $container"
-  )
+  override val view = container.getViewOrThrow<AbsSeekBar>(id)
 
   /** Asserts on the seeker's progress. */
   fun progress() = assert(ProgressAssertion())

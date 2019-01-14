@@ -49,11 +49,10 @@ class Form internal constructor(
     name: String? = null,
     builder: FieldBuilder<InputField>
   ) {
-    val fieldName = name ?: id.resName(container.context())
     val newField = InputField(
         container = container,
         id = id,
-        name = fieldName
+        name = container.getFieldName(id, name)
     )
     builder(newField)
     appendField(newField)
@@ -68,11 +67,10 @@ class Form internal constructor(
     name: String? = null,
     builder: FieldBuilder<InputLayoutField>
   ) {
-    val fieldName = name ?: id.resName(container.context())
     val newField = InputLayoutField(
         container = container,
         id = id,
-        name = fieldName
+        name = container.getFieldName(id, name)
     )
     builder(newField)
     appendField(newField)
@@ -84,11 +82,10 @@ class Form internal constructor(
     name: String? = null,
     builder: FieldBuilder<SpinnerField>
   ) {
-    val fieldName = name ?: id.resName(container.context())
     val newField = SpinnerField(
         container = container,
         id = id,
-        name = fieldName
+        name = container.getFieldName(id, name)
     )
     builder(newField)
     appendField(newField)
@@ -103,11 +100,10 @@ class Form internal constructor(
     name: String? = null,
     builder: FieldBuilder<CheckableField>
   ) {
-    val fieldName = name ?: id.resName(container.context())
     val newField = CheckableField(
         container = container,
         id = id,
-        name = fieldName
+        name = container.getFieldName(id, name)
     )
     builder(newField)
     appendField(newField)
@@ -119,11 +115,10 @@ class Form internal constructor(
     name: String? = null,
     builder: FieldBuilder<SeekField>
   ) {
-    val fieldName = name ?: id.resName(container.context())
     val newField = SeekField(
         container = container,
         id = id,
-        name = fieldName
+        name = container.getFieldName(id, name)
     )
     builder(newField)
     appendField(newField)
@@ -148,7 +143,7 @@ class Form internal constructor(
     onSubmit: (FormResult) -> Unit
   ) {
     val button = container.findViewById<Button>(id) ?: throw IllegalArgumentException(
-        "View ${id.resName(container.context())} must be a Button."
+        "View ${id.resName(container.context)} must be a Button."
     )
     button.setOnClickListener {
       val result = validate()
@@ -168,7 +163,7 @@ class Form internal constructor(
     onSubmit: (FormResult) -> Unit
   ) {
     val item = menu.findItem(itemId) ?: throw IllegalArgumentException(
-        "Didn't find item ${itemId.resName(container.context())} in the given Menu."
+        "Didn't find item ${itemId.resName(container.context)} in the given Menu."
     )
     item.setOnMenuItemClickListener {
       val result = validate()

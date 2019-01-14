@@ -20,7 +20,7 @@ package com.afollestad.vvalidator.util
 import android.content.Context
 
 /** Gets a resource ID's entry name. */
-fun Int.resName(context: Context): String {
+internal fun Int.resName(context: Context): String {
   val res = context.resources
   return res.getResourceEntryName(this)
 }

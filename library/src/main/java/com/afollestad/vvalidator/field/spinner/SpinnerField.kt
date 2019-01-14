@@ -23,7 +23,6 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.SpinnerAssertions.SelectionAssertion
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.util.resName
 
 /**
  * Represents a spinner (dropdown) field.
@@ -36,9 +35,7 @@ class SpinnerField internal constructor(
   override val name: String
 ) : FormField<SpinnerField, Spinner>() {
 
-  override val view = container.findViewById<Spinner>(id) ?: throw IllegalArgumentException(
-      "Didn't find view by ID ${id.resName(container.context())} in $container"
-  )
+  override val view = container.getViewOrThrow<Spinner>(id)
 
   /** Asserts on the spinner's selection. */
   fun selection() = assert(SelectionAssertion())
