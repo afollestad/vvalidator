@@ -23,8 +23,8 @@ import android.widget.CompoundButton
 sealed class CompoundButtonAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class CheckedStateAssertion(
-    private val checked: Boolean
+  class CheckedStateAssertion internal constructor(
+    val checked: Boolean
   ) : Assertion<CompoundButton>() {
     override fun isValid(view: CompoundButton): Boolean {
       return view.isChecked == checked

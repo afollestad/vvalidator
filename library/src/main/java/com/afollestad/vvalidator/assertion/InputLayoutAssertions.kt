@@ -25,7 +25,7 @@ import com.google.android.material.textfield.TextInputLayout
 sealed class InputLayoutAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class NotEmptyAssertion : Assertion<TextInputLayout>() {
+  class NotEmptyAssertion internal constructor() : Assertion<TextInputLayout>() {
     override fun isValid(view: TextInputLayout): Boolean {
       return view.editText?.text?.isNotEmpty() ?: false
     }
@@ -36,7 +36,7 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UrlAssertion : Assertion<TextInputLayout>() {
+  class UrlAssertion internal constructor() : Assertion<TextInputLayout>() {
     private val regex = Patterns.WEB_URL
 
     override fun isValid(view: TextInputLayout): Boolean {
@@ -50,7 +50,7 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UriAssertion : Assertion<TextInputLayout>() {
+  class UriAssertion internal constructor() : Assertion<TextInputLayout>() {
 
     private var schemes: List<String> = emptyList()
     private var schemesDescription: String? = null
@@ -110,7 +110,7 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class EmailAssertion : Assertion<TextInputLayout>() {
+  class EmailAssertion internal constructor() : Assertion<TextInputLayout>() {
     private val regex = Patterns.EMAIL_ADDRESS
 
     override fun isValid(view: TextInputLayout): Boolean {
@@ -124,7 +124,7 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class NumberAssertion : Assertion<TextInputLayout>() {
+  class NumberAssertion internal constructor() : Assertion<TextInputLayout>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -185,7 +185,7 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class LengthAssertion : Assertion<TextInputLayout>() {
+  class LengthAssertion internal constructor() : Assertion<TextInputLayout>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -243,7 +243,9 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class ContainsAssertion(private val text: String) : Assertion<TextInputLayout>() {
+  class ContainsAssertion internal constructor(
+    private val text: String
+  ) : Assertion<TextInputLayout>() {
     private var ignoreCase: Boolean = false
 
     /** Case is ignored when checking if the input contains the string. */

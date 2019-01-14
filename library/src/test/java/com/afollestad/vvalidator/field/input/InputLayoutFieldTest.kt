@@ -56,8 +56,7 @@ class InputLayoutFieldTest {
         }
     form = activity.get()
         .form {
-          inputLayout(ID_INPUT_LAYOUT, name = "Input layout") {
-          }
+          inputLayout(ID_INPUT_LAYOUT, name = "Input layout") {}
         }
     field = form.getFields()
         .single()

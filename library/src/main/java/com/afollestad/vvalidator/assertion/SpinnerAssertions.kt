@@ -23,7 +23,7 @@ import android.widget.Spinner
 sealed class SpinnerAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class SelectionAssertion : Assertion<Spinner>() {
+  class SelectionAssertion internal constructor() : Assertion<Spinner>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -105,7 +105,7 @@ sealed class SpinnerAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class PositionLessThanAssertion(
+  class PositionLessThanAssertion internal constructor(
     private val ceil: Int,
     private val description: String?
   ) : Assertion<Spinner>() {
@@ -119,7 +119,7 @@ sealed class SpinnerAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class PositionAtMostAssertion(
+  class PositionAtMostAssertion internal constructor(
     private val ceil: Int,
     private val description: String?
   ) : Assertion<Spinner>() {
@@ -133,7 +133,7 @@ sealed class SpinnerAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class PositionAtLeastAssertion(
+  class PositionAtLeastAssertion internal constructor(
     private val floor: Int,
     private val description: String?
   ) : Assertion<Spinner>() {
@@ -147,7 +147,7 @@ sealed class SpinnerAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class PositionGreaterThanAssertion(
+  class PositionGreaterThanAssertion internal constructor(
     private val floor: Int,
     private val description: String?
   ) : Assertion<Spinner>() {

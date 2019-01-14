@@ -23,7 +23,7 @@ import android.widget.AbsSeekBar
 sealed class SeekBarAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class ProgressAssertion : Assertion<AbsSeekBar>() {
+  class ProgressAssertion internal constructor() : Assertion<AbsSeekBar>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null

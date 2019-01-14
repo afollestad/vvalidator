@@ -25,7 +25,7 @@ import android.widget.EditText
 sealed class InputAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class NotEmptyAssertion : Assertion<EditText>() {
+  class NotEmptyAssertion internal constructor() : Assertion<EditText>() {
     override fun isValid(view: EditText): Boolean {
       return view.text()
           .isNotEmpty()
@@ -51,7 +51,7 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UriAssertion : Assertion<EditText>() {
+  class UriAssertion internal constructor() : Assertion<EditText>() {
 
     private var schemes: List<String> = emptyList()
     private var schemesDescription: String? = null
@@ -111,7 +111,7 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class EmailAssertion : Assertion<EditText>() {
+  class EmailAssertion internal constructor() : Assertion<EditText>() {
     private val regex = Patterns.EMAIL_ADDRESS
 
     override fun isValid(view: EditText): Boolean {
@@ -125,7 +125,7 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class NumberAssertion : Assertion<EditText>() {
+  class NumberAssertion internal constructor() : Assertion<EditText>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -187,7 +187,7 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class LengthAssertion : Assertion<EditText>() {
+  class LengthAssertion internal constructor() : Assertion<EditText>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -245,7 +245,9 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class ContainsAssertion(private val text: String) : Assertion<EditText>() {
+  class ContainsAssertion internal constructor(
+    private val text: String
+  ) : Assertion<EditText>() {
     private var ignoreCase: Boolean = false
 
     /** Case is ignored when checking if the input contains the string. */

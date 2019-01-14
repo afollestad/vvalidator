@@ -56,8 +56,7 @@ class InputFieldTest {
         }
     form = activity.get()
         .form {
-          input(ID_INPUT, name = "Input") {
-          }
+          input(ID_INPUT, name = "Input") {}
         }
     field = form.getFields()
         .single()
