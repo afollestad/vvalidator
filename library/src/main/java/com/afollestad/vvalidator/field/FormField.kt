@@ -42,7 +42,7 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
 
   private val assertions = mutableListOf<Assertion<V>>()
   private var currentCondition: Condition? = null
-  private var onErrors: OnError<V>? = null
+  @VisibleForTesting(otherwise = PRIVATE) var onErrors: OnError<V>? = null
 
   /** Adds an assertion to the field to be used during validation. */
   @CheckResult fun <T : Assertion<V>> assert(assertion: T): T {
