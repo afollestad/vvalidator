@@ -58,8 +58,9 @@ class MyActivity : AppCompatActivity() {
         isNotEmpty()
       }
       
-      submitWith(R.id.submit) {
-        // Do something with a valid form state
+      submitWith(R.id.submit) { result ->
+        // this block is only called if form is valid.
+        // do something with a valid form state.
       }
     }
   }
@@ -233,7 +234,7 @@ form {
       // `view` here is a CompoundButton.
       // `errors` here is a List<FieldError>, which can be empty to notify that there are no longer 
       // any validation errors.
-      val firstError = errors.firstOrNull()
+      val firstError: FieldError? = errors.firstOrNull()
       // TODO: show firstError.toString() in the UI.
     }
   }
