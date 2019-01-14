@@ -76,7 +76,10 @@ class InputAssertionsTest {
   }
 
   @Test fun isUri_withSchemes() {
-    val assertion = UriAssertion().hasScheme("file", "ftp")
+    val assertion = UriAssertion().hasScheme(
+        "expected a file or ftp Uri",
+        listOf("file", "ftp")
+    )
 
     view.text = "file://storage/external".toEditable()
     assertion.isValid(view)
@@ -86,7 +89,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .isFalse()
     assertion.description()
-        .isEqualTo("Scheme 'content' not in ['file', 'ftp']")
+        .isEqualTo("expected a file or ftp Uri")
   }
 
   @Test fun isUri_withThat() {
