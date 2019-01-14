@@ -17,9 +17,9 @@ package com.afollestad.vvalidator.assertion
 
 import android.widget.CompoundButton
 import com.afollestad.vvalidator.assertion.CompoundButtonAssertions.CheckedStateAssertion
-import com.afollestad.vvalidator.testutil.isEqualTo
-import com.afollestad.vvalidator.testutil.isFalse
-import com.afollestad.vvalidator.testutil.isTrue
+import com.afollestad.vvalidator.testutil.assertEqualTo
+import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertTrue
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
@@ -34,13 +34,13 @@ class CompoundButtonAssertionTest {
 
     whenever(view.isChecked).doReturn(false)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("should be checked")
+        .assertEqualTo("should be checked")
 
     whenever(view.isChecked).doReturn(true)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
   }
 
   @Test fun assertNotChecked() {
@@ -48,12 +48,12 @@ class CompoundButtonAssertionTest {
 
     whenever(view.isChecked).doReturn(false)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     whenever(view.isChecked).doReturn(true)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("should not be checked")
+        .assertEqualTo("should not be checked")
   }
 }

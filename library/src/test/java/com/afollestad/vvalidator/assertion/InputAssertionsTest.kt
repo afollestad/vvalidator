@@ -29,9 +29,9 @@ import com.afollestad.vvalidator.assertion.InputAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.InputAssertions.UriAssertion
 import com.afollestad.vvalidator.assertion.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
-import com.afollestad.vvalidator.testutil.isEqualTo
-import com.afollestad.vvalidator.testutil.isFalse
-import com.afollestad.vvalidator.testutil.isTrue
+import com.afollestad.vvalidator.testutil.assertEqualTo
+import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -52,13 +52,13 @@ class InputAssertionsTest {
 
     view.text = "test".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("cannot be empty")
+        .assertEqualTo("cannot be empty")
   }
 
   @Test fun isUrl() {
@@ -66,13 +66,13 @@ class InputAssertionsTest {
 
     view.text = "https://af.codes/test.html".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "Hello, World!".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be a valid URL")
+        .assertEqualTo("must be a valid URL")
   }
 
   @Test fun isUri_withSchemes() {
@@ -83,13 +83,13 @@ class InputAssertionsTest {
 
     view.text = "file://storage/external".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "content://storage/external".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("expected a file or ftp Uri")
+        .assertEqualTo("expected a file or ftp Uri")
   }
 
   @Test fun isUri_withThat() {
@@ -100,13 +100,13 @@ class InputAssertionsTest {
 
     view.text = "https://af.codes?q=test".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "https://af.codes".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("have q param")
+        .assertEqualTo("have q param")
   }
 
   @Test fun isEmail() {
@@ -114,13 +114,13 @@ class InputAssertionsTest {
 
     view.text = "tchalla@wakana.gov".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "testing".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be a valid email address")
+        .assertEqualTo("must be a valid email address")
   }
 
   @Test fun isNumber() {
@@ -128,13 +128,13 @@ class InputAssertionsTest {
 
     view.text = "1".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "a".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be a number")
+        .assertEqualTo("must be a number")
   }
 
   @Test fun isNumber_exactly() {
@@ -144,13 +144,13 @@ class InputAssertionsTest {
 
     view.text = "5".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "1".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must equal 5")
+        .assertEqualTo("must equal 5")
   }
 
   @Test fun isNumber_lessThan() {
@@ -160,13 +160,13 @@ class InputAssertionsTest {
 
     view.text = "4".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "5".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be less than 5")
+        .assertEqualTo("must be less than 5")
   }
 
   @Test fun isNumber_atMost() {
@@ -176,17 +176,17 @@ class InputAssertionsTest {
 
     view.text = "4".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "5".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "6".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be at most 5")
+        .assertEqualTo("must be at most 5")
   }
 
   @Test fun isNumber_atLeast() {
@@ -196,17 +196,17 @@ class InputAssertionsTest {
 
     view.text = "5".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "6".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "4".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be at least 5")
+        .assertEqualTo("must be at least 5")
   }
 
   @Test fun isNumber_greaterThan() {
@@ -216,17 +216,17 @@ class InputAssertionsTest {
 
     view.text = "6".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "7".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "5".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be greater than 5")
+        .assertEqualTo("must be greater than 5")
   }
 
   @Test fun length() {
@@ -234,9 +234,9 @@ class InputAssertionsTest {
 
     view.text = "1".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("no length bound set")
+        .assertEqualTo("no length bound set")
   }
 
   @Test fun length_exactly() {
@@ -246,19 +246,19 @@ class InputAssertionsTest {
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be exactly 5")
+        .assertEqualTo("length must be exactly 5")
 
     view.text = "helloo".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be exactly 5")
+        .assertEqualTo("length must be exactly 5")
   }
 
   @Test fun length_lessThan() {
@@ -268,19 +268,19 @@ class InputAssertionsTest {
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be less than 5")
+        .assertEqualTo("length must be less than 5")
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be less than 5")
+        .assertEqualTo("length must be less than 5")
   }
 
   @Test fun length_atMost() {
@@ -290,17 +290,17 @@ class InputAssertionsTest {
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be at most 5")
+        .assertEqualTo("length must be at most 5")
   }
 
   @Test fun length_atLeast() {
@@ -310,17 +310,17 @@ class InputAssertionsTest {
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be at least 5")
+        .assertEqualTo("length must be at least 5")
   }
 
   @Test fun length_greaterThan() {
@@ -330,13 +330,13 @@ class InputAssertionsTest {
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("length must be greater than 5")
+        .assertEqualTo("length must be greater than 5")
   }
 
   @Test fun contains() {
@@ -344,13 +344,13 @@ class InputAssertionsTest {
 
     view.text = "Hello World".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "Hello world".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must contain \"World\"")
+        .assertEqualTo("must contain \"World\"")
   }
 
   @Test fun contains_ignoreCase() {
@@ -360,13 +360,13 @@ class InputAssertionsTest {
 
     view.text = "hello world".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must contain \"World\"")
+        .assertEqualTo("must contain \"World\"")
   }
 
   @Test fun regex() {
@@ -375,13 +375,13 @@ class InputAssertionsTest {
 
     view.text = "192.168.0.1".toEditable()
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("must be an IP address")
+        .assertEqualTo("must be an IP address")
   }
 
   private fun String.toEditable(): Editable {

@@ -43,6 +43,9 @@ class Form internal constructor(
     fields.add(field)
   }
 
+  /** Retrieves fields that have been added to the form. */
+  fun getFields(): List<FormField<*, *>> = fields
+
   /** Adds an input field, which must be a [android.widget.EditText]. */
   fun input(
     @IdRes id: Int,

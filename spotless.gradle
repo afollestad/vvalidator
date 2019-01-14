@@ -13,5 +13,6 @@ spotless {
     licenseHeaderFile '../spotless.license.kt'
     trimTrailingWhitespace()
     endWithNewline()
+    ignoreErrorForPath("library/src/test/java/com/afollestad/vvalidator/form/FormTest.kt")
   }
 }

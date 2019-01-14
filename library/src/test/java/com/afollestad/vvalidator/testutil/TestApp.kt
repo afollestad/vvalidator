@@ -15,14 +15,14 @@
  */
 package com.afollestad.vvalidator.testutil
 
-import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
-import java.lang.reflect.Method
+import android.app.Application
+import com.afollestad.vvalidator.R
 
-@Config(manifest = Config.NONE, sdk = [28], application = TestApp::class)
-class NoManifestTestRunner(testClass: Class<*>) : RobolectricTestRunner(testClass) {
+/** @author Aidan Follestad (@afollestad) */
+class TestApp : Application() {
 
-  override fun getConfig(method: Method): Config {
-    return NoManifestTestRunner::class.java.getAnnotation(Config::class.java)!!
+  override fun onCreate() {
+    super.onCreate()
+    setTheme(R.style.Theme_AppCompat)
   }
 }

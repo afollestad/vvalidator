@@ -17,9 +17,9 @@ package com.afollestad.vvalidator.assertion
 
 import android.widget.AbsSeekBar
 import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAssertion
-import com.afollestad.vvalidator.testutil.isEqualTo
-import com.afollestad.vvalidator.testutil.isFalse
-import com.afollestad.vvalidator.testutil.isTrue
+import com.afollestad.vvalidator.testutil.assertEqualTo
+import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertTrue
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
@@ -36,13 +36,13 @@ class SeekBarAssertionsTest {
 
     whenever(view.progress).doReturn(6)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must equal 5")
+        .assertEqualTo("progress must equal 5")
 
     whenever(view.progress).doReturn(5)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
   }
 
   @Test fun lessThan() {
@@ -52,19 +52,19 @@ class SeekBarAssertionsTest {
 
     whenever(view.progress).doReturn(6)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must be less than 5")
+        .assertEqualTo("progress must be less than 5")
 
     whenever(view.progress).doReturn(5)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must be less than 5")
+        .assertEqualTo("progress must be less than 5")
 
     whenever(view.progress).doReturn(4)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
   }
 
   @Test fun atMost() {
@@ -74,17 +74,17 @@ class SeekBarAssertionsTest {
 
     whenever(view.progress).doReturn(6)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must be at most 5")
+        .assertEqualTo("progress must be at most 5")
 
     whenever(view.progress).doReturn(5)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     whenever(view.progress).doReturn(4)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
   }
 
   @Test fun atLeast() {
@@ -94,17 +94,17 @@ class SeekBarAssertionsTest {
 
     whenever(view.progress).doReturn(4)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must be at least 5")
+        .assertEqualTo("progress must be at least 5")
 
     whenever(view.progress).doReturn(5)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
 
     whenever(view.progress).doReturn(6)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
   }
 
   @Test fun greaterThan() {
@@ -114,18 +114,18 @@ class SeekBarAssertionsTest {
 
     whenever(view.progress).doReturn(4)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must be greater than 5")
+        .assertEqualTo("progress must be greater than 5")
 
     whenever(view.progress).doReturn(5)
     assertion.isValid(view)
-        .isFalse()
+        .assertFalse()
     assertion.description()
-        .isEqualTo("progress must be greater than 5")
+        .assertEqualTo("progress must be greater than 5")
 
     whenever(view.progress).doReturn(6)
     assertion.isValid(view)
-        .isTrue()
+        .assertTrue()
   }
 }
