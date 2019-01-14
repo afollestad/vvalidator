@@ -16,25 +16,17 @@
 package com.afollestad.vvalidator.assertion
 
 import android.view.View
-import androidx.annotation.VisibleForTesting
-import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.field.Condition
 
 /** @author Aidan Follestad (@afollestad) */
 abstract class Assertion<in T> {
-  @VisibleForTesting(otherwise = PRIVATE)
-  var condition: Condition? = null
+  internal var condition: Condition? = null
 
   /** Returns true if the given view passes the assertion. */
   abstract fun isValid(view: T): Boolean
 
   /** A short description of what the assertion tests. */
   abstract fun description(): String
-
-  /** Sets a condition delegate which must return true for the assertion to be executed. */
-  internal fun condition(condition: Condition?) {
-    this.condition = condition
-  }
 
   /** Returns true if the assertion's condition returns true, or if there is no condition. */
   internal fun isConditionMet() = condition?.invoke() ?: true
