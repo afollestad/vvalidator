@@ -337,11 +337,11 @@ form {
 ```
 
 The `conditional(..)` block above only asserts the field is a URL if a spinner's selection is greater 
-than 1. Say the spinner makes the `input_site` field visible if it's selection is > 1.
+than 1. Say the spinner makes the `input_site` field visible if its selection is > 1.
 
 Down further, we use `isEmptyOr` which under the hood, is just a wrapper around `conditional(...)`. 
 This only applies its inner assertions if the input text is not empty. This effectively makes the 
-age field optional, but if it's filled it it *must* be a number and greater than 0.
+age field optional, but if its filled then it *must* be a number and greater than 0.
 
 You can nest conditionals, as well:
 
