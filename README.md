@@ -36,7 +36,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
   
-  implementation 'com.afollestad:vvalidator:0.1.5'
+  implementation 'com.afollestad:vvalidator:0.1.6'
 }
 ```
 
