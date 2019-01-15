@@ -103,7 +103,7 @@ class FormFieldTest {
 
     val assertion = NotEmptyAssertion()
     field.assert(assertion)
-    field.view!!.setText("")
+    field.view.setText("")
 
     field.validate()
         .run {
@@ -119,7 +119,7 @@ class FormFieldTest {
           onErrorsCalled.assertEqualTo(error)
         }
 
-    field.view!!.setText("Hello")
+    field.view.setText("Hello")
     field.validate()
         .run {
           success().assertTrue()
@@ -141,7 +141,7 @@ class FormFieldTest {
     field.conditional(condition = { false }) {
       assert(assertion)
     }
-    field.view!!.setText("")
+    field.view.setText("")
 
     field.validate()
         .run {
