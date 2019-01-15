@@ -21,11 +21,12 @@
     3. [Checkable](#checkable)
     4. [Spinner](#spinner)
     5. [Seeker](#seeker)
-4. [Error Handling](#error-handling)
-5. [Submit With](#submit-with)
-6. [Validation Results](#validation-results)
-7. [Conditionals](#conditionals)
-8. [Supporting Additional Views](#supporting-additional-views)
+4. [Assertion Descriptions](#assertion-descriptions)
+5. [Validation Results](#validation-results)
+6. [Error Handling](#error-handling)
+7. [Submit With](#submit-with)
+8. [Conditionals](#conditionals)
+9. [Supporting Additional Views](#supporting-additional-views)
 
 ---
 
@@ -36,7 +37,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
   
-  implementation 'com.afollestad:vvalidator:0.1.7'
+  implementation 'com.afollestad:vvalidator:0.1.8'
 }
 ```
 
@@ -84,31 +85,30 @@ form {
   input(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
     
-    isUrl().description("optional description")
-    
-    isUri().description("optional description")
+    isUri()
     isUri().hasScheme("must be a file Uri", listOf("file"))
     isUri().that("expected something") { true }
     
-    isEmail().description("optional description")
+    isUrl()
+    isEmail()
     
-    isNumber().description("optional description")
-    isNumber().lessThan(5).description("optional description")
-    isNumber().atMost(5).description("optional description")
-    isNumber().exactly(5).description("optional description")
-    isNumber().atLeast(5).description("optional description")
-    isNumber().greaterThan(5).description("optional description")
+    isNumber()
+    isNumber().lessThan(5)
+    isNumber().atMost(5)
+    isNumber().exactly(5)
+    isNumber().atLeast(5)
+    isNumber().greaterThan(5)
     
-    length().lessThan(5).description("optional description")
-    length().atMost(5).description("optional description")
-    length().exactly(5).description("optional description")
-    length().atLeast(5).description("optional description")
-    length().greaterThan(5).description("optional description")
+    length().lessThan(5)
+    length().atMost(5)
+    length().exactly(5)
+    length().atLeast(5)
+    length().greaterThan(5)
     
-    contains("Hello, World!").description("optional description")
-    contains("Hello, World!").ignoreCase().description("optional description")
+    contains("Hello, World!")
+    contains("Hello, World!").ignoreCase()
     
-    matches("/^(\+?\d{1,3}|\d{1,4})$/").description("must be a country code")
+    matches("/^(\+?\d{1,3}|\d{1,4})$/")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -128,50 +128,31 @@ form {
 
   inputLayout(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
-      .description("optional description")
-   
-    isUrl()
-      .description("optional description")
     
     isUri()
-      .description("optional description")
     isUri().hasScheme("must be a file Uri", listOf("file"))
     isUri().that("expected something") { true }
-      
+    
+    isUrl()  
     isEmail()
-      .description("optional description")
     
     isNumber()
-      .description("optional description")
     isNumber().lessThan(5)
-      .description("optional description")
     isNumber().atMost(5)
-      .description("optional description")
     isNumber().exactly(5)
-      .description("optional description")
     isNumber().atLeast(5)
-      .description("optional description")
     isNumber().greaterThan(5)
-      .description("optional description")
     
     length().lessThan(5)
-      .description("optional description")
     length().atMost(5)
-      .description("optional description")
     length().exactly(5)
-      .description("optional description")
     length().atLeast(5)
-      .description("optional description")
     length().greaterThan(5)
-      .description("optional description")
     
     contains("Hello, World!")
-      .description("optional description")
     contains("Hello, World!").ignoreCase()
-      .description("optional description")
     
     matches("/^(\+?\d{1,3}|\d{1,4})$/")
-      .description("must be a country code")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -189,9 +170,7 @@ form {
 
   checkable(R.id.view_id, name = "Optional Name") {
     isChecked()
-      .description("optional description")
     isNotChecked()
-      .description("optional description")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -209,15 +188,10 @@ form {
   
   spinner(R.id.view_id, name = "Optional Name") {
     selection().exactly(1)
-      .description("optional description")
     selection().lessThan(1)
-      .description("optional description")
     selection().atMost(1)
-      .description("optional description")
     selection().atLeast(1)
-      .description("optional description")
     selection().greaterThan(1)
-      .description("optional description")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -235,20 +209,86 @@ form {
 
   seeker(R.id.view_id, name = "Optional Name") {
     progress().exactly(1)
-      .description("optional description")
     progress().lessThan(1)
-      .description("optional description")
     progress().atMost(1)
-      .description("optional description")
     progress().atLeast(1)
-      .description("optional description")
     progress().greaterThan(1)
-      .description("optional description")
     
     // Custom assertions
     assert("expected something") { view -> true }
   }
 }
+```
+
+---
+
+## Assertion Descriptions
+
+All assertions expose a `description(String)` method, used to specify a custom message for 
+assertion validation errors. They end up in the `description` field of `FieldError` instances.
+
+All assertions provide default validation failure messages, however they may not be what you want 
+to display to your app users.
+
+```kotlin
+form {
+  input(R.id.some_input) {
+    isNotEmpty().description("Please enter a value!")
+  }
+  
+  spinner(R.id.some_spinner) {
+    selection()
+      .greaterThan(0)
+      .description("Please make a selection!")
+  }
+}
+```
+
+---
+
+## Validation Results
+
+You get an instance of `FormResult` through the `submitWith(...)` callbacks. You can also get one
+when you manually validate your form.
+
+```kotlin
+val myForm = form {
+  ...
+}
+
+val result: FormResult = myForm.validate()
+```
+
+A call to `validate()` goes through all of your fields, making all of the set assertions, and propagating 
+errors through `onErrors` callbacks (which may or may not show errors in the UI automatically).
+
+This result class gives you access to some detailed information.
+
+```kotlin
+val result: FormResult = // ...
+
+val isSuccess: Boolean = result.success()
+val hasErrors: Boolean = result.hasErrors()
+
+val errors: List<FieldError> = result.errors()
+```
+
+Each instance of `FieldError` contains additional information:
+
+```kotlin
+val error: FieldError = // ...
+
+// view ID
+val id: Int = error.id      
+// field/view name
+val name: String = error.name
+// assertion description
+val description: String = error.description
+// the class of the assertion that failed
+val assertionType: KClass<out Assertion<*>> = error.assertionType
+
+// name + description, can generally be shown to users
+val message = error.toString()
 ```
 
 ---
@@ -300,53 +340,6 @@ form {
     // Item was clicked and form is completely valid!
   }
 }
-```
-
----
-
-## Validation Results
-
-You get an instance of `FormResult` through the `submitWith(...)` callbacks. You can also get one
-when you manually validate your form.
-
-```kotlin
-val myForm = form {
-  ...
-}
-
-val result: FormResult = myForm.validate()
-```
-
-A call to `validate()` goes through all of your fields, making all of the set assertions, and propagating 
-errors through `onErrors` callbacks (which may or may not show errors in the UI automatically).
-
-This result class gives you access to some detailed information.
-
-```kotlin
-val result: FormResult = // ...
-
-val isSuccess: Boolean = result.success()
-val hasErrors: Boolean = result.hasErrors()
-
-val errors: List<FieldError> = result.errors()
-```
-
-Each instance of `FieldError` contains additional information:
-
-```kotlin
-val error: FieldError = // ...
-
-// view ID
-val id: Int = error.id      
-// field/view name
-val name: String = error.name
-// assertion description
-val description: String = error.description
-// the class of the assertion that failed
-val assertionType: KClass<out Assertion<*>> = error.assertionType
-
-// name + description, can generally be shown to users
-val message = error.toString()
 ```
 
 ---
