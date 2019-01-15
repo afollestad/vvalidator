@@ -19,6 +19,7 @@ package com.afollestad.vvalidator.field
 
 import android.view.View
 import androidx.annotation.CheckResult
+import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.ValidationContainer
@@ -37,11 +38,13 @@ abstract class FormField<F, V>(
   /** The view ID of the field. */
   val id: Int,
   /** The name of the field, defaults to the resource ID entry name. */
-  name: String? = null
+  name: String? = null,
+  /** Same as [name] but a string resource way of setting it. */
+  @StringRes nameRes: Int? = null
 ) where F : FormField<F, V>, V : View {
 
   /** The name of the field. The name of the resource ID if not overridden by the user. */
-  val name = name ?: container.getFieldName(id)
+  val name = container.getString(nameRes) ?: (name ?: container.getFieldName(id))
   /** The view the field acts on. */
   val view = container.getViewOrThrow<V>(id)
 
