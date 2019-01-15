@@ -36,7 +36,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
   
-  implementation 'com.afollestad:vvalidator:0.1.6'
+  implementation 'com.afollestad:vvalidator:0.1.7'
 }
 ```
 
@@ -411,7 +411,6 @@ class MyField(
   @IdRes override val id: Int,
   override val name: String
 ) : FormField<MyField, MyView>() {
-
   init {
     onErrors { view, errors ->
       // Do some sort of default error handling with views
