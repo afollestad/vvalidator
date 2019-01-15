@@ -167,7 +167,6 @@ More specifically, a `CompoundButton`. This includes `Switch`,
 
 ```kotlin
 form {
-
   checkable(R.id.view_id, name = "Optional Name") {
     isChecked()
     isNotChecked()
@@ -185,7 +184,6 @@ adapter, and shows a list of options when tapped.
 
 ```kotlin
 form {
-  
   spinner(R.id.view_id, name = "Optional Name") {
     selection().exactly(1)
     selection().lessThan(1)
@@ -206,7 +204,6 @@ a number either with a horizontally sliding view or with horizontal icons.
 
 ```kotlin
 form {
-
   seeker(R.id.view_id, name = "Optional Name") {
     progress().exactly(1)
     progress().lessThan(1)
@@ -285,7 +282,7 @@ val name: String = error.name
 // assertion description - what the failure is
 val description: String = error.description
 // the class of the assertion that failed
-val assertionType: KClass<out Assertion<*>> = error.assertionType
+val assertionType: KClass<out Assertion<*, *>> = error.assertionType
 ```
 
 ---
@@ -298,7 +295,6 @@ error hook for each field that you can use to display errors in the UI.
 
 ```kotlin
 form {
-
   checkable(R.id.view_id, name = "Optional Name") {
     isChecked() 
     
