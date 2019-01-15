@@ -19,34 +19,43 @@ import android.view.View
 import com.afollestad.vvalidator.field.Condition
 
 /** @author Aidan Follestad (@afollestad) */
-abstract class Assertion<in T> {
+abstract class Assertion<T, A> where A : Assertion<T, A> {
   internal var condition: Condition? = null
+  private var description: String? = null
 
   /** Returns true if the given view passes the assertion. */
   abstract fun isValid(view: T): Boolean
 
-  /** A short description of what the assertion tests. */
-  abstract fun description(): String
+  /** Gets a user set description if any, falls back to the value of [defaultDescription]. **/
+  fun description(): String = description ?: defaultDescription()
+
+  /** Sets a custom assertion description that is used in validation errors. */
+  fun description(value: String?): A {
+    this.description = value
+    @Suppress("UNCHECKED_CAST")
+    return this as A
+  }
+
+  /** A short defaultDescription of what the assertion tests. */
+  abstract fun defaultDescription(): String
 
   /** Returns true if the assertion's condition returns true, or if there is no condition. */
   internal fun isConditionMet() = condition?.invoke() ?: true
 }
 
 /** @author Aidan Follestad (@afollestad) */
-class CustomViewAssertion<in T>(
-  private val description: String,
+class CustomViewAssertion<T>(
+  assertionDescription: String,
   private val assertion: (T) -> Boolean
-) : Assertion<T>() where T : View {
-
+) : Assertion<T, CustomViewAssertion<T>>() where T : View {
   init {
-    if (description.trim().isEmpty()) {
+    if (assertionDescription.trim().isEmpty()) {
       throw IllegalArgumentException("Custom assertion descriptions should not be empty.")
     }
+    description(assertionDescription)
   }
 
   override fun isValid(view: T) = assertion(view)
 
-  override fun description(): String {
-    return description
-  }
+  override fun defaultDescription() = "no description set"
 }

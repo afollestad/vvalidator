@@ -65,7 +65,9 @@ class MainActivity : AppCompatActivity() {
       }
 
       spinner(R.id.input_spinner, name = "Have a website") {
-        selection().atLeast(1, "Please make a selection")
+        selection()
+            .atLeast(1)
+            .description("Please make a selection")
         onErrors { _, errors ->
           val firstError = errors.firstOrNull()
           spinnerError.showOrHide(firstError != null)
@@ -87,7 +89,9 @@ class MainActivity : AppCompatActivity() {
       }
 
       seeker(R.id.seek_bar, name = "Seek Bar") {
-        progress().atLeast(50, "selection must be at least 50%")
+        progress()
+            .atLeast(50)
+            .description("selection must be at least 50%")
         onErrors { _, errors ->
           val firstError = errors.firstOrNull()
           seekBarError.showOrHide(firstError != null)

@@ -40,18 +40,18 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
   open val name: String = ""
   open val view: V? = null
 
-  private val assertions = mutableListOf<Assertion<V>>()
+  private val assertions = mutableListOf<Assertion<V, *>>()
   private var currentCondition: Condition? = null
   @VisibleForTesting(otherwise = PRIVATE) var onErrors: OnError<V>? = null
 
   /** Adds an assertion to the field to be used during validation. */
-  @CheckResult fun <T : Assertion<V>> assert(assertion: T): T {
+  @CheckResult fun <T : Assertion<V, *>> assert(assertion: T): T {
     assertions.add(assertion.apply { condition = currentCondition })
     return assertion
   }
 
   /** Gets all assertions added to the field. */
-  @CheckResult fun assertions(): List<Assertion<V>> = assertions
+  @CheckResult fun assertions(): List<Assertion<V, *>> = assertions
 
   /** Makes inner assertions optional based on a condition. */
   fun conditional(

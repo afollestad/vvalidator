@@ -93,15 +93,7 @@ class InputLayoutField internal constructor(
   fun contains(text: String) = assert(ContainsAssertion(text))
 
   /** Asserts that the input text matches a regular expression. */
-  fun matches(
-    description: String,
-    regex: String
-  ) = assert(
-      RegexAssertion(
-          regexString = regex,
-          description = description
-      )
-  )
+  fun matches(regex: String) = assert(RegexAssertion(regex))
 
   /** Adds a custom inline assertion for the input layout field. */
   fun assert(

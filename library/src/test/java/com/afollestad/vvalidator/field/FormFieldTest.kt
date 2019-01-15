@@ -102,7 +102,7 @@ class FormFieldTest {
           val error = errors().single()
           error.id.assertEqualTo(ID_INPUT)
           error.name.assertEqualTo("Test Input")
-          error.description.assertEqualTo(assertion.description())
+          error.description.assertEqualTo(assertion.defaultDescription())
           error.assertionType.assertEqualTo(NotEmptyAssertion::class)
 
           onErrorsCalled.assertEqualTo(error)

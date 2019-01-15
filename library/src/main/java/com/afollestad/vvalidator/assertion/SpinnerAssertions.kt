@@ -23,140 +23,102 @@ import android.widget.Spinner
 sealed class SpinnerAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class SelectionAssertion internal constructor() : Assertion<Spinner>() {
+  class SelectionAssertion internal constructor() : Assertion<Spinner, SelectionAssertion>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
     private var atLeast: Int? = null
     private var greaterThan: Int? = null
-    private var description: String? = null
 
     /** Asserts the spinner selection is an exact (=) value. */
-    fun exactly(
-      length: Int,
-      description: String? = null
-    ) {
+    fun exactly(length: Int): SelectionAssertion {
       exactly = length
-      this.description = description
+      return this
     }
 
     /** Asserts the spinner selection is less than (<) a value. */
-    fun lessThan(
-      length: Int,
-      description: String? = null
-    ) {
+    fun lessThan(length: Int): SelectionAssertion {
       lessThan = length
-      this.description = description
+      return this
     }
 
     /** Asserts the spinner selection is at most (<=) a value. */
-    fun atMost(
-      length: Int,
-      description: String? = null
-    ) {
+    fun atMost(length: Int): SelectionAssertion {
       atMost = length
-      this.description = description
+      return this
     }
 
     /** Asserts the spinner selection is at least (>=) a value. */
-    fun atLeast(
-      length: Int,
-      description: String? = null
-    ) {
+    fun atLeast(length: Int): SelectionAssertion {
       atLeast = length
-      this.description = description
+      return this
     }
 
     /** Asserts the spinner selection is greater (>) than a value. */
-    fun greaterThan(
-      length: Int,
-      description: String? = null
-    ) {
+    fun greaterThan(length: Int): SelectionAssertion {
       greaterThan = length
-      this.description = description
+      return this
     }
 
     override fun isValid(view: Spinner): Boolean {
       val position = view.selectedItemPosition
-      if (exactly != null && position != exactly!!) {
-        return false
-      } else if (lessThan != null && position >= lessThan!!) {
-        return false
-      } else if (atMost != null && position > atMost!!) {
-        return false
-      } else if (atLeast != null && position < atLeast!!) {
-        return false
-      } else if (greaterThan != null && position <= greaterThan!!) {
-        return false
+      return when {
+        exactly != null && position != exactly!! -> false
+        lessThan != null && position >= lessThan!! -> false
+        atMost != null && position > atMost!! -> false
+        atLeast != null && position < atLeast!! -> false
+        greaterThan != null && position <= greaterThan!! -> false
+        else -> true
       }
-      return true
     }
 
-    override fun description(): String {
-      return description ?: when {
-        exactly != null -> "selection must equal $exactly"
-        lessThan != null -> "selection must be less than $lessThan"
-        atMost != null -> "selection must be at most $atMost"
-        atLeast != null -> "selection must be at least $atLeast"
-        greaterThan != null -> "selection must be greater than $greaterThan"
-        else -> "selection bound not set"
-      }
+    override fun defaultDescription() = when {
+      exactly != null -> "selection must equal $exactly"
+      lessThan != null -> "selection must be less than $lessThan"
+      atMost != null -> "selection must be at most $atMost"
+      atLeast != null -> "selection must be at least $atLeast"
+      greaterThan != null -> "selection must be greater than $greaterThan"
+      else -> "selection bound not set"
     }
   }
 
   /** @author Aidan Follestad (@afollestad) */
   class PositionLessThanAssertion internal constructor(
-    private val ceil: Int,
-    private val description: String?
-  ) : Assertion<Spinner>() {
-    override fun isValid(view: Spinner): Boolean {
-      return view.selectedItemPosition < ceil
-    }
+    private val ceil: Int
+  ) : Assertion<Spinner, PositionLessThanAssertion>() {
 
-    override fun description(): String {
-      return description ?: "selection should be less than $ceil"
-    }
+    override fun isValid(view: Spinner) = view.selectedItemPosition < ceil
+
+    override fun defaultDescription() = "selection should be less than $ceil"
   }
 
   /** @author Aidan Follestad (@afollestad) */
   class PositionAtMostAssertion internal constructor(
-    private val ceil: Int,
-    private val description: String?
-  ) : Assertion<Spinner>() {
-    override fun isValid(view: Spinner): Boolean {
-      return view.selectedItemPosition <= ceil
-    }
+    private val ceil: Int
+  ) : Assertion<Spinner, PositionAtMostAssertion>() {
 
-    override fun description(): String {
-      return description ?: "selection should be at most $ceil"
-    }
+    override fun isValid(view: Spinner) = view.selectedItemPosition <= ceil
+
+    override fun defaultDescription() = "selection should be at most $ceil"
   }
 
   /** @author Aidan Follestad (@afollestad) */
   class PositionAtLeastAssertion internal constructor(
-    private val floor: Int,
-    private val description: String?
-  ) : Assertion<Spinner>() {
-    override fun isValid(view: Spinner): Boolean {
-      return view.selectedItemPosition >= floor
-    }
+    private val floor: Int
+  ) : Assertion<Spinner, PositionAtLeastAssertion>() {
 
-    override fun description(): String {
-      return description ?: "selection should be at least $floor"
-    }
+    override fun isValid(view: Spinner) = view.selectedItemPosition >= floor
+
+    override fun defaultDescription() = "selection should be at least $floor"
   }
 
   /** @author Aidan Follestad (@afollestad) */
   class PositionGreaterThanAssertion internal constructor(
-    private val floor: Int,
-    private val description: String?
-  ) : Assertion<Spinner>() {
-    override fun isValid(view: Spinner): Boolean {
-      return view.selectedItemPosition > floor
-    }
+    private val floor: Int
+  ) : Assertion<Spinner, PositionGreaterThanAssertion>() {
 
-    override fun description(): String {
-      return description ?: "selection should be greater than $floor"
-    }
+    override fun isValid(view: Spinner) = view.selectedItemPosition > floor
+
+    override fun defaultDescription() = "selection should be greater than $floor"
   }
 }

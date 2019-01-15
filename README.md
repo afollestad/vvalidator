@@ -83,30 +83,32 @@ form {
 
   input(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
-    isUrl()
-    isUri()
-      .hasScheme("must be a file Uri", listOf("file"))
-      .that("custom assertion") { true }
-    isEmail()
     
-    isNumber()
-    isNumber().lessThan(5)
-    isNumber().atMost(5)
-    isNumber().exactly(5)
-    isNumber().atLeast(5)
-    isNumber().greaterThan(5)
+    isUrl().description("optional description")
     
-    length().lessThan(5)
-    length().atMost(5)
-    length().exactly(5)
-    length().atLeast(5)
-    length().greaterThan(5)
+    isUri().description("optional description")
+    isUri().hasScheme("must be a file Uri", listOf("file"))
+    isUri().that("expected something") { true }
     
-    contains("Hello, World!")
-    contains("Hello, World!").ignoreCase()
+    isEmail().description("optional description")
     
-    // Regex assertions, with description of what it does
-    matches("must be a country code", "/^(\+?\d{1,3}|\d{1,4})$/")
+    isNumber().description("optional description")
+    isNumber().lessThan(5).description("optional description")
+    isNumber().atMost(5).description("optional description")
+    isNumber().exactly(5).description("optional description")
+    isNumber().atLeast(5).description("optional description")
+    isNumber().greaterThan(5).description("optional description")
+    
+    length().lessThan(5).description("optional description")
+    length().atMost(5).description("optional description")
+    length().exactly(5).description("optional description")
+    length().atLeast(5).description("optional description")
+    length().greaterThan(5).description("optional description")
+    
+    contains("Hello, World!").description("optional description")
+    contains("Hello, World!").ignoreCase().description("optional description")
+    
+    matches("/^(\+?\d{1,3}|\d{1,4})$/").description("must be a country code")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -126,30 +128,50 @@ form {
 
   inputLayout(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
+      .description("optional description")
+   
     isUrl()
+      .description("optional description")
+    
     isUri()
-      .hasScheme("must be a file Uri", listOf("file"))
-      .that("custom assertion") { true }
+      .description("optional description")
+    isUri().hasScheme("must be a file Uri", listOf("file"))
+    isUri().that("expected something") { true }
+      
     isEmail()
+      .description("optional description")
     
     isNumber()
+      .description("optional description")
     isNumber().lessThan(5)
+      .description("optional description")
     isNumber().atMost(5)
+      .description("optional description")
     isNumber().exactly(5)
+      .description("optional description")
     isNumber().atLeast(5)
+      .description("optional description")
     isNumber().greaterThan(5)
+      .description("optional description")
     
     length().lessThan(5)
+      .description("optional description")
     length().atMost(5)
+      .description("optional description")
     length().exactly(5)
+      .description("optional description")
     length().atLeast(5)
+      .description("optional description")
     length().greaterThan(5)
+      .description("optional description")
     
     contains("Hello, World!")
+      .description("optional description")
     contains("Hello, World!").ignoreCase()
+      .description("optional description")
     
-    // Regex assertions, with description of what it does
-    matches("must be a country code", "/^(\+?\d{1,3}|\d{1,4})$/")
+    matches("/^(\+?\d{1,3}|\d{1,4})$/")
+      .description("must be a country code")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -167,7 +189,9 @@ form {
 
   checkable(R.id.view_id, name = "Optional Name") {
     isChecked()
+      .description("optional description")
     isNotChecked()
+      .description("optional description")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -185,10 +209,15 @@ form {
   
   spinner(R.id.view_id, name = "Optional Name") {
     selection().exactly(1)
+      .description("optional description")
     selection().lessThan(1)
+      .description("optional description")
     selection().atMost(1)
+      .description("optional description")
     selection().atLeast(1)
+      .description("optional description")
     selection().greaterThan(1)
+      .description("optional description")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -206,10 +235,15 @@ form {
 
   seeker(R.id.view_id, name = "Optional Name") {
     progress().exactly(1)
+      .description("optional description")
     progress().lessThan(1)
+      .description("optional description")
     progress().atMost(1)
+      .description("optional description")
     progress().atLeast(1)
+      .description("optional description")
     progress().greaterThan(1)
+      .description("optional description")
     
     // Custom assertions
     assert("expected something") { view -> true }
@@ -230,12 +264,13 @@ form {
 
   checkable(R.id.view_id, name = "Optional Name") {
     isChecked() 
+    
     onErrors { view, errors ->
       // `view` here is a CompoundButton.
       // `errors` here is a List<FieldError>, which can be empty to notify that there are no longer 
       // any validation errors.
       val firstError: FieldError? = errors.firstOrNull()
-      // TODO: show firstError.toString() in the UI.
+      // Show firstError.toString() in the UI.
     }
   }
 }
@@ -357,12 +392,12 @@ First, you'd need an assertion class that goes with your view.
 ```kotlin
 class MyView(context: Context) : View(context, null)
 
-class MyAssertion : Assertion<MyView>() {
+class MyAssertion : Assertion<MyView, MyAssertion>() {
   override fun isValid(view: MyView): Boolean {
     return true
   }
 
-  override fun description(): String {
+  override fun defaultDescription(): String {
     return "does something"
   }
 }

@@ -25,39 +25,28 @@ import android.widget.EditText
 sealed class InputAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class NotEmptyAssertion internal constructor() : Assertion<EditText>() {
-    override fun isValid(view: EditText): Boolean {
-      return view.text()
-          .isNotEmpty()
-    }
+  class NotEmptyAssertion internal constructor() : Assertion<EditText, NotEmptyAssertion>() {
+    override fun isValid(view: EditText) = view.text().isNotEmpty()
 
-    override fun description(): String {
-      return "cannot be empty"
-    }
+    override fun defaultDescription() = "cannot be empty"
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UrlAssertion : Assertion<EditText>() {
+  class UrlAssertion : Assertion<EditText, UrlAssertion>() {
     private val regex = Patterns.WEB_URL
 
-    override fun isValid(view: EditText): Boolean {
-      return regex.matcher(view.text())
-          .matches()
-    }
+    override fun isValid(view: EditText) = regex.matcher(view.text()).matches()
 
-    override fun description(): String {
-      return "must be a valid URL"
-    }
+    override fun defaultDescription() = "must be a valid URL"
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UriAssertion internal constructor() : Assertion<EditText>() {
-
+  class UriAssertion internal constructor() : Assertion<EditText, UriAssertion>() {
     private var schemes: List<String> = emptyList()
     private var schemesDescription: String? = null
     private var that: ((Uri) -> Boolean)? = null
     private var thatDescription: String? = null
-    private var description: String? = null
+    private var descriptionToUse: String? = null
 
     /** Asserts that the URI has a scheme within the given values. */
     fun hasScheme(
@@ -84,13 +73,13 @@ sealed class InputAssertions {
         val uri = Uri.parse(view.text())
         val uriScheme = uri.scheme ?: ""
         if (schemes.isNotEmpty() && uriScheme !in schemes) {
-          description = schemesDescription
+          descriptionToUse = schemesDescription
               ?: "scheme '$uriScheme' not in ${schemes.displayString()}"
           return false
         }
         val thatResult = that?.invoke(uri) ?: true
         if (!thatResult) {
-          description = thatDescription ?: "didn't pass custom validation"
+          descriptionToUse = thatDescription ?: "didn't pass custom validation"
           return false
         }
       } catch (_: Exception) {
@@ -99,33 +88,26 @@ sealed class InputAssertions {
       return true
     }
 
-    override fun description() = description ?: "must be a valid Uri"
+    override fun defaultDescription() = descriptionToUse ?: "must be a valid Uri"
 
-    private fun List<String>.displayString(): String {
-      return joinToString(
-          prefix = "[",
-          postfix = "]",
-          transform = { "'$it'" }
-      )
-    }
+    private fun List<String>.displayString() = joinToString(
+        prefix = "[",
+        postfix = "]",
+        transform = { "'$it'" }
+    )
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class EmailAssertion internal constructor() : Assertion<EditText>() {
+  class EmailAssertion internal constructor() : Assertion<EditText, EmailAssertion>() {
     private val regex = Patterns.EMAIL_ADDRESS
 
-    override fun isValid(view: EditText): Boolean {
-      return regex.matcher(view.text())
-          .matches()
-    }
+    override fun isValid(view: EditText) = regex.matcher(view.text()).matches()
 
-    override fun description(): String {
-      return "must be a valid email address"
-    }
+    override fun defaultDescription() = "must be a valid email address"
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class NumberAssertion internal constructor() : Assertion<EditText>() {
+  class NumberAssertion internal constructor() : Assertion<EditText, NumberAssertion>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -133,28 +115,33 @@ sealed class InputAssertions {
     private var greaterThan: Int? = null
 
     /** Asserts the number is an exact (=) value. */
-    fun exactly(length: Int) {
+    fun exactly(length: Int): NumberAssertion {
       exactly = length
+      return this
     }
 
     /** Asserts the number is less than (<) a value. */
-    fun lessThan(length: Int) {
+    fun lessThan(length: Int): NumberAssertion {
       lessThan = length
+      return this
     }
 
     /** Asserts the number is at most (<=) a value. */
-    fun atMost(length: Int) {
+    fun atMost(length: Int): NumberAssertion {
       atMost = length
+      return this
     }
 
     /** Asserts the number is at least (>=) a value. */
-    fun atLeast(length: Int) {
+    fun atLeast(length: Int): NumberAssertion {
       atLeast = length
+      return this
     }
 
     /** Asserts the number is greater (>) than a value. */
-    fun greaterThan(length: Int) {
+    fun greaterThan(length: Int): NumberAssertion {
       greaterThan = length
+      return this
     }
 
     override fun isValid(view: EditText): Boolean {
@@ -174,20 +161,18 @@ sealed class InputAssertions {
       return true
     }
 
-    override fun description(): String {
-      return when {
-        exactly != null -> "must equal $exactly"
-        lessThan != null -> "must be less than $lessThan"
-        atMost != null -> "must be at most $atMost"
-        atLeast != null -> "must be at least $atLeast"
-        greaterThan != null -> "must be greater than $greaterThan"
-        else -> "must be a number"
-      }
+    override fun defaultDescription() = when {
+      exactly != null -> "must equal $exactly"
+      lessThan != null -> "must be less than $lessThan"
+      atMost != null -> "must be at most $atMost"
+      atLeast != null -> "must be at least $atLeast"
+      greaterThan != null -> "must be greater than $greaterThan"
+      else -> "must be a number"
     }
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class LengthAssertion internal constructor() : Assertion<EditText>() {
+  class LengthAssertion internal constructor() : Assertion<EditText, LengthAssertion>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -195,28 +180,33 @@ sealed class InputAssertions {
     private var greaterThan: Int? = null
 
     /** Asserts the length is an exact (=) value. */
-    fun exactly(length: Int) {
+    fun exactly(length: Int): LengthAssertion {
       exactly = length
+      return this
     }
 
     /** Asserts the length is less than (<) a value. */
-    fun lessThan(length: Int) {
+    fun lessThan(length: Int): LengthAssertion {
       lessThan = length
+      return this
     }
 
     /** Asserts the length is at most (<=) a value. */
-    fun atMost(length: Int) {
+    fun atMost(length: Int): LengthAssertion {
       atMost = length
+      return this
     }
 
     /** Asserts the length is at least (>=) a value. */
-    fun atLeast(length: Int) {
+    fun atLeast(length: Int): LengthAssertion {
       atLeast = length
+      return this
     }
 
     /** Asserts the length is greater (>) than a value. */
-    fun greaterThan(length: Int) {
+    fun greaterThan(length: Int): LengthAssertion {
       greaterThan = length
+      return this
     }
 
     override fun isValid(view: EditText): Boolean {
@@ -232,27 +222,26 @@ sealed class InputAssertions {
       }
     }
 
-    override fun description(): String {
-      return when {
-        exactly != null -> "length must be exactly $exactly"
-        lessThan != null -> "length must be less than $lessThan"
-        atMost != null -> "length must be at most $atMost"
-        atLeast != null -> "length must be at least $atLeast"
-        greaterThan != null -> "length must be greater than $greaterThan"
-        else -> "no length bound set"
-      }
+    override fun defaultDescription() = when {
+      exactly != null -> "length must be exactly $exactly"
+      lessThan != null -> "length must be less than $lessThan"
+      atMost != null -> "length must be at most $atMost"
+      atLeast != null -> "length must be at least $atLeast"
+      greaterThan != null -> "length must be greater than $greaterThan"
+      else -> "no length bound set"
     }
   }
 
   /** @author Aidan Follestad (@afollestad) */
   class ContainsAssertion internal constructor(
     private val text: String
-  ) : Assertion<EditText>() {
+  ) : Assertion<EditText, ContainsAssertion>() {
     private var ignoreCase: Boolean = false
 
     /** Case is ignored when checking if the input contains the string. */
-    fun ignoreCase() {
+    fun ignoreCase(): ContainsAssertion {
       ignoreCase = true
+      return this
     }
 
     override fun isValid(view: EditText): Boolean {
@@ -260,16 +249,13 @@ sealed class InputAssertions {
           .contains(text, ignoreCase)
     }
 
-    override fun description(): String {
-      return "must contain \"$text\""
-    }
+    override fun defaultDescription() = "must contain \"$text\""
   }
 
   /** @author Aidan Follestad (@afollestad) */
   class RegexAssertion(
-    regexString: String,
-    private val description: String
-  ) : Assertion<EditText>() {
+    private val regexString: String
+  ) : Assertion<EditText, RegexAssertion>() {
     private val regex = Regex(regexString)
 
     override fun isValid(view: EditText): Boolean {
@@ -277,9 +263,7 @@ sealed class InputAssertions {
           .matches(regex)
     }
 
-    override fun description(): String {
-      return description
-    }
+    override fun defaultDescription() = "must match regex \"$regexString\""
   }
 }
 

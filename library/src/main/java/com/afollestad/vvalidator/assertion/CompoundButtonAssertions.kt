@@ -25,17 +25,14 @@ sealed class CompoundButtonAssertions {
   /** @author Aidan Follestad (@afollestad) */
   class CheckedStateAssertion internal constructor(
     val checked: Boolean
-  ) : Assertion<CompoundButton>() {
-    override fun isValid(view: CompoundButton): Boolean {
-      return view.isChecked == checked
-    }
+  ) : Assertion<CompoundButton, CheckedStateAssertion>() {
 
-    override fun description(): String {
-      return if (checked) {
-        "should be checked"
-      } else {
-        "should not be checked"
-      }
+    override fun isValid(view: CompoundButton) = view.isChecked == checked
+
+    override fun defaultDescription() = if (checked) {
+      "should be checked"
+    } else {
+      "should not be checked"
     }
   }
 }

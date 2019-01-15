@@ -35,7 +35,7 @@ class CompoundButtonAssertionTest {
     whenever(view.isChecked).doReturn(false)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("should be checked")
 
     whenever(view.isChecked).doReturn(true)
@@ -53,7 +53,7 @@ class CompoundButtonAssertionTest {
     whenever(view.isChecked).doReturn(true)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("should not be checked")
   }
 }

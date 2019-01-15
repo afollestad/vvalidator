@@ -27,10 +27,10 @@ data class FieldError(
   @IdRes val id: Int,
   /** The name of the field that the error is for. */
   val name: String,
-  /** The description of the error. */
+  /** The defaultDescription of the error. */
   val description: String,
   /** The type of assertion that created this error. */
-  val assertionType: KClass<out Assertion<*>>
+  val assertionType: KClass<out Assertion<*, *>>
 ) {
   /** A combination of [name] and [description] to display to a user. */
   override fun toString(): String {

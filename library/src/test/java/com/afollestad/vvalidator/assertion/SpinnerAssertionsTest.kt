@@ -37,7 +37,7 @@ class SpinnerAssertionsTest {
     whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must equal 5")
 
     whenever(view.selectedItemPosition).doReturn(5)
@@ -53,13 +53,13 @@ class SpinnerAssertionsTest {
     whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must be less than 5")
 
     whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must be less than 5")
 
     whenever(view.selectedItemPosition).doReturn(4)
@@ -75,7 +75,7 @@ class SpinnerAssertionsTest {
     whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must be at most 5")
 
     whenever(view.selectedItemPosition).doReturn(5)
@@ -95,7 +95,7 @@ class SpinnerAssertionsTest {
     whenever(view.selectedItemPosition).doReturn(4)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must be at least 5")
 
     whenever(view.selectedItemPosition).doReturn(5)
@@ -115,13 +115,13 @@ class SpinnerAssertionsTest {
     whenever(view.selectedItemPosition).doReturn(4)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must be greater than 5")
 
     whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertFalse()
-    assertion.description()
+    assertion.defaultDescription()
         .assertEqualTo("selection must be greater than 5")
 
     whenever(view.selectedItemPosition).doReturn(6)

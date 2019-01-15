@@ -128,7 +128,7 @@ class InputFieldTest {
   }
 
   @Test fun matches() {
-    val assertion = field.matches("test regex", "hello|world")
+    val assertion = field.matches("hello|world")
         .assertType<RegexAssertion>()
     field.assertions()
         .single()

@@ -23,84 +23,62 @@ import android.widget.AbsSeekBar
 sealed class SeekBarAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class ProgressAssertion internal constructor() : Assertion<AbsSeekBar>() {
+  class ProgressAssertion internal constructor() : Assertion<AbsSeekBar, ProgressAssertion>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
     private var atLeast: Int? = null
     private var greaterThan: Int? = null
-    private var description: String? = null
 
     /** Asserts the seeker progress is an exact (=) value. */
-    fun exactly(
-      length: Int,
-      description: String? = null
-    ) {
+    fun exactly(length: Int): ProgressAssertion {
       exactly = length
-      this.description = description
+      return this
     }
 
     /** Asserts the seeker progress is less than (<) a value. */
-    fun lessThan(
-      length: Int,
-      description: String? = null
-    ) {
+    fun lessThan(length: Int): ProgressAssertion {
       lessThan = length
-      this.description = description
+      return this
     }
 
     /** Asserts the seeker progress is at most (<=) a value. */
-    fun atMost(
-      length: Int,
-      description: String? = null
-    ) {
+    fun atMost(length: Int): ProgressAssertion {
       atMost = length
-      this.description = description
+      return this
     }
 
     /** Asserts the seeker progress is at least (>=) a value. */
-    fun atLeast(
-      length: Int,
-      description: String? = null
-    ) {
+    fun atLeast(length: Int): ProgressAssertion {
       atLeast = length
-      this.description = description
+      return this
     }
 
     /** Asserts the seeker progress is greater (>) than a value. */
-    fun greaterThan(
-      length: Int,
-      description: String? = null
-    ) {
+    fun greaterThan(length: Int): ProgressAssertion {
       greaterThan = length
-      this.description = description
+      return this
     }
 
     override fun isValid(view: AbsSeekBar): Boolean {
       val progress = view.progress
-      if (exactly != null && progress != exactly!!) {
-        return false
-      } else if (lessThan != null && progress >= lessThan!!) {
-        return false
-      } else if (atMost != null && progress > atMost!!) {
-        return false
-      } else if (atLeast != null && progress < atLeast!!) {
-        return false
-      } else if (greaterThan != null && progress <= greaterThan!!) {
-        return false
+      return when {
+        exactly != null && progress != exactly!! -> false
+        lessThan != null && progress >= lessThan!! -> false
+        atMost != null && progress > atMost!! -> false
+        atLeast != null && progress < atLeast!! -> false
+        greaterThan != null && progress <= greaterThan!! -> false
+        else -> true
       }
-      return true
     }
 
-    override fun description(): String {
-      return description ?: when {
-        exactly != null -> "progress must equal $exactly"
-        lessThan != null -> "progress must be less than $lessThan"
-        atMost != null -> "progress must be at most $atMost"
-        atLeast != null -> "progress must be at least $atLeast"
-        greaterThan != null -> "progress must be greater than $greaterThan"
-        else -> "progress bound not set"
-      }
+    override fun defaultDescription() = when {
+      exactly != null -> "progress must equal $exactly"
+      lessThan != null -> "progress must be less than $lessThan"
+      atMost != null -> "progress must be at most $atMost"
+      atLeast != null -> "progress must be at least $atLeast"
+      greaterThan != null -> "progress must be greater than $greaterThan"
+      else -> "progress bound not set"
     }
   }
 }
