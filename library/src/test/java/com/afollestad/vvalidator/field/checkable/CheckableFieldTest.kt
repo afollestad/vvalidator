@@ -16,7 +16,7 @@
 package com.afollestad.vvalidator.field.checkable
 
 import android.widget.CompoundButton
-import com.afollestad.vvalidator.assertion.CompoundButtonAssertions.CheckedStateAssertion
+import com.afollestad.vvalidator.assertion.checkable.CompoundButtonAssertions.CheckedStateAssertion
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form

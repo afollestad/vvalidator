@@ -21,14 +21,14 @@ import android.widget.EditText
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.ContainsAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.LengthAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.NotEmptyAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.NumberAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.RegexAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.UrlAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FormField
 
 /**
@@ -38,9 +38,9 @@ import com.afollestad.vvalidator.field.FormField
  */
 class InputField internal constructor(
   container: ValidationContainer,
-  @IdRes override val id: Int,
-  override val name: String
-) : FormField<InputField, EditText>() {
+  @IdRes id: Int,
+  name: String?
+) : FormField<InputField, EditText>(container, id, name) {
 
   init {
     onErrors { view, errors ->
@@ -48,8 +48,6 @@ class InputField internal constructor(
           ?.toString()
     }
   }
-
-  override val view = container.getViewOrThrow<EditText>(id)
 
   /** Asserts that the input text is not empty. */
   fun isNotEmpty() = assert(NotEmptyAssertion())

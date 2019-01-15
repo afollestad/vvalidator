@@ -16,12 +16,17 @@
 package com.afollestad.vvalidator.assertion
 
 import android.view.View
+import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
+import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.field.Condition
 
 /** @author Aidan Follestad (@afollestad) */
 abstract class Assertion<T, A> where A : Assertion<T, A> {
+  var container: ValidationContainer? = null
   internal var condition: Condition? = null
-  private var description: String? = null
+  @VisibleForTesting(otherwise = PRIVATE) var description: String? = null
 
   /** Returns true if the given view passes the assertion. */
   abstract fun isValid(view: T): Boolean
@@ -30,11 +35,15 @@ abstract class Assertion<T, A> where A : Assertion<T, A> {
   fun description(): String = description ?: defaultDescription()
 
   /** Sets a custom assertion description that is used in validation errors. */
+  @Suppress("UNCHECKED_CAST")
   fun description(value: String?): A {
     this.description = value
-    @Suppress("UNCHECKED_CAST")
     return this as A
   }
+
+  /** Sets a custom assertion description that is used in validation errors. */
+  @Suppress("UNCHECKED_CAST")
+  fun description(@StringRes value: Int?) = description(container?.getString(value))
 
   /** A short defaultDescription of what the assertion tests. */
   abstract fun defaultDescription(): String

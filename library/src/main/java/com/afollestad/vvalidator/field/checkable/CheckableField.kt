@@ -20,8 +20,8 @@ package com.afollestad.vvalidator.field.checkable
 import android.widget.CompoundButton
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.assertion.CompoundButtonAssertions.CheckedStateAssertion
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
+import com.afollestad.vvalidator.assertion.checkable.CompoundButtonAssertions.CheckedStateAssertion
 import com.afollestad.vvalidator.field.FormField
 
 /**
@@ -31,11 +31,9 @@ import com.afollestad.vvalidator.field.FormField
  */
 class CheckableField internal constructor(
   container: ValidationContainer,
-  @IdRes override val id: Int,
-  override val name: String
-) : FormField<CheckableField, CompoundButton>() {
-
-  override val view = container.getViewOrThrow<CompoundButton>(id)
+  @IdRes id: Int,
+  name: String?
+) : FormField<CheckableField, CompoundButton>(container, id, name) {
 
   /** Asserts the view is checked. */
   fun isChecked() = assert(CheckedStateAssertion(true))

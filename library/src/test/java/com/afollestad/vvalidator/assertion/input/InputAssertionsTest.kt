@@ -13,59 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.afollestad.vvalidator.assertion
+package com.afollestad.vvalidator.assertion.input
 
 import android.content.Context
 import android.text.Editable
 import android.util.Patterns
-import android.view.ContextThemeWrapper
+import android.widget.EditText
 import androidx.test.core.app.ApplicationProvider
-import com.afollestad.vvalidator.R
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.ContainsAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NotEmptyAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NumberAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.RegexAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UrlAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertNotEqualTo
 import com.afollestad.vvalidator.testutil.assertTrue
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 /** @author Aidan Follestad (@afollestad) */
 @RunWith(NoManifestTestRunner::class)
-class InputLayoutAssertionsTest {
+class InputAssertionsTest {
 
-  private lateinit var view: TextInputLayout
-  private lateinit var editText: TextInputEditText
+  private lateinit var view: EditText
 
   @Before fun setup() {
     val appContext = ApplicationProvider.getApplicationContext<Context>()
-    val context =
-      ContextThemeWrapper(appContext, R.style.Theme_MaterialComponents_Light)
-    editText = TextInputEditText(context)
-    view = TextInputLayout(context).apply {
-      isHintAnimationEnabled = false
-    }
-    view.addView(editText)
+    view = EditText(appContext)
   }
 
   @Test fun notEmpty() {
     val assertion = NotEmptyAssertion()
 
-    editText.text = "test".toEditable()
+    view.text = "test".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "".toEditable()
+    view.text = "".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -75,11 +65,11 @@ class InputLayoutAssertionsTest {
   @Test fun isUrl() {
     val assertion = UrlAssertion()
 
-    editText.text = "https://af.codes/test.html".toEditable()
+    view.text = "https://af.codes/test.html".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "Hello, World!".toEditable()
+    view.text = "Hello, World!".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -92,11 +82,11 @@ class InputLayoutAssertionsTest {
         listOf("file", "ftp")
     )
 
-    editText.text = "file://storage/external".toEditable()
+    view.text = "file://storage/external".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "content://storage/external".toEditable()
+    view.text = "content://storage/external".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -109,11 +99,11 @@ class InputLayoutAssertionsTest {
           !it.getQueryParameter("q").isNullOrEmpty()
         }
 
-    editText.text = "https://af.codes?q=test".toEditable()
+    view.text = "https://af.codes?q=test".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "https://af.codes".toEditable()
+    view.text = "https://af.codes".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -123,11 +113,11 @@ class InputLayoutAssertionsTest {
   @Test fun isEmail() {
     val assertion = EmailAssertion()
 
-    editText.text = "tchalla@wakana.gov".toEditable()
+    view.text = "tchalla@wakana.gov".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "testing".toEditable()
+    view.text = "testing".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -137,11 +127,11 @@ class InputLayoutAssertionsTest {
   @Test fun isNumber() {
     val assertion = NumberAssertion()
 
-    editText.text = "1".toEditable()
+    view.text = "1".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "a".toEditable()
+    view.text = "a".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -153,11 +143,11 @@ class InputLayoutAssertionsTest {
       exactly(5)
     }
 
-    editText.text = "5".toEditable()
+    view.text = "5".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "1".toEditable()
+    view.text = "1".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -169,11 +159,11 @@ class InputLayoutAssertionsTest {
       lessThan(5)
     }
 
-    editText.text = "4".toEditable()
+    view.text = "4".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "5".toEditable()
+    view.text = "5".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -185,15 +175,15 @@ class InputLayoutAssertionsTest {
       atMost(5)
     }
 
-    editText.text = "4".toEditable()
+    view.text = "4".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "5".toEditable()
+    view.text = "5".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "6".toEditable()
+    view.text = "6".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -205,15 +195,15 @@ class InputLayoutAssertionsTest {
       atLeast(5)
     }
 
-    editText.text = "5".toEditable()
+    view.text = "5".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "6".toEditable()
+    view.text = "6".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "4".toEditable()
+    view.text = "4".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -225,15 +215,15 @@ class InputLayoutAssertionsTest {
       greaterThan(5)
     }
 
-    editText.text = "6".toEditable()
+    view.text = "6".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "7".toEditable()
+    view.text = "7".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "5".toEditable()
+    view.text = "5".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -243,7 +233,7 @@ class InputLayoutAssertionsTest {
   @Test fun length() {
     val assertion = LengthAssertion()
 
-    editText.text = "1".toEditable()
+    view.text = "1".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -255,17 +245,17 @@ class InputLayoutAssertionsTest {
       exactly(5)
     }
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hell".toEditable()
+    view.text = "hell".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
         .assertEqualTo("length must be exactly 5")
 
-    editText.text = "helloo".toEditable()
+    view.text = "helloo".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -277,17 +267,17 @@ class InputLayoutAssertionsTest {
       lessThan(5)
     }
 
-    editText.text = "hell".toEditable()
+    view.text = "hell".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
         .assertEqualTo("length must be less than 5")
 
-    editText.text = "hello,".toEditable()
+    view.text = "hello,".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -299,15 +289,15 @@ class InputLayoutAssertionsTest {
       atMost(5)
     }
 
-    editText.text = "hell".toEditable()
+    view.text = "hell".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello,".toEditable()
+    view.text = "hello,".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -319,15 +309,15 @@ class InputLayoutAssertionsTest {
       atLeast(5)
     }
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello,".toEditable()
+    view.text = "hello,".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hell".toEditable()
+    view.text = "hell".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -339,11 +329,11 @@ class InputLayoutAssertionsTest {
       greaterThan(5)
     }
 
-    editText.text = "hello,".toEditable()
+    view.text = "hello,".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -353,11 +343,11 @@ class InputLayoutAssertionsTest {
   @Test fun contains() {
     val assertion = ContainsAssertion("World")
 
-    editText.text = "Hello World".toEditable()
+    view.text = "Hello World".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "Hello world".toEditable()
+    view.text = "Hello world".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -369,11 +359,11 @@ class InputLayoutAssertionsTest {
       ignoreCase()
     }
 
-    editText.text = "hello world".toEditable()
+    view.text = "hello world".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
@@ -385,11 +375,11 @@ class InputLayoutAssertionsTest {
     val assertion = RegexAssertion(regex)
         .description("must be an IP address")
 
-    editText.text = "192.168.0.1".toEditable()
+    view.text = "192.168.0.1".toEditable()
     assertion.isValid(view)
         .assertTrue()
 
-    editText.text = "hello".toEditable()
+    view.text = "hello".toEditable()
     assertion.isValid(view)
         .assertFalse()
     assertion.description()

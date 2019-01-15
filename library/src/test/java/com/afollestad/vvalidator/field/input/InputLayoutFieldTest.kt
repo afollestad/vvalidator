@@ -16,14 +16,14 @@
 package com.afollestad.vvalidator.field.input
 
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.ContainsAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NotEmptyAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NumberAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.RegexAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UrlAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form

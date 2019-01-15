@@ -55,7 +55,7 @@ class Form internal constructor(
     val newField = InputField(
         container = container,
         id = id,
-        name = container.getFieldName(id, name)
+        name = name
     )
     builder(newField)
     appendField(newField)
@@ -73,7 +73,7 @@ class Form internal constructor(
     val newField = InputLayoutField(
         container = container,
         id = id,
-        name = container.getFieldName(id, name)
+        name = name
     )
     builder(newField)
     appendField(newField)
@@ -88,7 +88,7 @@ class Form internal constructor(
     val newField = SpinnerField(
         container = container,
         id = id,
-        name = container.getFieldName(id, name)
+        name = name
     )
     builder(newField)
     appendField(newField)
@@ -106,7 +106,7 @@ class Form internal constructor(
     val newField = CheckableField(
         container = container,
         id = id,
-        name = container.getFieldName(id, name)
+        name = name
     )
     builder(newField)
     appendField(newField)
@@ -121,7 +121,7 @@ class Form internal constructor(
     val newField = SeekField(
         container = container,
         id = id,
-        name = container.getFieldName(id, name)
+        name = name
     )
     builder(newField)
     appendField(newField)

@@ -149,11 +149,12 @@ class FormTest {
           input.setText("Hello, World!")
           seeker.progress = 2
         }
-    form.validate().run {
-      success().assertTrue()
-      hasErrors().assertFalse()
-      errors().assertEmpty()
-    }
+    form.validate()
+        .run {
+          success().assertTrue()
+          hasErrors().assertFalse()
+          errors().assertEmpty()
+        }
   }
 
   @Test fun submitWith_button_success() {

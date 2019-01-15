@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.afollestad.vvalidator.assertion
+package com.afollestad.vvalidator.assertion.spinner
 
-import android.widget.AbsSeekBar
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAssertion
+import android.widget.Spinner
+import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertTrue
@@ -26,105 +26,105 @@ import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 
 /** @author Aidan Follestad (@afollestad) */
-class SeekBarAssertionsTest {
-  private val view = mock<AbsSeekBar>()
+class SpinnerAssertionsTest {
+  private val view = mock<Spinner>()
 
   @Test fun exactly() {
-    val assertion = ProgressAssertion().apply {
+    val assertion = SelectionAssertion().apply {
       exactly(5)
     }
 
-    whenever(view.progress).doReturn(6)
+    whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must equal 5")
+        .assertEqualTo("selection must equal 5")
 
-    whenever(view.progress).doReturn(5)
+    whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertTrue()
   }
 
   @Test fun lessThan() {
-    val assertion = ProgressAssertion().apply {
+    val assertion = SelectionAssertion().apply {
       lessThan(5)
     }
 
-    whenever(view.progress).doReturn(6)
+    whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must be less than 5")
+        .assertEqualTo("selection must be less than 5")
 
-    whenever(view.progress).doReturn(5)
+    whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must be less than 5")
+        .assertEqualTo("selection must be less than 5")
 
-    whenever(view.progress).doReturn(4)
+    whenever(view.selectedItemPosition).doReturn(4)
     assertion.isValid(view)
         .assertTrue()
   }
 
   @Test fun atMost() {
-    val assertion = ProgressAssertion().apply {
+    val assertion = SelectionAssertion().apply {
       atMost(5)
     }
 
-    whenever(view.progress).doReturn(6)
+    whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must be at most 5")
+        .assertEqualTo("selection must be at most 5")
 
-    whenever(view.progress).doReturn(5)
+    whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertTrue()
 
-    whenever(view.progress).doReturn(4)
+    whenever(view.selectedItemPosition).doReturn(4)
     assertion.isValid(view)
         .assertTrue()
   }
 
   @Test fun atLeast() {
-    val assertion = ProgressAssertion().apply {
+    val assertion = SelectionAssertion().apply {
       atLeast(5)
     }
 
-    whenever(view.progress).doReturn(4)
+    whenever(view.selectedItemPosition).doReturn(4)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must be at least 5")
+        .assertEqualTo("selection must be at least 5")
 
-    whenever(view.progress).doReturn(5)
+    whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertTrue()
 
-    whenever(view.progress).doReturn(6)
+    whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertTrue()
   }
 
   @Test fun greaterThan() {
-    val assertion = ProgressAssertion().apply {
+    val assertion = SelectionAssertion().apply {
       greaterThan(5)
     }
 
-    whenever(view.progress).doReturn(4)
+    whenever(view.selectedItemPosition).doReturn(4)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must be greater than 5")
+        .assertEqualTo("selection must be greater than 5")
 
-    whenever(view.progress).doReturn(5)
+    whenever(view.selectedItemPosition).doReturn(5)
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("progress must be greater than 5")
+        .assertEqualTo("selection must be greater than 5")
 
-    whenever(view.progress).doReturn(6)
+    whenever(view.selectedItemPosition).doReturn(6)
     assertion.isValid(view)
         .assertTrue()
   }

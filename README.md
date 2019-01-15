@@ -394,16 +394,14 @@ Then you'll need a custom `FormField` class:
 ```kotlin
 class MyField(
   container: ValidationContainer,
-  @IdRes override val id: Int,
-  override val name: String
-) : FormField<MyField, MyView>() {
+  @IdRes id: Int,
+  name: String
+) : FormField<MyField, MyView>(container, id, name) {
   init {
     onErrors { view, errors ->
       // Do some sort of default error handling with views
     }
   }
-
-  override val view = container.getViewOrThrow<MyView>(id)
   
   // Your first custom assertion
   fun myAssertion() = assert(MyAssertion())
@@ -421,7 +419,7 @@ fun Form.myView(
   val newField = MyField(
       container = container,
       id = id,
-      name = container.getFieldName(id, name)
+      name = name
   )
   builder(newField)
   appendField(newField)

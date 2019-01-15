@@ -17,14 +17,14 @@ package com.afollestad.vvalidator.field.input
 
 import android.widget.EditText
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.ContainsAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.LengthAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.NotEmptyAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.NumberAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.RegexAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.InputAssertions.UrlAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form

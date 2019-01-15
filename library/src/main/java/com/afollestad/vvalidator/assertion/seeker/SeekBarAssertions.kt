@@ -15,9 +15,10 @@
  */
 @file:Suppress("unused")
 
-package com.afollestad.vvalidator.assertion
+package com.afollestad.vvalidator.assertion.seeker
 
 import android.widget.AbsSeekBar
+import com.afollestad.vvalidator.assertion.Assertion
 
 /** @author Aidan Follestad (@afollestad) */
 sealed class SeekBarAssertions {

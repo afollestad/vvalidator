@@ -17,7 +17,7 @@ package com.afollestad.vvalidator.field.seeker
 
 import android.widget.AbsSeekBar
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAssertion
+import com.afollestad.vvalidator.assertion.seeker.SeekBarAssertions.ProgressAssertion
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_SEEKER

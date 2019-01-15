@@ -15,34 +15,34 @@
  */
 @file:Suppress("unused")
 
-package com.afollestad.vvalidator.assertion
+package com.afollestad.vvalidator.assertion.input
 
 import android.net.Uri
 import android.util.Patterns
-import com.google.android.material.textfield.TextInputLayout
+import android.widget.EditText
+import com.afollestad.vvalidator.assertion.Assertion
 
 /** @author Aidan Follestad (@afollestad) */
-sealed class InputLayoutAssertions {
+sealed class InputAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
-  class NotEmptyAssertion internal constructor() : Assertion<TextInputLayout, NotEmptyAssertion>() {
-
-    override fun isValid(view: TextInputLayout) = view.editText?.text?.isNotEmpty() ?: false
+  class NotEmptyAssertion internal constructor() : Assertion<EditText, NotEmptyAssertion>() {
+    override fun isValid(view: EditText) = view.text().isNotEmpty()
 
     override fun defaultDescription() = "cannot be empty"
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UrlAssertion internal constructor() : Assertion<TextInputLayout, UrlAssertion>() {
+  class UrlAssertion : Assertion<EditText, UrlAssertion>() {
     private val regex = Patterns.WEB_URL
 
-    override fun isValid(view: TextInputLayout) = regex.matcher(view.text()).matches()
+    override fun isValid(view: EditText) = regex.matcher(view.text()).matches()
 
     override fun defaultDescription() = "must be a valid URL"
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UriAssertion internal constructor() : Assertion<TextInputLayout, UriAssertion>() {
+  class UriAssertion internal constructor() : Assertion<EditText, UriAssertion>() {
     private var schemes: List<String> = emptyList()
     private var schemesDescription: String? = null
     private var that: ((Uri) -> Boolean)? = null
@@ -69,7 +69,7 @@ sealed class InputLayoutAssertions {
       return this
     }
 
-    override fun isValid(view: TextInputLayout): Boolean {
+    override fun isValid(view: EditText): Boolean {
       try {
         val uri = Uri.parse(view.text())
         val uriScheme = uri.scheme ?: ""
@@ -99,16 +99,16 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class EmailAssertion internal constructor() : Assertion<TextInputLayout, EmailAssertion>() {
+  class EmailAssertion internal constructor() : Assertion<EditText, EmailAssertion>() {
     private val regex = Patterns.EMAIL_ADDRESS
 
-    override fun isValid(view: TextInputLayout) = regex.matcher(view.text()).matches()
+    override fun isValid(view: EditText) = regex.matcher(view.text()).matches()
 
     override fun defaultDescription() = "must be a valid email address"
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class NumberAssertion internal constructor() : Assertion<TextInputLayout, NumberAssertion>() {
+  class NumberAssertion internal constructor() : Assertion<EditText, NumberAssertion>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -145,16 +145,21 @@ sealed class InputLayoutAssertions {
       return this
     }
 
-    override fun isValid(view: TextInputLayout): Boolean {
-      val intValue = view.text().toIntOrNull() ?: return false
-      return when {
-        exactly != null && intValue != exactly!! -> false
-        lessThan != null && intValue >= lessThan!! -> false
-        atMost != null && intValue > atMost!! -> false
-        atLeast != null && intValue < atLeast!! -> false
-        greaterThan != null && intValue <= greaterThan!! -> false
-        else -> true
+    override fun isValid(view: EditText): Boolean {
+      val intValue = view.text()
+          .toIntOrNull() ?: return false
+      if (exactly != null && intValue != exactly!!) {
+        return false
+      } else if (lessThan != null && intValue >= lessThan!!) {
+        return false
+      } else if (atMost != null && intValue > atMost!!) {
+        return false
+      } else if (atLeast != null && intValue < atLeast!!) {
+        return false
+      } else if (greaterThan != null && intValue <= greaterThan!!) {
+        return false
       }
+      return true
     }
 
     override fun defaultDescription() = when {
@@ -168,7 +173,7 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class LengthAssertion internal constructor() : Assertion<TextInputLayout, LengthAssertion>() {
+  class LengthAssertion internal constructor() : Assertion<EditText, LengthAssertion>() {
     private var exactly: Int? = null
     private var lessThan: Int? = null
     private var atMost: Int? = null
@@ -205,7 +210,7 @@ sealed class InputLayoutAssertions {
       return this
     }
 
-    override fun isValid(view: TextInputLayout): Boolean {
+    override fun isValid(view: EditText): Boolean {
       val length = view.text()
           .length
       return when {
@@ -231,7 +236,7 @@ sealed class InputLayoutAssertions {
   /** @author Aidan Follestad (@afollestad) */
   class ContainsAssertion internal constructor(
     private val text: String
-  ) : Assertion<TextInputLayout, ContainsAssertion>() {
+  ) : Assertion<EditText, ContainsAssertion>() {
     private var ignoreCase: Boolean = false
 
     /** Case is ignored when checking if the input contains the string. */
@@ -240,7 +245,10 @@ sealed class InputLayoutAssertions {
       return this
     }
 
-    override fun isValid(view: TextInputLayout) = view.text().contains(text, ignoreCase)
+    override fun isValid(view: EditText): Boolean {
+      return view.text()
+          .contains(text, ignoreCase)
+    }
 
     override fun defaultDescription() = "must contain \"$text\""
   }
@@ -248,15 +256,18 @@ sealed class InputLayoutAssertions {
   /** @author Aidan Follestad (@afollestad) */
   class RegexAssertion(
     private val regexString: String
-  ) : Assertion<TextInputLayout, RegexAssertion>() {
+  ) : Assertion<EditText, RegexAssertion>() {
     private val regex = Regex(regexString)
 
-    override fun isValid(view: TextInputLayout) = view.text().matches(regex)
+    override fun isValid(view: EditText): Boolean {
+      return view.text()
+          .matches(regex)
+    }
 
     override fun defaultDescription() = "must match regex \"$regexString\""
   }
 }
 
-internal fun TextInputLayout.text(): String {
-  return editText?.text?.toString() ?: ""
+private fun EditText.text(): String {
+  return text.toString()
 }

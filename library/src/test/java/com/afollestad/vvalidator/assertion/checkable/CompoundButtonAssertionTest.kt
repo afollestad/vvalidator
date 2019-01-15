@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.afollestad.vvalidator.assertion
+package com.afollestad.vvalidator.assertion.checkable
 
 import android.widget.CompoundButton
-import com.afollestad.vvalidator.assertion.CompoundButtonAssertions.CheckedStateAssertion
+import com.afollestad.vvalidator.assertion.checkable.CompoundButtonAssertions.CheckedStateAssertion
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertTrue

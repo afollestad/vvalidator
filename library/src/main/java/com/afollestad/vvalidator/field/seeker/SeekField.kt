@@ -21,7 +21,7 @@ import android.widget.AbsSeekBar
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.SeekBarAssertions.ProgressAssertion
+import com.afollestad.vvalidator.assertion.seeker.SeekBarAssertions.ProgressAssertion
 import com.afollestad.vvalidator.field.FormField
 
 /**
@@ -31,11 +31,9 @@ import com.afollestad.vvalidator.field.FormField
  */
 class SeekField internal constructor(
   container: ValidationContainer,
-  @IdRes override val id: Int,
-  override val name: String
-) : FormField<SeekField, AbsSeekBar>() {
-
-  override val view = container.getViewOrThrow<AbsSeekBar>(id)
+  @IdRes id: Int,
+  name: String?
+) : FormField<SeekField, AbsSeekBar>(container, id, name) {
 
   /** Asserts on the seeker's progress. */
   fun progress() = assert(ProgressAssertion())

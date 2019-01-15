@@ -15,9 +15,10 @@
  */
 @file:Suppress("unused")
 
-package com.afollestad.vvalidator.assertion
+package com.afollestad.vvalidator.assertion.checkable
 
 import android.widget.CompoundButton
+import com.afollestad.vvalidator.assertion.Assertion
 
 /** @author Aidan Follestad (@afollestad) */
 sealed class CompoundButtonAssertions {

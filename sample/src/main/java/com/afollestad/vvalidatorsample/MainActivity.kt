@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
 
     form {
       inputLayout(R.id.input_layout_name, name = "Name") {
-        isNotEmpty()
+        isNotEmpty().description("Enter your name!")
         length().atLeast(3)
       }
 

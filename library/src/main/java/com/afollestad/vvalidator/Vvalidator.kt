@@ -21,6 +21,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.form.FormBuilder
@@ -32,6 +33,15 @@ abstract class ValidationContainer(val context: Context) {
   /** Retrieves a view from the container view by its ID, which can be null.. */
   abstract fun <T : View> findViewById(@IdRes id: Int): T?
 
+  /** Retrieves the value of a string resource. */
+  fun getString(@StringRes res: Int?): String? {
+    return if (res == null) {
+      null
+    } else {
+      context.getString(res)
+    }
+  }
+
   /** Returns the result [findViewById] or throws with a useful exception if it's null. */
   fun <T : View> getViewOrThrow(@IdRes id: Int): T {
     return findViewById(id) ?: throw IllegalStateException(
@@ -39,12 +49,10 @@ abstract class ValidationContainer(val context: Context) {
     )
   }
 
-  /** Returns [name], unless its null in which case we return the name of the ID. */
-  fun getFieldName(@IdRes id: Int, name: String?): String {
-    return name ?: run {
-      val res = context.resources
-      return res.getResourceEntryName(id)
-    }
+  /** Returns the name of the resource ID. */
+  fun getFieldName(@IdRes id: Int): String {
+    val res = context.resources
+    return res.getResourceEntryName(id)
   }
 }
 

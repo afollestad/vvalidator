@@ -15,14 +15,17 @@
  */
 package com.afollestad.vvalidator.field
 
+import android.view.View
 import android.widget.EditText
-import com.afollestad.vvalidator.assertion.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.ValidationContainer
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.testutil.ID_INPUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertNotNull
 import com.afollestad.vvalidator.testutil.assertNull
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
@@ -32,7 +35,11 @@ import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.android.controller.ActivityController
 
-private abstract class TestField : FormField<TestField, EditText>()
+private class TestField(
+  container: ValidationContainer,
+  id: Int,
+  name: String
+) : FormField<TestField, EditText>(container, id, name)
 
 /** @author Aidan Follestad (@afollestad) */
 @RunWith(NoManifestTestRunner::class)
@@ -46,20 +53,24 @@ class FormFieldTest {
         .apply {
           create()
         }
-    field = object : TestField() {
-      override val id: Int = ID_INPUT
-
-      override val name: String = "Test Input"
-
-      override val view: EditText?
-        get() = activity.get().input
+    val container = object : ValidationContainer(activity.get()) {
+      override fun <T : View> findViewById(id: Int): T? {
+        @Suppress("UNCHECKED_CAST")
+        return if (id == ID_INPUT) {
+          return activity.get().input as T
+        } else {
+          null
+        }
+      }
     }
+    field = TestField(container, ID_INPUT, "Test Input")
   }
 
   @Test fun assert() {
     val arg = NotEmptyAssertion()
     val result = field.assert(arg)
     result.assertEqualTo(arg)
+    result.container.assertNotNull()
     field.assertions()
         .single()
         .assertEqualTo(result)

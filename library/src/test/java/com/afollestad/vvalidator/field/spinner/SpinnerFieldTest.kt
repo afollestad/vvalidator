@@ -17,7 +17,7 @@ package com.afollestad.vvalidator.field.spinner
 
 import android.widget.Spinner
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.SpinnerAssertions.SelectionAssertion
+import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_SPINNER

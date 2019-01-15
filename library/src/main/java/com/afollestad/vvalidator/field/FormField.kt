@@ -18,11 +18,10 @@
 package com.afollestad.vvalidator.field
 
 import android.view.View
-import android.view.View.NO_ID
 import androidx.annotation.CheckResult
-import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
+import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.Assertion
 
 typealias FieldBuilder<T> = T.() -> Unit
@@ -32,21 +31,31 @@ typealias Condition = () -> Boolean
 typealias OnError<V> = (view: V, errors: List<FieldError>) -> Unit
 
 /** @author Aidan Follestad (@afollestad) */
-abstract class FormField<F, V> where F : FormField<F, V>, V : View {
-
+abstract class FormField<F, V>(
+  /** The container which provides Context, view lookup, etc. */
+  val container: ValidationContainer,
   /** The view ID of the field. */
-  @IdRes open val id: Int = NO_ID
+  val id: Int,
   /** The name of the field, defaults to the resource ID entry name. */
-  open val name: String = ""
-  open val view: V? = null
+  name: String? = null
+) where F : FormField<F, V>, V : View {
+
+  /** The name of the field. The name of the resource ID if not overridden by the user. */
+  val name = name ?: container.getFieldName(id)
+  /** The view the field acts on. */
+  val view = container.getViewOrThrow<V>(id)
 
   private val assertions = mutableListOf<Assertion<V, *>>()
   private var currentCondition: Condition? = null
-  @VisibleForTesting(otherwise = PRIVATE) var onErrors: OnError<V>? = null
+
+  internal var onErrors: OnError<V>? = null
 
   /** Adds an assertion to the field to be used during validation. */
   @CheckResult fun <T : Assertion<V, *>> assert(assertion: T): T {
-    assertions.add(assertion.apply { condition = currentCondition })
+    assertions.add(assertion.apply {
+      this.container = this@FormField.container
+      this.condition = currentCondition
+    })
     return assertion
   }
 
@@ -73,14 +82,13 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
 
   /** Validates the field, returning the result. */
   @CheckResult fun validate(): FieldResult {
-    val v = view ?: throw IllegalStateException("View is null.")
     val result = FieldResult()
 
     for (assertion in assertions()) {
       if (!assertion.isConditionMet()) {
         // If conditions aren't met, the assertion is ignored
         continue
-      } else if (!assertion.isValid(v)) {
+      } else if (!assertion.isValid(view)) {
         val error = FieldError(
             id = id,
             name = name,
@@ -97,8 +105,6 @@ abstract class FormField<F, V> where F : FormField<F, V>, V : View {
 
   @VisibleForTesting(otherwise = PRIVATE)
   fun propagateErrors(errors: List<FieldError>) {
-    view?.let {
-      onErrors?.invoke(it, errors)
-    }
+    onErrors?.invoke(view, errors)
   }
 }

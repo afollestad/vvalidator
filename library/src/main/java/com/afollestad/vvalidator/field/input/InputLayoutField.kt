@@ -20,15 +20,15 @@ package com.afollestad.vvalidator.field.input
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.ContainsAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.LengthAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NotEmptyAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.NumberAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.RegexAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.InputLayoutAssertions.UrlAssertion
-import com.afollestad.vvalidator.assertion.text
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UrlAssertion
+import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.util.resName
 import com.google.android.material.textfield.TextInputLayout
@@ -40,9 +40,9 @@ import com.google.android.material.textfield.TextInputLayout
  */
 class InputLayoutField internal constructor(
   container: ValidationContainer,
-  @IdRes override val id: Int,
-  override val name: String
-) : FormField<InputLayoutField, TextInputLayout>() {
+  @IdRes id: Int,
+  name: String?
+) : FormField<InputLayoutField, TextInputLayout>(container, id, name) {
 
   init {
     onErrors { view, errors ->
@@ -51,7 +51,7 @@ class InputLayoutField internal constructor(
     }
   }
 
-  override val view = container.getViewOrThrow<TextInputLayout>(id)
+  /** The TextInputEditText that's inside of the TextInputLayout. */
   val editText = view.editText ?: throw IllegalStateException(
       "TextInputLayout ${id.resName(container.context)} should have a child EditText."
   )
