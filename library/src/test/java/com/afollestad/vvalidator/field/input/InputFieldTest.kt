@@ -163,6 +163,6 @@ class InputFieldTest {
         )
     )
     field.propagateErrors(errors)
-    field.view.error.assertEqualTo("Input must not be empty")
+    field.view.error.assertEqualTo("must not be empty")
   }
 }

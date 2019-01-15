@@ -164,6 +164,6 @@ class InputLayoutFieldTest {
         )
     )
     field.propagateErrors(errors)
-    field.view.error.assertEqualTo("Input layout must not be empty")
+    field.view.error.assertEqualTo("must not be empty")
   }
 }
