@@ -282,13 +282,10 @@ val error: FieldError = // ...
 val id: Int = error.id      
 // field/view name
 val name: String = error.name
-// assertion description
+// assertion description - what the failure is
 val description: String = error.description
 // the class of the assertion that failed
 val assertionType: KClass<out Assertion<*>> = error.assertionType
-
-// name + description, can generally be shown to users
-val message = error.toString()
 ```
 
 ---
