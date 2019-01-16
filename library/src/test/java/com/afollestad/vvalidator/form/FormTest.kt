@@ -35,6 +35,7 @@ import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
+import com.afollestad.vvalidator.testutil.second
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -140,7 +141,7 @@ class FormTest {
               .first()
               .id.assertEqualTo(ID_INPUT)
           errors()
-              .last()
+              .second()
               .id.assertEqualTo(ID_SEEKER)
         }
 

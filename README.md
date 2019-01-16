@@ -352,19 +352,28 @@ form {
       isUrl()
     }
   }
-  
-  input(R.id.input_age, name = "Age") {
-    isEmptyOr { isNumber().greaterThan(0) }
-  }
 }
 ```
 
 The `conditional(..)` block above only asserts the field is a URL if a spinner's selection is greater 
 than 1. Say the spinner makes the `input_site` field visible if its selection is > 1.
 
-Down further, we use `isEmptyOr` which under the hood, is just a wrapper around `conditional(...)`. 
-This only applies its inner assertions if the input text is not empty. This effectively makes the 
-age field optional, but if its filled then it *must* be a number and greater than 0.
+You can nest conditions as well.
+
+```kotlin
+form {
+  input {
+    isEmptyOr {
+      conditional {
+        isUrl()
+        conditional {
+          length().greaterThan(20)
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 

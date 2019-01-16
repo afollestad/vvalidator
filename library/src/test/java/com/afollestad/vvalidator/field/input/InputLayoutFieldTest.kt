@@ -30,9 +30,10 @@ import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_INPUT_LAYOUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
+import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertNotNull
-import com.afollestad.vvalidator.testutil.assertNull
+import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertType
 import com.google.android.material.textfield.TextInputLayout
 import org.junit.Before
@@ -71,7 +72,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isUrl() {
@@ -80,7 +81,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isUri() {
@@ -89,7 +90,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isEmail() {
@@ -98,7 +99,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isNumber() {
@@ -107,7 +108,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun length() {
@@ -116,7 +117,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun contains() {
@@ -125,7 +126,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun matches() {
@@ -134,7 +135,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun assert_custom() {
@@ -143,7 +144,7 @@ class InputLayoutFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isEmptyOr() {
@@ -151,7 +152,8 @@ class InputLayoutFieldTest {
     val assertion = field.assertions()
         .single()
         .assertType<UrlAssertion>()
-    assertion.condition.assertNotNull()
+    assertion.conditions.assertNotNull()
+        .assertSize(1)
   }
 
   @Test fun onErrors() {

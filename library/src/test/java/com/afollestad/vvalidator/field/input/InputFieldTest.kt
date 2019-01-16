@@ -31,9 +31,10 @@ import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_INPUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
+import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertNotNull
-import com.afollestad.vvalidator.testutil.assertNull
+import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertType
 import org.junit.Before
 import org.junit.Test
@@ -70,7 +71,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isUrl() {
@@ -79,7 +80,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isUri() {
@@ -88,7 +89,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isEmail() {
@@ -97,7 +98,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isNumber() {
@@ -106,7 +107,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun length() {
@@ -115,7 +116,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun contains() {
@@ -124,7 +125,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun matches() {
@@ -133,7 +134,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun assert_custom() {
@@ -142,7 +143,7 @@ class InputFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun isEmptyOr() {
@@ -150,7 +151,8 @@ class InputFieldTest {
     val assertion = field.assertions()
         .single()
         .assertType<UrlAssertion>()
-    assertion.condition.assertNotNull()
+    assertion.conditions.assertNotNull()
+        .assertSize(1)
   }
 
   @Test fun onErrors() {

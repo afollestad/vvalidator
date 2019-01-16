@@ -18,7 +18,11 @@ package com.afollestad.vvalidator.field
 import android.view.View
 import android.widget.EditText
 import com.afollestad.vvalidator.ValidationContainer
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.form.Condition
 import com.afollestad.vvalidator.testutil.ID_INPUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
@@ -27,8 +31,11 @@ import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertNotNull
 import com.afollestad.vvalidator.testutil.assertNull
+import com.afollestad.vvalidator.testutil.assertSameAs
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
+import com.afollestad.vvalidator.testutil.second
+import com.afollestad.vvalidator.testutil.third
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -77,15 +84,47 @@ class FormFieldTest {
   }
 
   @Test fun conditional() {
-    val condition: Condition = { true }
-    field.conditional(condition) {
+    val condition1: Condition = { true }
+    val condition2: Condition = { true }
+
+    field.apply {
       assert(NotEmptyAssertion())
+      conditional(condition1) {
+        assert(ContainsAssertion("Hello, World!"))
+        conditional(condition2) {
+          assert(NumberAssertion())
+        }
+        assert(LengthAssertion())
+      }
     }
 
-    val assertion = field.assertions()
-        .single()
+    val firstAssertion = field.assertions()
+        .first()
         .assertType<NotEmptyAssertion>()
-    assertion.condition.assertEqualTo(condition)
+    firstAssertion.conditions.assertEmpty()
+
+    val secondAssertion = field.assertions()
+        .second()
+        .assertType<ContainsAssertion>()
+    val secondConditions = secondAssertion.conditions.assertNotNull()
+    secondConditions.single()
+        .assertEqualTo(condition1)
+
+    val thirdAssertion = field.assertions()
+        .third()
+        .assertType<NumberAssertion>()
+    val thirdConditions = thirdAssertion.conditions.assertNotNull()
+    thirdConditions.first()
+        .assertSameAs(condition1)
+    thirdConditions.second()
+        .assertSameAs(condition2)
+
+    val fourthAssertion = field.assertions()
+        .last()
+        .assertType<LengthAssertion>()
+    val fourthConditions = fourthAssertion.conditions.assertNotNull()
+    fourthConditions.single()
+        .assertSameAs(condition1)
   }
 
   @Test fun onErrors() {

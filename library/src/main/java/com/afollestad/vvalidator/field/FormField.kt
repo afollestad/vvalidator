@@ -24,10 +24,10 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.Assertion
+import com.afollestad.vvalidator.form.Condition
+import com.afollestad.vvalidator.form.ConditionStack
 
 typealias FieldBuilder<T> = T.() -> Unit
-
-typealias Condition = () -> Boolean
 
 typealias OnError<V> = (view: V, errors: List<FieldError>) -> Unit
 
@@ -49,7 +49,7 @@ abstract class FormField<F, V>(
   val view = container.getViewOrThrow<V>(id)
 
   private val assertions = mutableListOf<Assertion<V, *>>()
-  private var currentCondition: Condition? = null
+  private var conditionStack = ConditionStack()
 
   internal var onErrors: OnError<V>? = null
 
@@ -57,7 +57,7 @@ abstract class FormField<F, V>(
   @CheckResult fun <T : Assertion<V, *>> assert(assertion: T): T {
     assertions.add(assertion.apply {
       this.container = this@FormField.container
-      this.condition = currentCondition
+      this.conditions = conditionStack.asList()
     })
     return assertion
   }
@@ -70,12 +70,10 @@ abstract class FormField<F, V>(
     condition: Condition,
     builder: F.() -> Unit
   ) {
-    val previousCondition = this.currentCondition
-    currentCondition = condition
+    conditionStack.push(condition)
     @Suppress("UNCHECKED_CAST")
     builder(this as F)
-    // We restore the previous condition to correctly support nesting.
-    currentCondition = previousCondition
+    conditionStack.pop()
   }
 
   /** Sets custom logic for displaying errors for the field. */

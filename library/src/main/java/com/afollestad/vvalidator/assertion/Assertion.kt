@@ -20,12 +20,13 @@ import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.ValidationContainer
-import com.afollestad.vvalidator.field.Condition
+import com.afollestad.vvalidator.form.ConditionList
+import com.afollestad.vvalidator.form.isAllMet
 
 /** @author Aidan Follestad (@afollestad) */
 abstract class Assertion<T, A> where A : Assertion<T, A> {
   var container: ValidationContainer? = null
-  internal var condition: Condition? = null
+  internal var conditions: ConditionList? = null
   @VisibleForTesting(otherwise = PRIVATE) var description: String? = null
 
   /** Returns true if the given view passes the assertion. */
@@ -49,7 +50,7 @@ abstract class Assertion<T, A> where A : Assertion<T, A> {
   abstract fun defaultDescription(): String
 
   /** Returns true if the assertion's condition returns true, or if there is no condition. */
-  internal fun isConditionMet() = condition?.invoke() ?: true
+  internal fun isConditionMet() = conditions.isAllMet()
 }
 
 /** @author Aidan Follestad (@afollestad) */

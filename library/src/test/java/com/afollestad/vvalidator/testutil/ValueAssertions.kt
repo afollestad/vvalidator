@@ -23,15 +23,22 @@ fun <T : Any?> T.assertNull() {
   }
 }
 
-fun <T : Any?> T.assertNotNull() {
+fun <T> T?.assertNotNull(): T {
   if (this == null) {
     throw AssertionError("Expected value to be not null, but it was")
   }
+  return this
 }
 
 fun <T : Any> T?.assertEqualTo(value: T?) {
   if (this != value) {
     throw AssertionError("Expected value: \"$value\"\nActual: \"$this\"")
+  }
+}
+
+fun <T : Any> T?.assertSameAs(value: T?) {
+  if (this !== value) {
+    throw AssertionError("Expected reference: \"$value\"\nActual: \"$this\"")
   }
 }
 
@@ -53,8 +60,8 @@ fun Boolean.assertTrue() = assertEqualTo(true)
 
 fun Boolean.assertFalse() = assertEqualTo(false)
 
-fun Collection<*>.assertEmpty() {
-  if (this.isNotEmpty()) {
+fun Collection<*>?.assertEmpty() {
+  if (this != null && this.isNotEmpty()) {
     val stringRepresentation = joinToString(
         prefix = "[ ",
         postfix = " ]",
@@ -73,6 +80,36 @@ fun Collection<*>.assertNotEmpty() {
 fun Collection<*>.assertSize(expected: Int) {
   if (this.size != expected) {
     throw AssertionError("Expected list size to be $expected, actual: ${this.size}")
+  }
+}
+
+fun <T> Iterable<T>.second(): T {
+  return when (this) {
+    is List -> this[1]
+    else -> {
+      val iterator = iterator()
+      if (!iterator.hasNext())
+        throw NoSuchElementException("Collection is empty.")
+      if (!iterator.hasNext())
+        throw NoSuchElementException("There is no second element.")
+      iterator.next()
+    }
+  }
+}
+
+fun <T> Iterable<T>.third(): T {
+  return when (this) {
+    is List -> this[2]
+    else -> {
+      val iterator = iterator()
+      if (!iterator.hasNext())
+        throw NoSuchElementException("Collection is empty.")
+      if (!iterator.hasNext())
+        throw NoSuchElementException("There is no second element.")
+      if (!iterator.hasNext())
+        throw NoSuchElementException("There is no third element.")
+      iterator.next()
+    }
   }
 }
 

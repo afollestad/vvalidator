@@ -73,14 +73,14 @@ class AssertionTest {
   }
 
   @Test fun condition() {
-    assertion.condition = null
-    assertion.isConditionMet()
-        .assertTrue()
-    assertion.condition = { true }
-    assertion.isConditionMet()
-        .assertTrue()
-    assertion.condition = { false }
+    assertion.conditions = listOf({ true }, { false })
     assertion.isConditionMet()
         .assertFalse()
+    assertion.conditions = listOf({ true }, { true })
+    assertion.isConditionMet()
+        .assertTrue()
+    assertion.conditions = emptyList()
+    assertion.isConditionMet()
+        .assertTrue()
   }
 }

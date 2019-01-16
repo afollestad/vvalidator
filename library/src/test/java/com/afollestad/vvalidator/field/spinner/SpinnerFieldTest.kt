@@ -23,8 +23,8 @@ import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_SPINNER
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
+import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
-import com.afollestad.vvalidator.testutil.assertNull
 import com.afollestad.vvalidator.testutil.assertType
 import org.junit.Before
 import org.junit.Test
@@ -61,7 +61,7 @@ class SpinnerFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 
   @Test fun assert_custom() {
@@ -70,6 +70,6 @@ class SpinnerFieldTest {
     field.assertions()
         .single()
         .assertEqualTo(assertion)
-    assertion.condition.assertNull()
+    assertion.conditions.assertEmpty()
   }
 }
