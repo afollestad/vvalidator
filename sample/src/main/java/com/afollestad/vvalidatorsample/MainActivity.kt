@@ -75,11 +75,9 @@ class MainActivity : AppCompatActivity() {
         }
       }
 
-      input(R.id.input_site, name = "Site") {
+      input(R.id.input_site, name = "Site", optional = true) {
         conditional({ spinner.selectedItemPosition > 1 }) {
-          isEmptyOr {
-            isUrl()
-          }
+          isUrl()
         }
       }
 
