@@ -37,7 +37,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
   
-  implementation 'com.afollestad:vvalidator:0.1.9'
+  implementation 'com.afollestad:vvalidator:0.2.0'
 }
 ```
 
@@ -81,8 +81,7 @@ The most basic type of supported view is an `EditText`.
 
 ```kotlin
 form {
-
-  input(R.id.view_id, name = "Optional Name") {
+  input(R.id.view_id, name = "Optional Name", optional = false) {
     isNotEmpty()
     
     isUri()
