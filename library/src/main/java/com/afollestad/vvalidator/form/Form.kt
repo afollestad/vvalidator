@@ -50,6 +50,7 @@ class Form internal constructor(
   fun input(
     @IdRes id: Int,
     name: String? = null,
+    optional: Boolean = false,
     builder: FieldBuilder<InputField>
   ) {
     val newField = InputField(
@@ -57,7 +58,11 @@ class Form internal constructor(
         id = id,
         name = name
     )
-    builder(newField)
+    if (optional) {
+      newField.isEmptyOr(builder)
+    } else {
+      builder(newField)
+    }
     appendField(newField)
   }
 
@@ -68,6 +73,7 @@ class Form internal constructor(
   fun inputLayout(
     @IdRes id: Int,
     name: String? = null,
+    optional: Boolean = false,
     builder: FieldBuilder<InputLayoutField>
   ) {
     val newField = InputLayoutField(
@@ -75,6 +81,11 @@ class Form internal constructor(
         id = id,
         name = name
     )
+    if (optional) {
+      newField.isEmptyOr(builder)
+    } else {
+      builder(newField)
+    }
     builder(newField)
     appendField(newField)
   }
