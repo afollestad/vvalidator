@@ -32,8 +32,8 @@ data class FieldError(
   /** The type of assertion that created this error. */
   val assertionType: KClass<out Assertion<*, *>>
 ) {
-    /** Returns the [description]. */
-    override fun toString() = description
+  /** Returns the [description]. */
+  override fun toString() = description
 }
 
 /**
@@ -42,25 +42,25 @@ data class FieldError(
  * @author Aidan Follestad (@afollestad)
  */
 class FieldResult {
-    private val errors = mutableListOf<FieldError>()
+  private val errors = mutableListOf<FieldError>()
 
-    /** Returns true if validation passed with no errors. */
-    fun success() = errors.isEmpty()
+  /** Returns true if validation passed with no errors. */
+  fun success() = errors.isEmpty()
 
-    /** Returns true if validation failed with errors. */
-    fun hasErrors() = errors.isNotEmpty()
+  /** Returns true if validation failed with errors. */
+  fun hasErrors() = errors.isNotEmpty()
 
-    /** Returns errors that occurred during validation. */
-    fun errors(): List<FieldError> = errors
+  /** Returns errors that occurred during validation. */
+  fun errors(): List<FieldError> = errors
 
-    /** Appends an error to the validation result. */
-    internal fun addError(error: FieldError) = errors.add(error)
+  /** Appends an error to the validation result. */
+  internal fun addError(error: FieldError) = errors.add(error)
 
-    override fun toString(): String {
-        return if (success()) {
-            "Success"
-        } else {
-            "${errors.size} errors"
-        }
+  override fun toString(): String {
+    return if (success()) {
+      "Success"
+    } else {
+      "${errors.size} errors"
     }
+  }
 }

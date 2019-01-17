@@ -80,6 +80,7 @@ fun Spinner.onItemSelected(cb: (Int) -> Unit) {
 fun View.show() {
   visibility = VISIBLE
 }
+
 /** Sets a view's visible to [GONE]. */
 fun View.hide() {
   visibility = GONE
