@@ -146,20 +146,15 @@ sealed class InputAssertions {
     }
 
     override fun isValid(view: EditText): Boolean {
-      val intValue = view.text()
-          .toIntOrNull() ?: return false
-      if (exactly != null && intValue != exactly!!) {
-        return false
-      } else if (lessThan != null && intValue >= lessThan!!) {
-        return false
-      } else if (atMost != null && intValue > atMost!!) {
-        return false
-      } else if (atLeast != null && intValue < atLeast!!) {
-        return false
-      } else if (greaterThan != null && intValue <= greaterThan!!) {
-        return false
+      val intValue = view.text().toIntOrNull() ?: return false
+      return when {
+        exactly != null && intValue != exactly!! -> false
+        lessThan != null && intValue >= lessThan!! -> false
+        atMost != null && intValue > atMost!! -> false
+        atLeast != null && intValue < atLeast!! -> false
+        greaterThan != null && intValue <= greaterThan!! -> false
+        else -> true
       }
-      return true
     }
 
     override fun defaultDescription() = when {
