@@ -81,7 +81,7 @@ The most basic type of supported view is an `EditText`.
 
 ```kotlin
 form {
-  input(R.id.view_id, name = "Optional Name", optional = false) {
+  input(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
     
     isUri()
@@ -338,10 +338,8 @@ form {
 ## Conditionals
 
 You can apply assertions conditionally. **Anything outside of a `conditional` block is still always 
-executed during validation.** This could be useful in many cases.
-
-One use case would be on fields that are optionally visible. *If a field is not visible, it 
-should not be validated.* 
+executed during validation.** This could be useful in many cases. One use case would be on fields that are optionally 
+visible. *If a field is not visible, it should not be validated.* 
 
 ```kotlin
 form {
@@ -356,17 +354,18 @@ form {
 The `conditional(..)` block above only asserts the field is a URL if a spinner's selection is greater 
 than 1. Say the spinner makes the `input_site` field visible if its selection is > 1.
 
-You can nest conditions as well.
+You can nest conditions as well:
 
 ```kotlin
 form {
-  input {
-    isEmptyOr {
-      conditional {
-        isUrl()
-        conditional {
-          length().greaterThan(20)
-        }
+  input(...) {
+    conditional(...) {
+      isNotEmpty()
+      conditional(...) {
+        length().greaterThan(0)
+      }
+      conditional(...) {
+        isNumber()
       }
     }
   }
