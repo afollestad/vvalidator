@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/afollestad/vvalidator.svg)](https://travis-ci.org/afollestad/vvalidator)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
-<img src="https://raw.githubusercontent.com/afollestad/vvalidator/master/images/showcase3.png" width="600" />
+<img src="https://raw.githubusercontent.com/afollestad/vvalidator/master/images/showcase4.png" width="600" />
 
 ---
 
