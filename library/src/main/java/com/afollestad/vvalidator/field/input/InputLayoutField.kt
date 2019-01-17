@@ -27,7 +27,6 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyA
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UrlAssertion
 import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FormField
 import com.google.android.material.textfield.TextInputLayout
@@ -62,19 +61,17 @@ class InputLayoutField internal constructor(
    * A wrapper around [conditional] which applies inner assertions only if the
    * input text is not empty.
    */
-  fun isEmptyOr(builder: InputLayoutField.() -> Unit) {
-    conditional(
-        condition = {
-          view.text()
-              .trim()
-              .isNotEmpty()
-        },
-        builder = builder
-    )
-  }
+  fun isEmptyOr(builder: InputLayoutField.() -> Unit) = conditional(
+      condition = {
+        view.text()
+            .trim()
+            .isNotEmpty()
+      },
+      builder = builder
+  )
 
-  /** Asserts that the input text is a valid URL. */
-  fun isUrl() = assert(UrlAssertion())
+  /** Asserts that the input text is a valid web address (HTTP or HTTPS). */
+  fun isUrl() = assert(UriAssertion()).hasScheme("http", "https").that { !it.host.isNullOrEmpty() }
 
   /** Asserts that the input text is a valid URI. */
   fun isUri() = assert(UriAssertion())

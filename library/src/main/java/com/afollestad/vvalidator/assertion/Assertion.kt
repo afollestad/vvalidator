@@ -24,9 +24,11 @@ import com.afollestad.vvalidator.form.isAllMet
 
 /** @author Aidan Follestad (@afollestad) */
 abstract class Assertion<T, A> where A : Assertion<T, A> {
-  var container: ValidationContainer? = null
+  lateinit var container: ValidationContainer
   internal var conditions: ConditionList? = null
-  @VisibleForTesting(otherwise = PRIVATE) var description: String? = null
+
+  @VisibleForTesting(otherwise = PRIVATE)
+  internal var description: String? = null
 
   /** Returns true if the given view passes the assertion. */
   abstract fun isValid(view: T): Boolean
@@ -43,7 +45,7 @@ abstract class Assertion<T, A> where A : Assertion<T, A> {
 
   /** Sets a custom assertion description that is used in validation errors. */
   @Suppress("UNCHECKED_CAST")
-  fun description(@StringRes value: Int?) = description(container?.getString(value))
+  fun description(@StringRes value: Int?) = description(container.getString(value))
 
   /** A short defaultDescription of what the assertion tests. */
   abstract fun defaultDescription(): String

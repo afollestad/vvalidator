@@ -85,10 +85,10 @@ form {
     isNotEmpty()
     
     isUri()
-    isUri().hasScheme("must be a file Uri", listOf("file"))
-    isUri().that("expected something") { true }
+    isUri().hasScheme("file")
+    isUri().that { uri -> uri.getQueryParameter("q") != null }
     
-    isUrl()
+    isUrl() // isUri() with defaults to require http/https and a hostname
     isEmail()
     
     isNumber()
@@ -124,15 +124,14 @@ from the child `TextInputEditText` rather than the parent.
 
 ```kotlin
 form {
-
   inputLayout(R.id.view_id, name = "Optional Name") {
     isNotEmpty()
     
     isUri()
-    isUri().hasScheme("must be a file Uri", listOf("file"))
-    isUri().that("expected something") { true }
+    isUri().hasScheme("file")
+    isUri().that { uri -> uri.getQueryParameter("q") != null }
     
-    isUrl()  
+    isUrl() // isUri() with defaults to require http/https and a hostname
     isEmail()
     
     isNumber()

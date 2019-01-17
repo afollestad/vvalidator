@@ -27,7 +27,6 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAsserti
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.input.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
@@ -62,25 +61,8 @@ class InputAssertionsTest {
         .assertEqualTo("cannot be empty")
   }
 
-  @Test fun isUrl() {
-    val assertion = UrlAssertion()
-
-    view.text = "https://af.codes/test.html".toEditable()
-    assertion.isValid(view)
-        .assertTrue()
-
-    view.text = "Hello, World!".toEditable()
-    assertion.isValid(view)
-        .assertFalse()
-    assertion.defaultDescription()
-        .assertEqualTo("must be a valid URL")
-  }
-
   @Test fun isUri_withSchemes() {
-    val assertion = UriAssertion().hasScheme(
-        "expected a file or ftp Uri",
-        listOf("file", "ftp")
-    )
+    val assertion = UriAssertion().hasScheme("file", "ftp")
 
     view.text = "file://storage/external".toEditable()
     assertion.isValid(view)
@@ -90,12 +72,12 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("expected a file or ftp Uri")
+        .assertEqualTo("scheme 'content' not in ['file', 'ftp']")
   }
 
   @Test fun isUri_withThat() {
     val assertion = UriAssertion()
-        .that("have q param") {
+        .that {
           !it.getQueryParameter("q").isNullOrEmpty()
         }
 
@@ -107,7 +89,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("have q param")
+        .assertEqualTo("didn't pass custom validation")
   }
 
   @Test fun isEmail() {

@@ -23,7 +23,6 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyA
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form
@@ -32,8 +31,10 @@ import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
+import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertNotNull
 import com.afollestad.vvalidator.testutil.assertSize
+import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
 import com.google.android.material.textfield.TextInputLayout
 import org.junit.Before
@@ -77,11 +78,35 @@ class InputLayoutFieldTest {
 
   @Test fun isUrl() {
     val assertion = field.isUrl()
-        .assertType<UrlAssertion>()
+        .assertType<UriAssertion>()
     field.assertions()
         .single()
         .assertEqualTo(assertion)
     assertion.conditions.assertEmpty()
+
+    field.editText.setText("https://af.codes")
+    assertion.isValid(field.view)
+        .assertTrue()
+
+    field.editText.setText("https://af.codes/test.html")
+    assertion.isValid(field.view)
+        .assertTrue()
+
+    field.editText.setText("http://www.af.codes?q=hello+world")
+    assertion.isValid(field.view)
+        .assertTrue()
+
+    field.editText.setText("https://")
+    assertion.isValid(field.view)
+        .assertFalse()
+
+    field.editText.setText("https://?q=hello")
+    assertion.isValid(field.view)
+        .assertFalse()
+
+    field.editText.setText("ftp://af.codes")
+    assertion.isValid(field.view)
+        .assertFalse()
   }
 
   @Test fun isUri() {
@@ -151,7 +176,7 @@ class InputLayoutFieldTest {
     field.isEmptyOr { isUrl() }
     val assertion = field.assertions()
         .single()
-        .assertType<UrlAssertion>()
+        .assertType<UriAssertion>()
     assertion.conditions.assertNotNull()
         .assertSize(1)
   }

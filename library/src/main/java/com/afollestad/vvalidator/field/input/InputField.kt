@@ -28,7 +28,6 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAsserti
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.input.InputAssertions.UrlAssertion
 import com.afollestad.vvalidator.field.FormField
 
 /**
@@ -56,18 +55,16 @@ class InputField internal constructor(
    * A wrapper around [conditional] which applies inner assertions only if the
    * input text is not empty.
    */
-  fun isEmptyOr(builder: InputField.() -> Unit) {
-    conditional(
-        condition = {
-          view.text.trim()
-              .isNotEmpty()
-        },
-        builder = builder
-    )
-  }
+  fun isEmptyOr(builder: InputField.() -> Unit) = conditional(
+      condition = {
+        view.text.trim()
+            .isNotEmpty()
+      },
+      builder = builder
+  )
 
-  /** Asserts that the input text is a valid URL. */
-  fun isUrl() = assert(UrlAssertion())
+  /** Asserts that the input text is a valid web address (HTTP or HTTPS). */
+  fun isUrl() = assert(UriAssertion()).hasScheme("http", "https").that { !it.host.isNullOrEmpty() }
 
   /** Asserts that the input text is a valid URI. */
   fun isUri() = assert(UriAssertion())

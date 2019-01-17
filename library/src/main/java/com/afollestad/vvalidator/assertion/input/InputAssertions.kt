@@ -33,38 +33,19 @@ sealed class InputAssertions {
   }
 
   /** @author Aidan Follestad (@afollestad) */
-  class UrlAssertion : Assertion<EditText, UrlAssertion>() {
-    private val regex = Patterns.WEB_URL
-
-    override fun isValid(view: EditText) = regex.matcher(view.text()).matches()
-
-    override fun defaultDescription() = "must be a valid URL"
-  }
-
-  /** @author Aidan Follestad (@afollestad) */
   class UriAssertion internal constructor() : Assertion<EditText, UriAssertion>() {
     private var schemes: List<String> = emptyList()
-    private var schemesDescription: String? = null
     private var that: ((Uri) -> Boolean)? = null
-    private var thatDescription: String? = null
-    private var descriptionToUse: String? = null
+    private var defaultDescription: String? = null
 
     /** Asserts that the URI has a scheme within the given values. */
-    fun hasScheme(
-      description: String,
-      schemes: List<String>
-    ): UriAssertion {
-      this.schemesDescription = description
-      this.schemes = schemes
+    fun hasScheme(vararg schemes: String): UriAssertion {
+      this.schemes = schemes.toList()
       return this
     }
 
     /** Makes a custom assertion on the Uri. */
-    fun that(
-      description: String,
-      that: (Uri) -> Boolean
-    ): UriAssertion {
-      this.thatDescription = description
+    fun that(that: (Uri) -> Boolean): UriAssertion {
       this.that = that
       return this
     }
@@ -74,13 +55,12 @@ sealed class InputAssertions {
         val uri = Uri.parse(view.text())
         val uriScheme = uri.scheme ?: ""
         if (schemes.isNotEmpty() && uriScheme !in schemes) {
-          descriptionToUse = schemesDescription
-              ?: "scheme '$uriScheme' not in ${schemes.displayString()}"
+          defaultDescription = "scheme '$uriScheme' not in ${schemes.displayString()}"
           return false
         }
         val thatResult = that?.invoke(uri) ?: true
         if (!thatResult) {
-          descriptionToUse = thatDescription ?: "didn't pass custom validation"
+          defaultDescription = "didn't pass custom validation"
           return false
         }
       } catch (_: Exception) {
@@ -89,7 +69,7 @@ sealed class InputAssertions {
       return true
     }
 
-    override fun defaultDescription() = descriptionToUse ?: "must be a valid Uri"
+    override fun defaultDescription() = defaultDescription ?: "must be a valid Uri"
 
     private fun List<String>.displayString() = joinToString(
         prefix = "[",

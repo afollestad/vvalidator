@@ -28,7 +28,6 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyA
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UrlAssertion
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
@@ -72,25 +71,8 @@ class InputLayoutAssertionsTest {
         .assertEqualTo("cannot be empty")
   }
 
-  @Test fun isUrl() {
-    val assertion = UrlAssertion()
-
-    editText.text = "https://af.codes/test.html".toEditable()
-    assertion.isValid(view)
-        .assertTrue()
-
-    editText.text = "Hello, World!".toEditable()
-    assertion.isValid(view)
-        .assertFalse()
-    assertion.defaultDescription()
-        .assertEqualTo("must be a valid URL")
-  }
-
   @Test fun isUri_withSchemes() {
-    val assertion = UriAssertion().hasScheme(
-        "expected a file or ftp Uri",
-        listOf("file", "ftp")
-    )
+    val assertion = UriAssertion().hasScheme("file", "ftp")
 
     editText.text = "file://storage/external".toEditable()
     assertion.isValid(view)
@@ -100,14 +82,12 @@ class InputLayoutAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("expected a file or ftp Uri")
+        .assertEqualTo("scheme 'content' not in ['file', 'ftp']")
   }
 
   @Test fun isUri_withThat() {
     val assertion = UriAssertion()
-        .that("have q param") {
-          !it.getQueryParameter("q").isNullOrEmpty()
-        }
+        .that { !it.getQueryParameter("q").isNullOrEmpty() }
 
     editText.text = "https://af.codes?q=test".toEditable()
     assertion.isValid(view)
@@ -117,7 +97,7 @@ class InputLayoutAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("have q param")
+        .assertEqualTo("didn't pass custom validation")
   }
 
   @Test fun isEmail() {
