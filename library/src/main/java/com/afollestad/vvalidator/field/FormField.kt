@@ -19,6 +19,7 @@ package com.afollestad.vvalidator.field
 
 import android.view.View
 import androidx.annotation.CheckResult
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
@@ -36,7 +37,7 @@ abstract class FormField<F, V>(
   /** The container which provides Context, view lookup, etc. */
   val container: ValidationContainer,
   /** The view ID of the field. */
-  val id: Int,
+  @IdRes val id: Int,
   /** The name of the field, defaults to the resource ID entry name. */
   name: String? = null,
   /** Same as [name] but a string resource way of setting it. */
@@ -44,17 +45,18 @@ abstract class FormField<F, V>(
 ) where F : FormField<F, V>, V : View {
 
   /** The name of the field. The name of the resource ID if not overridden by the user. */
-  val name = container.getString(nameRes) ?: (name ?: container.getFieldName(id))
+  val name = getFormFieldName(container, name, nameRes, id)
   /** The view the field acts on. */
   val view = container.getViewOrThrow<V>(id)
 
   private val assertions = mutableListOf<Assertion<V, *>>()
-  private var conditionStack = ConditionStack()
+  private val conditionStack = ConditionStack()
 
   internal var onErrors: OnError<V>? = null
 
   /** Adds an assertion to the field to be used during validation. */
-  @CheckResult fun <T : Assertion<V, *>> assert(assertion: T): T {
+  @CheckResult
+  fun <T : Assertion<V, *>> assert(assertion: T): T {
     assertions.add(assertion.apply {
       this.container = this@FormField.container
       this.conditions = conditionStack.asList()
@@ -63,7 +65,8 @@ abstract class FormField<F, V>(
   }
 
   /** Gets all assertions added to the field. */
-  @CheckResult fun assertions(): List<Assertion<V, *>> = assertions
+  @CheckResult
+  fun assertions(): List<Assertion<V, *>> = assertions
 
   /** Makes inner assertions optional based on a condition. */
   fun conditional(
@@ -82,7 +85,8 @@ abstract class FormField<F, V>(
   }
 
   /** Validates the field, returning the result. */
-  @CheckResult fun validate(): FieldResult {
+  @CheckResult
+  fun validate(): FieldResult {
     val result = FieldResult()
 
     for (assertion in assertions()) {
@@ -109,4 +113,13 @@ abstract class FormField<F, V>(
   fun propagateErrors(errors: List<FieldError>) {
     onErrors?.invoke(view, errors)
   }
+}
+
+private fun getFormFieldName(
+  container: ValidationContainer,
+  name: String?,
+  nameRes: Int?,
+  @IdRes id: Int
+): String {
+  return container.getString(nameRes) ?: (name ?: container.getFieldName(id))
 }
