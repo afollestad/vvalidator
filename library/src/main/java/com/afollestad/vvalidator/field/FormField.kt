@@ -104,6 +104,7 @@ abstract class FormField<F, V>(
     return result
   }
 
+  /** Sends errors through the field's error callback if there is one. */
   @VisibleForTesting(otherwise = PRIVATE)
   fun propagateErrors(errors: List<FieldError>) {
     onErrors?.invoke(view, errors)
