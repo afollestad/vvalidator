@@ -30,7 +30,6 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssert
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UrlAssertion
 import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.util.resName
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -53,7 +52,7 @@ class InputLayoutField internal constructor(
 
   /** The TextInputEditText that's inside of the TextInputLayout. */
   val editText = view.editText ?: throw IllegalStateException(
-      "TextInputLayout ${id.resName(container.context)} should have a child EditText."
+      "TextInputLayout ${container.getFieldName(id)} should have a child EditText."
   )
 
   /** Asserts that the input text is not empty. */

@@ -18,7 +18,7 @@
 package com.afollestad.vvalidator.form
 
 import android.view.Menu
-import android.widget.Button
+import android.view.View
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.field.FieldBuilder
@@ -28,7 +28,6 @@ import com.afollestad.vvalidator.field.input.InputField
 import com.afollestad.vvalidator.field.input.InputLayoutField
 import com.afollestad.vvalidator.field.seeker.SeekField
 import com.afollestad.vvalidator.field.spinner.SpinnerField
-import com.afollestad.vvalidator.util.resName
 
 typealias FormBuilder = Form.() -> Unit
 
@@ -156,8 +155,8 @@ class Form internal constructor(
     @IdRes id: Int,
     onSubmit: (FormResult) -> Unit
   ) {
-    val button = container.findViewById<Button>(id) ?: throw IllegalArgumentException(
-        "View ${id.resName(container.context)} must be a Button."
+    val button = container.findViewById<View>(id) ?: throw IllegalArgumentException(
+        "Unable to find view ${container.getFieldName(id)} in your container."
     )
     button.setOnClickListener {
       val result = validate()
@@ -177,7 +176,7 @@ class Form internal constructor(
     onSubmit: (FormResult) -> Unit
   ) {
     val item = menu.findItem(itemId) ?: throw IllegalArgumentException(
-        "Didn't find item ${itemId.resName(container.context)} in the given Menu."
+        "Didn't find item ${container.getFieldName(itemId)} in the given Menu."
     )
     item.setOnMenuItemClickListener {
       val result = validate()

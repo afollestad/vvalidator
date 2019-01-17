@@ -25,10 +25,9 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.form.FormBuilder
-import com.afollestad.vvalidator.util.resName
 
 /** @author Aidan Follestad (@afollestad) */
-abstract class ValidationContainer(val context: Context) {
+abstract class ValidationContainer(private val context: Context) {
 
   /** Retrieves a view from the container view by its ID, which can be null.. */
   abstract fun <T : View> findViewById(@IdRes id: Int): T?
@@ -36,7 +35,7 @@ abstract class ValidationContainer(val context: Context) {
   /** Returns the result [findViewById] or throws with a useful exception if it's null. */
   fun <T : View> getViewOrThrow(@IdRes id: Int): T {
     return findViewById(id) ?: throw IllegalStateException(
-        "Unable to find a view by ID ${id.resName(context)} in the container."
+        "Unable to find a view by ID ${getFieldName(id)} in the container."
     )
   }
 
