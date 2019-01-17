@@ -15,7 +15,6 @@
  */
 package com.afollestad.vvalidator.assertion
 
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
@@ -51,21 +50,4 @@ abstract class Assertion<T, A> where A : Assertion<T, A> {
 
   /** Returns true if the assertion's condition returns true, or if there is no condition. */
   internal fun isConditionMet() = conditions.isAllMet()
-}
-
-/** @author Aidan Follestad (@afollestad) */
-class CustomViewAssertion<T>(
-  assertionDescription: String,
-  private val assertion: (T) -> Boolean
-) : Assertion<T, CustomViewAssertion<T>>() where T : View {
-  init {
-    if (assertionDescription.trim().isEmpty()) {
-      throw IllegalArgumentException("Custom assertion descriptions should not be empty.")
-    }
-    description(assertionDescription)
-  }
-
-  override fun isValid(view: T) = assertion(view)
-
-  override fun defaultDescription() = "no description set"
 }
