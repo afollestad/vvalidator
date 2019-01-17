@@ -33,15 +33,6 @@ abstract class ValidationContainer(val context: Context) {
   /** Retrieves a view from the container view by its ID, which can be null.. */
   abstract fun <T : View> findViewById(@IdRes id: Int): T?
 
-  /** Retrieves the value of a string resource. */
-  fun getString(@StringRes res: Int?): String? {
-    return if (res == null) {
-      null
-    } else {
-      context.getString(res)
-    }
-  }
-
   /** Returns the result [findViewById] or throws with a useful exception if it's null. */
   fun <T : View> getViewOrThrow(@IdRes id: Int): T {
     return findViewById(id) ?: throw IllegalStateException(
@@ -49,8 +40,17 @@ abstract class ValidationContainer(val context: Context) {
     )
   }
 
+  /** Retrieves the value of a string resource. */
+  internal fun getString(@StringRes res: Int?): String? {
+    return if (res == null) {
+      null
+    } else {
+      context.getString(res)
+    }
+  }
+
   /** Returns the name of the resource ID. */
-  fun getFieldName(@IdRes id: Int): String {
+  internal fun getFieldName(@IdRes id: Int): String {
     val res = context.resources
     return res.getResourceEntryName(id)
   }
@@ -83,7 +83,7 @@ fun Fragment.form(
 ): Form {
   val activity = this.activity ?: throw IllegalStateException("Fragment is not attached.")
   val container = object : ValidationContainer(activity) {
-    override fun <T : View> findViewById(id: Int): T? = getView()?.findViewById(id)
+    override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
   }
   val newForm = Form(container)
   builder(newForm)
