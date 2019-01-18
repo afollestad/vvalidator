@@ -427,7 +427,7 @@ fun Form.myView(
   builder: FieldBuilder<MyField>
 ) {
   val newField = MyField(
-      container = container,
+      container = container.checkAttached(),
       view = view,
       name = name
   )
@@ -444,7 +444,6 @@ fun Form.myView(
   name = name,
   builder = builder
 )
-
 ```
 
 Now, you can use it:

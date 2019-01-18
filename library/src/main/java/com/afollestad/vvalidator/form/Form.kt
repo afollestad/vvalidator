@@ -25,6 +25,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
+import com.afollestad.vvalidator.checkAttached
 import com.afollestad.vvalidator.field.FieldBuilder
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.field.checkable.CheckableField
@@ -32,14 +33,14 @@ import com.afollestad.vvalidator.field.input.InputField
 import com.afollestad.vvalidator.field.input.InputLayoutField
 import com.afollestad.vvalidator.field.seeker.SeekField
 import com.afollestad.vvalidator.field.spinner.SpinnerField
+import com.afollestad.vvalidator.getViewOrThrow
 import com.google.android.material.textfield.TextInputLayout
 
 typealias FormBuilder = Form.() -> Unit
 
 /** @author Aidan Follestad (@afollestad) */
-class Form internal constructor(
-  val container: ValidationContainer
-) {
+class Form internal constructor(validationContainer: ValidationContainer) {
+  var container: ValidationContainer? = validationContainer
   private val fields = mutableListOf<FormField<*, *>>()
 
   /** Adds a field to the form. */
@@ -58,7 +59,7 @@ class Form internal constructor(
     builder: FieldBuilder<InputField>
   ) {
     val newField = InputField(
-        container = container,
+        container = container.checkAttached(),
         view = view,
         name = name
     )
@@ -94,7 +95,7 @@ class Form internal constructor(
     builder: FieldBuilder<InputLayoutField>
   ) {
     val newField = InputLayoutField(
-        container = container,
+        container = container.checkAttached(),
         view = view,
         name = name
     )
@@ -130,7 +131,7 @@ class Form internal constructor(
     builder: FieldBuilder<SpinnerField>
   ) {
     val newField = SpinnerField(
-        container = container,
+        container = container.checkAttached(),
         view = view,
         name = name
     )
@@ -159,7 +160,7 @@ class Form internal constructor(
     builder: FieldBuilder<CheckableField>
   ) {
     val newField = CheckableField(
-        container = container,
+        container = container.checkAttached(),
         view = view,
         name = name
     )
@@ -188,7 +189,7 @@ class Form internal constructor(
     builder: FieldBuilder<SeekField>
   ) {
     val newField = SeekField(
-        container = container,
+        container = container.checkAttached(),
         view = view,
         name = name
     )
@@ -239,8 +240,9 @@ class Form internal constructor(
     @IdRes id: Int,
     onSubmit: (FormResult) -> Unit
   ) {
-    val view = container.findViewById<View>(id) ?: throw IllegalArgumentException(
-        "Unable to find view ${container.getFieldName(id)} in your container."
+    val currentContainer = container.checkAttached()
+    val view = currentContainer.findViewById<View>(id) ?: throw IllegalArgumentException(
+        "Unable to find view ${currentContainer.getFieldName(id)} in your container."
     )
     submitWith(view, onSubmit)
   }
@@ -254,8 +256,9 @@ class Form internal constructor(
     @IdRes itemId: Int,
     onSubmit: (FormResult) -> Unit
   ) {
+    val currentContainer = container.checkAttached()
     val item = menu.findItem(itemId) ?: throw IllegalArgumentException(
-        "Didn't find item ${container.getFieldName(itemId)} in the given Menu."
+        "Didn't find item ${currentContainer.getFieldName(itemId)} in the given Menu."
     )
     item.setOnMenuItemClickListener {
       val result = validate()
@@ -264,5 +267,11 @@ class Form internal constructor(
       }
       true
     }
+  }
+
+  /** Destroys the form by removing all fields and freeing up references. */
+  internal fun destroy() {
+    fields.clear()
+    container = null
   }
 }

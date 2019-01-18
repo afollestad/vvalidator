@@ -109,6 +109,8 @@ class MainActivity : AppCompatActivity() {
       submitWith(R.id.submit) {
         toast("Success!")
       }
+
+      destroyWith(this@MainActivity)
     }
   }
 }

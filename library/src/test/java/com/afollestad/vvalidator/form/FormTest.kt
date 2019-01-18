@@ -32,6 +32,9 @@ import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertNotEmpty
+import com.afollestad.vvalidator.testutil.assertNotNull
+import com.afollestad.vvalidator.testutil.assertNull
 import com.afollestad.vvalidator.testutil.assertSameAs
 import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertTrue
@@ -189,5 +192,21 @@ class FormTest {
     activity.get()
         .button.performClick()
     called.assertFalse()
+  }
+
+  @Test fun destroy() {
+    form.input(ID_INPUT, name = "Input!") {
+      isNotEmpty()
+    }
+
+    form.container.assertNotNull()
+    form.getFields()
+        .assertNotEmpty()
+
+    activity.destroy()
+
+    form.container.assertNull()
+    form.getFields()
+        .assertEmpty()
   }
 }

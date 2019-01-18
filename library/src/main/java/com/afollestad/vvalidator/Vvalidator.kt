@@ -17,26 +17,25 @@
 
 package com.afollestad.vvalidator
 
-import android.app.Activity
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.form.FormBuilder
 
 /**
- * Constructs a validation form for an Activity.
+ * Constructs a validation form for an FragmentActivity (which includes AppCompatActivity).
  *
  * @author Aidan Follestad (@afollestad)
  */
-fun Activity.form(
-  builder: FormBuilder
-): Form {
+fun FragmentActivity.form(builder: FormBuilder): Form {
   val activity = this
   val container = object : ValidationContainer(activity) {
     override fun <T : View> findViewById(id: Int): T? = activity.findViewById(id)
   }
   val newForm = Form(container)
   builder(newForm)
+  lifecycle.addObserver(DestroyLifecycleObserver(newForm))
   return newForm
 }
 
@@ -45,14 +44,13 @@ fun Activity.form(
  *
  * @author Aidan Follestad (@afollestad)
  */
-fun Fragment.form(
-  builder: FormBuilder
-): Form {
+fun Fragment.form(builder: FormBuilder): Form {
   val activity = this.activity ?: throw IllegalStateException("Fragment is not attached.")
   val container = object : ValidationContainer(activity) {
     override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
   }
   val newForm = Form(container)
   builder(newForm)
+  lifecycle.addObserver(DestroyLifecycleObserver(newForm))
   return newForm
 }
