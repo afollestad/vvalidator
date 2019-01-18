@@ -372,6 +372,10 @@ form {
 }
 ```
 
+You may have noticed somewhere above that `input(...)` and `inputLayout(...)` have an optional 
+argument named `optional`. Internally, this uses `conditional` to only apply inner assertions if
+the input field's text is not empty.
+
 ---
 
 ## Supporting Additional Views
@@ -400,11 +404,11 @@ Then you'll need a custom `FormField` class:
 ```kotlin
 class MyField(
   container: ValidationContainer,
-  @IdRes id: Int,
+  view: MyView,
   name: String
 ) : FormField<MyField, MyView>(container, id, name) {
   init {
-    onErrors { view, errors ->
+    onErrors { myView, errors ->
       // Do some sort of default error handling with views
     }
   }
@@ -418,18 +422,29 @@ Finally, you can add an extension to `Form`:
 
 ```kotlin
 fun Form.myView(
-  @IdRes id: Int,
+  view: MyView,
   name: String? = null,
   builder: FieldBuilder<MyField>
 ) {
   val newField = MyField(
       container = container,
-      id = id,
+      view = view,
       name = name
   )
   builder(newField)
   appendField(newField)
 }
+
+fun Form.myView(
+  @IdRes id: Int,
+  name: String? = null,
+  builder: FieldBuilder<MyField>
+) = myView(
+  view = container.getViewOrThrow(id),
+  name = name,
+  builder = builder
+)
+
 ```
 
 Now, you can use it:

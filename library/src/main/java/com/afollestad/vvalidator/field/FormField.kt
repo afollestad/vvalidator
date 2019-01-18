@@ -36,8 +36,8 @@ typealias OnError<V> = (view: V, errors: List<FieldError>) -> Unit
 abstract class FormField<F, V>(
   /** The container which provides Context, view lookup, etc. */
   val container: ValidationContainer,
-  /** The view ID of the field. */
-  @IdRes val id: Int,
+  /** The view that the field acts on. */
+  val view: V,
   /** The name of the field, defaults to the resource ID entry name. */
   name: String? = null,
   /** Same as [name] but a string resource way of setting it. */
@@ -45,9 +45,7 @@ abstract class FormField<F, V>(
 ) where F : FormField<F, V>, V : View {
 
   /** The name of the field. The name of the resource ID if not overridden by the user. */
-  val name = getFormFieldName(container, name, nameRes, id)
-  /** The view the field acts on. */
-  val view = container.getViewOrThrow<V>(id)
+  val name = getFormFieldName(container, name, nameRes, view.id)
 
   private val assertions = mutableListOf<Assertion<V, *>>()
   private val conditionStack = ConditionStack()
@@ -95,7 +93,7 @@ abstract class FormField<F, V>(
         continue
       } else if (!assertion.isValid(view)) {
         val error = FieldError(
-            id = id,
+            id = view.id,
             name = name,
             description = assertion.description(),
             assertionType = assertion::class
@@ -120,6 +118,4 @@ private fun getFormFieldName(
   name: String?,
   nameRes: Int?,
   @IdRes id: Int
-): String {
-  return container.getString(nameRes) ?: (name ?: container.getFieldName(id))
-}
+) = container.getString(nameRes) ?: (name ?: container.getFieldName(id))

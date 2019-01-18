@@ -18,10 +18,7 @@
 package com.afollestad.vvalidator
 
 import android.app.Activity
-import android.content.Context
 import android.view.View
-import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.form.FormBuilder

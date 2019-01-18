@@ -32,6 +32,7 @@ import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertSameAs
 import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
@@ -66,8 +67,7 @@ class FormTest {
         .single()
         .assertType<InputField>()
 
-    field.view.assertEqualTo(activity.get().input)
-    field.id.assertEqualTo(ID_INPUT)
+    field.view.assertSameAs(activity.get().input)
     field.name.assertEqualTo("Input!")
   }
 
@@ -79,8 +79,7 @@ class FormTest {
         .single()
         .assertType<InputLayoutField>()
 
-    field.view.assertEqualTo(activity.get().inputLayout)
-    field.id.assertEqualTo(ID_INPUT_LAYOUT)
+    field.view.assertSameAs(activity.get().inputLayout)
     field.name.assertEqualTo("Input layout!")
   }
 
@@ -92,8 +91,7 @@ class FormTest {
         .single()
         .assertType<SpinnerField>()
 
-    field.view.assertEqualTo(activity.get().spinner)
-    field.id.assertEqualTo(ID_SPINNER)
+    field.view.assertSameAs(activity.get().spinner)
     field.name.assertEqualTo("Spinner!")
   }
 
@@ -105,8 +103,7 @@ class FormTest {
         .single()
         .assertType<CheckableField>()
 
-    field.view.assertEqualTo(activity.get().checkable)
-    field.id.assertEqualTo(ID_CHECKABLE)
+    field.view.assertSameAs(activity.get().checkable)
     field.name.assertEqualTo("Checkable!")
   }
 
@@ -118,8 +115,7 @@ class FormTest {
         .single()
         .assertType<SeekField>()
 
-    field.view.assertEqualTo(activity.get().seeker)
-    field.id.assertEqualTo(ID_SEEKER)
+    field.view.assertSameAs(activity.get().seeker)
     field.name.assertEqualTo("Seeker!")
   }
 

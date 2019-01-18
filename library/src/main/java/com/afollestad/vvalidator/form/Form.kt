@@ -19,6 +19,10 @@ package com.afollestad.vvalidator.form
 
 import android.view.Menu
 import android.view.View
+import android.widget.AbsSeekBar
+import android.widget.CompoundButton
+import android.widget.EditText
+import android.widget.Spinner
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.field.FieldBuilder
@@ -28,6 +32,7 @@ import com.afollestad.vvalidator.field.input.InputField
 import com.afollestad.vvalidator.field.input.InputLayoutField
 import com.afollestad.vvalidator.field.seeker.SeekField
 import com.afollestad.vvalidator.field.spinner.SpinnerField
+import com.google.android.material.textfield.TextInputLayout
 
 typealias FormBuilder = Form.() -> Unit
 
@@ -47,14 +52,14 @@ class Form internal constructor(
 
   /** Adds an input field, which must be a [android.widget.EditText]. */
   fun input(
-    @IdRes id: Int,
+    view: EditText,
     name: String? = null,
     optional: Boolean = false,
     builder: FieldBuilder<InputField>
   ) {
     val newField = InputField(
         container = container,
-        id = id,
+        view = view,
         name = name
     )
     if (optional) {
@@ -62,6 +67,43 @@ class Form internal constructor(
     } else {
       builder(newField)
     }
+    appendField(newField)
+  }
+
+  /** Adds an input field, which must be a [android.widget.EditText]. */
+  fun input(
+    @IdRes id: Int,
+    name: String? = null,
+    optional: Boolean = false,
+    builder: FieldBuilder<InputField>
+  ) = input(
+      view = container.getViewOrThrow(id),
+      name = name,
+      optional = optional,
+      builder = builder
+  )
+
+  /**
+   * Adds an input layout field, which must be a
+   * [com.google.android.material.textfield.TextInputLayout]
+   */
+  fun inputLayout(
+    view: TextInputLayout,
+    name: String? = null,
+    optional: Boolean = false,
+    builder: FieldBuilder<InputLayoutField>
+  ) {
+    val newField = InputLayoutField(
+        container = container,
+        view = view,
+        name = name
+    )
+    if (optional) {
+      newField.isEmptyOr(builder)
+    } else {
+      builder(newField)
+    }
+    builder(newField)
     appendField(newField)
   }
 
@@ -74,17 +116,24 @@ class Form internal constructor(
     name: String? = null,
     optional: Boolean = false,
     builder: FieldBuilder<InputLayoutField>
+  ) = inputLayout(
+      view = container.getViewOrThrow(id),
+      name = name,
+      optional = optional,
+      builder = builder
+  )
+
+  /** Adds a dropdown field, which must be a [android.widget.Spinner]. */
+  fun spinner(
+    view: Spinner,
+    name: String? = null,
+    builder: FieldBuilder<SpinnerField>
   ) {
-    val newField = InputLayoutField(
+    val newField = SpinnerField(
         container = container,
-        id = id,
+        view = view,
         name = name
     )
-    if (optional) {
-      newField.isEmptyOr(builder)
-    } else {
-      builder(newField)
-    }
     builder(newField)
     appendField(newField)
   }
@@ -94,10 +143,24 @@ class Form internal constructor(
     @IdRes id: Int,
     name: String? = null,
     builder: FieldBuilder<SpinnerField>
+  ) = spinner(
+      view = container.getViewOrThrow(id),
+      name = name,
+      builder = builder
+  )
+
+  /**
+   * Adds a checkable field, like a [android.widget.CheckBox], [android.widget.Switch], or
+   * [android.widget.RadioButton].
+   */
+  fun checkable(
+    view: CompoundButton,
+    name: String? = null,
+    builder: FieldBuilder<CheckableField>
   ) {
-    val newField = SpinnerField(
+    val newField = CheckableField(
         container = container,
-        id = id,
+        view = view,
         name = name
     )
     builder(newField)
@@ -112,10 +175,21 @@ class Form internal constructor(
     @IdRes id: Int,
     name: String? = null,
     builder: FieldBuilder<CheckableField>
+  ) = checkable(
+      view = container.getViewOrThrow(id),
+      name = name,
+      builder = builder
+  )
+
+  /** Adds a AbsSeekBar field, like a [android.widget.SeekBar] or [android.widget.RatingBar]. */
+  fun seeker(
+    view: AbsSeekBar,
+    name: String? = null,
+    builder: FieldBuilder<SeekField>
   ) {
-    val newField = CheckableField(
+    val newField = SeekField(
         container = container,
-        id = id,
+        view = view,
         name = name
     )
     builder(newField)
@@ -127,15 +201,11 @@ class Form internal constructor(
     @IdRes id: Int,
     name: String? = null,
     builder: FieldBuilder<SeekField>
-  ) {
-    val newField = SeekField(
-        container = container,
-        id = id,
-        name = name
-    )
-    builder(newField)
-    appendField(newField)
-  }
+  ) = seeker(
+      view = container.getViewOrThrow(id),
+      name = name,
+      builder = builder
+  )
 
   /** Validates all fields in the form. */
   fun validate(): FormResult {
@@ -148,22 +218,31 @@ class Form internal constructor(
   }
 
   /**
-   * Attaches the form to a button. When the button is clicked, validation is performed. If
+   * Attaches the form to a view. When the view is clicked, validation is performed. If
+   * validation passes, the given callback is invoked.
+   */
+  fun submitWith(
+    view: View,
+    onSubmit: (FormResult) -> Unit
+  ) = view.setOnClickListener {
+    val result = validate()
+    if (result.success()) {
+      onSubmit(result)
+    }
+  }
+
+  /**
+   * Attaches the form to a view. When the view is clicked, validation is performed. If
    * validation passes, the given callback is invoked.
    */
   fun submitWith(
     @IdRes id: Int,
     onSubmit: (FormResult) -> Unit
   ) {
-    val button = container.findViewById<View>(id) ?: throw IllegalArgumentException(
+    val view = container.findViewById<View>(id) ?: throw IllegalArgumentException(
         "Unable to find view ${container.getFieldName(id)} in your container."
     )
-    button.setOnClickListener {
-      val result = validate()
-      if (result.success()) {
-        onSubmit(result)
-      }
-    }
+    submitWith(view, onSubmit)
   }
 
   /**

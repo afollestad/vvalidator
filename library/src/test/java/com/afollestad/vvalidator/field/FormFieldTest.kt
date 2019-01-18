@@ -44,9 +44,9 @@ import org.robolectric.android.controller.ActivityController
 
 private class TestField(
   container: ValidationContainer,
-  id: Int,
+  view: EditText,
   name: String
-) : FormField<TestField, EditText>(container, id, name)
+) : FormField<TestField, EditText>(container, view, name)
 
 /** @author Aidan Follestad (@afollestad) */
 @RunWith(NoManifestTestRunner::class)
@@ -70,7 +70,7 @@ class FormFieldTest {
         }
       }
     }
-    field = TestField(container, ID_INPUT, "Test Input")
+    field = TestField(container, activity.get().input, "Test Input")
   }
 
   @Test fun assert() {

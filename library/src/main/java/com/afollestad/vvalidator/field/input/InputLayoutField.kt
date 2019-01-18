@@ -17,7 +17,6 @@
 
 package com.afollestad.vvalidator.field.input
 
-import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.ContainsAssertion
@@ -38,12 +37,12 @@ import com.google.android.material.textfield.TextInputLayout
  */
 class InputLayoutField internal constructor(
   container: ValidationContainer,
-  @IdRes id: Int,
+  view: TextInputLayout,
   name: String?
-) : FormField<InputLayoutField, TextInputLayout>(container, id, name) {
+) : FormField<InputLayoutField, TextInputLayout>(container, view, name) {
 
   init {
-    onErrors { view, errors ->
+    onErrors { _, errors ->
       view.error = errors.firstOrNull()
           ?.toString()
     }
@@ -51,7 +50,7 @@ class InputLayoutField internal constructor(
 
   /** The TextInputEditText that's inside of the TextInputLayout. */
   val editText = view.editText ?: throw IllegalStateException(
-      "TextInputLayout ${container.getFieldName(id)} should have a child EditText."
+      "TextInputLayout ${container.getFieldName(view.id)} should have a child EditText."
   )
 
   /** Asserts that the input text is not empty. */

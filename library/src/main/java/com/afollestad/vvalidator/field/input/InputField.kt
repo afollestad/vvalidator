@@ -18,7 +18,6 @@
 package com.afollestad.vvalidator.field.input
 
 import android.widget.EditText
-import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
@@ -37,12 +36,12 @@ import com.afollestad.vvalidator.field.FormField
  */
 class InputField internal constructor(
   container: ValidationContainer,
-  @IdRes id: Int,
+  view: EditText,
   name: String?
-) : FormField<InputField, EditText>(container, id, name) {
+) : FormField<InputField, EditText>(container, view, name) {
 
   init {
-    onErrors { view, errors ->
+    onErrors { _, errors ->
       view.error = errors.firstOrNull()
           ?.toString()
     }

@@ -18,7 +18,6 @@
 package com.afollestad.vvalidator.field.spinner
 
 import android.widget.Spinner
-import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
@@ -31,9 +30,9 @@ import com.afollestad.vvalidator.field.FormField
  */
 class SpinnerField internal constructor(
   container: ValidationContainer,
-  @IdRes id: Int,
+  view: Spinner,
   name: String?
-) : FormField<SpinnerField, Spinner>(container, id, name) {
+) : FormField<SpinnerField, Spinner>(container, view, name) {
 
   /** Asserts on the spinner's selection. */
   fun selection() = assert(SelectionAssertion())
