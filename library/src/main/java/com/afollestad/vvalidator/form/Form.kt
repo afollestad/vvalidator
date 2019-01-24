@@ -104,7 +104,6 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     } else {
       builder(newField)
     }
-    builder(newField)
     appendField(newField)
   }
 
