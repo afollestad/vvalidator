@@ -28,6 +28,8 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
 import com.afollestad.vvalidator.field.FormField
+import com.afollestad.vvalidator.field.value.FieldValue
+import com.afollestad.vvalidator.field.value.TextFieldValue
 
 /**
  * Represents an edit text field.
@@ -38,7 +40,7 @@ class InputField internal constructor(
   container: ValidationContainer,
   view: EditText,
   name: String?
-) : FormField<InputField, EditText>(container, view, name) {
+) : FormField<InputField, EditText, CharSequence>(container, view, name) {
 
   init {
     onErrors { _, errors ->
@@ -88,4 +90,8 @@ class InputField internal constructor(
     description: String,
     matcher: (EditText) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
+
+  /** Return value of EditText.text **/
+  override fun obtainValue(id: Int, name: String): FieldValue<CharSequence> =
+    TextFieldValue(id, name, view.text)
 }

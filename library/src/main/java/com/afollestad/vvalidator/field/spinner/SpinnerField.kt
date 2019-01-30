@@ -22,6 +22,8 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
 import com.afollestad.vvalidator.field.FormField
+import com.afollestad.vvalidator.field.value.FieldValue
+import com.afollestad.vvalidator.field.value.NumericFieldValue
 
 /**
  * Represents a spinner (dropdown) field.
@@ -32,7 +34,7 @@ class SpinnerField internal constructor(
   container: ValidationContainer,
   view: Spinner,
   name: String?
-) : FormField<SpinnerField, Spinner>(container, view, name) {
+) : FormField<SpinnerField, Spinner, Int>(container, view, name) {
 
   /** Asserts on the spinner's selection. */
   fun selection() = assert(SelectionAssertion())
@@ -42,4 +44,8 @@ class SpinnerField internal constructor(
     description: String,
     matcher: (Spinner) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
+
+  /** Returns selected position on Spinner **/
+  override fun obtainValue(id: Int, name: String): FieldValue<Int> =
+    NumericFieldValue(id, name, view.selectedItemPosition)
 }

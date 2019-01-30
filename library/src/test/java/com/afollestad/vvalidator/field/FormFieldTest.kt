@@ -22,6 +22,8 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAsserti
 import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.field.value.FieldValue
+import com.afollestad.vvalidator.field.value.TextFieldValue
 import com.afollestad.vvalidator.form.Condition
 import com.afollestad.vvalidator.testutil.ID_INPUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
@@ -46,7 +48,10 @@ private class TestField(
   container: ValidationContainer,
   view: EditText,
   name: String
-) : FormField<TestField, EditText>(container, view, name)
+) : FormField<TestField, EditText, CharSequence>(container, view, name) {
+  override fun obtainValue(id: Int, name: String): FieldValue<CharSequence> =
+          TextFieldValue(id, name, view.text)
+}
 
 /** @author Aidan Follestad (@afollestad) */
 @RunWith(NoManifestTestRunner::class)

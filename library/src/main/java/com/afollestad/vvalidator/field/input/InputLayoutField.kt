@@ -28,6 +28,8 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAsse
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
 import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FormField
+import com.afollestad.vvalidator.field.value.FieldValue
+import com.afollestad.vvalidator.field.value.TextFieldValue
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -39,7 +41,7 @@ class InputLayoutField internal constructor(
   container: ValidationContainer,
   view: TextInputLayout,
   name: String?
-) : FormField<InputLayoutField, TextInputLayout>(container, view, name) {
+) : FormField<InputLayoutField, TextInputLayout, CharSequence>(container, view, name) {
 
   init {
     onErrors { _, errors ->
@@ -95,4 +97,8 @@ class InputLayoutField internal constructor(
     description: String,
     matcher: (TextInputLayout) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
+
+  /** Return value of EditText.text **/
+  override fun obtainValue(id: Int, name: String): FieldValue<CharSequence> =
+      TextFieldValue(id, name, view.editText?.text?.toString().orEmpty())
 }
