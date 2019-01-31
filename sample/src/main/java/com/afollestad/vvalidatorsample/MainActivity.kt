@@ -106,8 +106,8 @@ class MainActivity : AppCompatActivity() {
         }
       }
 
-      submitWith(R.id.submit) {
-        toast("Success!")
+      submitWith(R.id.submit) { result ->
+        toast("Success! Hello ${result["Name"]?.value}")
       }
     }
   }
