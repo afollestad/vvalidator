@@ -19,6 +19,7 @@ package com.afollestad.vvalidator.form
 
 import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.field.FieldResult
+import com.afollestad.vvalidator.field.value.FieldValue
 
 /**
  * Holds the validation result of a whole form.
@@ -27,6 +28,7 @@ import com.afollestad.vvalidator.field.FieldResult
  */
 class FormResult {
   private val errors = mutableListOf<FieldError>()
+  private val values = mutableListOf<FieldValue<*>>()
 
   /** Returns true if validation passed with no errors. */
   fun success() = errors.isEmpty()
@@ -37,8 +39,11 @@ class FormResult {
   /** Returns errors that occurred during validation. */
   fun errors(): List<FieldError> = errors
 
+  fun values(): List<FieldValue<*>> = values
+
   /** Merges a [FieldResult] into this result. */
-  operator fun plusAssign(fieldResult: FieldResult) {
+  operator fun plusAssign(fieldResult: FieldResult<*>) {
     errors.addAll(fieldResult.errors())
+    fieldResult.fieldValue?.let { values.add(it) }
   }
 }

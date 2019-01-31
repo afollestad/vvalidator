@@ -19,6 +19,7 @@ package com.afollestad.vvalidator.field
 
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.assertion.Assertion
+import com.afollestad.vvalidator.field.value.FieldValue
 import kotlin.reflect.KClass
 
 /** @author Aidan Follestad (@afollestad) */
@@ -41,8 +42,9 @@ data class FieldError(
  *
  * @author Aidan Follestad (@afollestad)
  */
-class FieldResult {
+class FieldResult<T> {
   private val errors = mutableListOf<FieldError>()
+  var fieldValue: FieldValue<T>? = null
 
   /** Returns true if validation passed with no errors. */
   fun success() = errors.isEmpty()

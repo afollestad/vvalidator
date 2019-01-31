@@ -41,15 +41,15 @@ typealias FormBuilder = Form.() -> Unit
 /** @author Aidan Follestad (@afollestad) */
 class Form internal constructor(validationContainer: ValidationContainer) {
   var container: ValidationContainer? = validationContainer
-  private val fields = mutableListOf<FormField<*, *>>()
+  private val fields = mutableListOf<FormField<*, *, *>>()
 
   /** Adds a field to the form. */
-  fun appendField(field: FormField<*, *>) {
+  fun appendField(field: FormField<*, *, *>) {
     fields.add(field)
   }
 
   /** Retrieves fields that have been added to the form. */
-  fun getFields(): List<FormField<*, *>> = fields
+  fun getFields(): List<FormField<*, *, *>> = fields
 
   /** Adds an input field, which must be a [android.widget.EditText]. */
   fun input(
