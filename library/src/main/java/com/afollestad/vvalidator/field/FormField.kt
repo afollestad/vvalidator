@@ -25,17 +25,15 @@ import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.Assertion
-import com.afollestad.vvalidator.field.value.FieldValue
 import com.afollestad.vvalidator.form.Condition
 import com.afollestad.vvalidator.form.ConditionStack
 
 typealias FieldBuilder<T> = T.() -> Unit
-
 typealias OnError<V> = (view: V, errors: List<FieldError>) -> Unit
 typealias OnValue<V, T> = (view: V, value: FieldValue<T>) -> Unit
 
 /** @author Aidan Follestad (@afollestad) */
-abstract class FormField<F, V, T>(
+abstract class FormField<F, V : View, T : Any>(
   /** The container which provides Context, view lookup, etc. */
   val container: ValidationContainer,
   /** The view that the field acts on. */
@@ -44,7 +42,7 @@ abstract class FormField<F, V, T>(
   name: String? = null,
   /** Same as [name] but a string resource way of setting it. */
   @StringRes nameRes: Int? = null
-) where F : FormField<F, V, T>, V : View {
+) where F : FormField<F, V, T> {
 
   /** The name of the field. The name of the resource ID if not overridden by the user. */
   val name = getFormFieldName(container, name, nameRes, view.id)
@@ -56,8 +54,7 @@ abstract class FormField<F, V, T>(
   internal var onValue: OnValue<V, T>? = null
 
   /** Adds an assertion to the field to be used during validation. */
-  @CheckResult
-  fun <T : Assertion<V, *>> assert(assertion: T): T {
+  @CheckResult fun <T : Assertion<V, *>> assert(assertion: T): T {
     assertions.add(assertion.apply {
       this.container = this@FormField.container
       this.conditions = conditionStack.asList()
@@ -66,8 +63,7 @@ abstract class FormField<F, V, T>(
   }
 
   /** Gets all assertions added to the field. */
-  @CheckResult
-  fun assertions(): List<Assertion<V, *>> = assertions
+  @CheckResult fun assertions(): List<Assertion<V, *>> = assertions
 
   /** Makes inner assertions optional based on a condition. */
   fun conditional(
@@ -85,6 +81,7 @@ abstract class FormField<F, V, T>(
     this.onErrors = errors
   }
 
+  /** Sets a callback that is invoked when this field becomes validated successfully and has a value. */
   fun onValue(onValue: OnValue<V, T>?) {
     this.onValue = onValue
   }
@@ -92,7 +89,10 @@ abstract class FormField<F, V, T>(
   /** Validates the field, returning the result. */
   @CheckResult
   fun validate(): FieldResult<T> {
-    val result = FieldResult<T>()
+    val result = FieldResult(
+        name = name,
+        value = obtainValue(view.id, name)
+    )
 
     for (assertion in assertions()) {
       if (!assertion.isConditionMet()) {
@@ -106,18 +106,22 @@ abstract class FormField<F, V, T>(
             assertionType = assertion::class
         )
         result.addError(error)
-      } else {
-        result.fieldValue = obtainValue(view.id, name)
-        continue
       }
     }
 
     propagateErrors(result.errors())
-    propagateValue(result.fieldValue)
+    propagateValue(result.value)
     return result
   }
 
-  protected abstract fun obtainValue(id: Int, name: String): FieldValue<T>
+  /**
+   * Generates a [FieldValue] instance of the field, should contain a snapshot of the field's
+   * current value.
+   */
+  protected abstract fun obtainValue(
+    id: Int,
+    name: String
+  ): FieldValue<T>?
 
   /** Sends errors through the field's error callback if there is one. */
   @VisibleForTesting(otherwise = PRIVATE)

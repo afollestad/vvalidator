@@ -27,9 +27,9 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAss
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
 import com.afollestad.vvalidator.assertion.input.text
+import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.field.value.FieldValue
-import com.afollestad.vvalidator.field.value.TextFieldValue
+import com.afollestad.vvalidator.field.TextFieldValue
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -42,7 +42,6 @@ class InputLayoutField internal constructor(
   view: TextInputLayout,
   name: String?
 ) : FormField<InputLayoutField, TextInputLayout, CharSequence>(container, view, name) {
-
   init {
     onErrors { _, errors ->
       view.error = errors.firstOrNull()
@@ -98,7 +97,16 @@ class InputLayoutField internal constructor(
     matcher: (TextInputLayout) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
 
-  /** Return value of EditText.text **/
-  override fun obtainValue(id: Int, name: String): FieldValue<CharSequence> =
-      TextFieldValue(id, name, view.editText?.text?.toString().orEmpty())
+  /** Return a snapshot of the [TextInputLayout.editText]'s text. **/
+  override fun obtainValue(
+    id: Int,
+    name: String
+  ): FieldValue<CharSequence>? {
+    val currentValue = editText.text as? CharSequence ?: return null
+    return TextFieldValue(
+        id = id,
+        name = name,
+        value = currentValue
+    )
+  }
 }

@@ -22,8 +22,6 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAsserti
 import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
-import com.afollestad.vvalidator.field.value.FieldValue
-import com.afollestad.vvalidator.field.value.TextFieldValue
 import com.afollestad.vvalidator.form.Condition
 import com.afollestad.vvalidator.testutil.ID_INPUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
@@ -49,8 +47,12 @@ private class TestField(
   view: EditText,
   name: String
 ) : FormField<TestField, EditText, CharSequence>(container, view, name) {
-  override fun obtainValue(id: Int, name: String): FieldValue<CharSequence> =
-          TextFieldValue(id, name, view.text)
+  override fun obtainValue(
+    id: Int,
+    name: String
+  ): FieldValue<CharSequence>? {
+    return TextFieldValue(id, name, view.text)
+  }
 }
 
 /** @author Aidan Follestad (@afollestad) */
@@ -138,11 +140,21 @@ class FormFieldTest {
     field.onErrors.assertEqualTo(onErrors)
   }
 
+  @Test fun onValue() {
+    val onValue: OnValue<EditText, CharSequence> = { _, _ -> }
+    field.onValue(onValue)
+    field.onValue.assertEqualTo(onValue)
+  }
+
   @Test fun validate() {
     var onErrorsCalled: FieldError? = null
     field.onErrors { view, errors ->
       view.assertEqualTo(field.view)
       onErrorsCalled = errors.singleOrNull()
+    }
+    var emittedValue: FieldValue<CharSequence>? = null
+    field.onValue { _, value ->
+      emittedValue = value
     }
 
     val assertion = NotEmptyAssertion()
@@ -153,6 +165,9 @@ class FormFieldTest {
         .run {
           success().assertFalse()
           hasErrors().assertTrue()
+
+          value!!.value.assertEmpty()
+          emittedValue!!.value.assertEmpty()
 
           val error = errors().single()
           error.id.assertEqualTo(ID_INPUT)
@@ -169,6 +184,9 @@ class FormFieldTest {
           success().assertTrue()
           hasErrors().assertFalse()
           errors().assertEmpty()
+
+          value!!.value.toString().assertEqualTo("Hello")
+          emittedValue!!.value.toString().assertEqualTo("Hello")
 
           onErrorsCalled.assertNull()
         }

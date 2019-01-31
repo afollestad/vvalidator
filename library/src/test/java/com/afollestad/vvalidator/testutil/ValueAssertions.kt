@@ -128,3 +128,15 @@ fun <T> Collection<T>.assertValues(vararg values: T) {
     throw AssertionError("Expected content: $expectedRepresentation\nActual: $actualRepresentation")
   }
 }
+
+fun CharSequence.assertEmpty() {
+  if (isNotEmpty()) {
+    throw AssertionError("Expected string to be empty but actual: $this")
+  }
+}
+
+fun CharSequence.assertNotEmpty() {
+  if (isEmpty()) {
+    throw AssertionError("Expected string to be not empty but it is")
+  }
+}

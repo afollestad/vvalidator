@@ -123,10 +123,10 @@ class FormTest {
   }
 
   @Test fun validate() {
-    form.input(ID_INPUT, name = "Input!") {
+    form.input(ID_INPUT, name = "Input") {
       isNotEmpty()
     }
-    form.seeker(ID_SEEKER, name = "Seeker!") {
+    form.seeker(ID_SEEKER, name = "Seeker") {
       progress().greaterThan(1)
     }
     form.getFields()
@@ -142,6 +142,11 @@ class FormTest {
           errors()
               .second()
               .id.assertEqualTo(ID_SEEKER)
+
+          this["Input"]!!.name.assertEqualTo("Input")
+          this["Input"]!!.value.toString().assertEmpty()
+          this["Seeker"]!!.name.assertEqualTo("Seeker")
+          this["Seeker"]!!.value.assertEqualTo(0)
         }
 
     activity.get()

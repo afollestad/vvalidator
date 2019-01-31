@@ -13,37 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.afollestad.vvalidator.field.value
+package com.afollestad.vvalidator.field
 
 import androidx.annotation.IdRes
+import kotlin.reflect.KClass
 
-/** @author Bernat Borras (@alorma) */
-open class FieldValue<T>(
+/**
+ * Represents a snapshot of the value of a field (e.g. the text of an input filed).
+ *
+ * @author Bernat Borras (@alorma)
+ */
+open class FieldValue<T : Any>(
   /** The view ID that the value is for. */
   @IdRes open val id: Int,
   /** The name of the field that the value is for. */
   open val name: String,
   /** The value of that field */
-  open val value: T
+  open val value: T,
+  /** The class type of the value, e.g. a String, Int, etc. */
+  open val valueType: KClass<T>
 ) {
-    /** Returns the [value]. */
-    override fun toString() = value.toString()
+  /** Returns the [value]. */
+  override fun toString() = value.toString()
 }
 
-data class NumericFieldValue<T : Number>(
+/** Represents the value of a numeric field such as a progress bar or seek bar. */
+data class IntFieldValue(
   @IdRes override val id: Int,
   override val name: String,
-  override val value: T
-) : FieldValue<T>(id, name, value)
+  override val value: Int
+) : FieldValue<Int>(id, name, value, Int::class)
 
+/** Represents the value of a text field, like an EditText or TextInputLayout. */
 data class TextFieldValue(
   @IdRes override val id: Int,
   override val name: String,
   override val value: CharSequence
-) : FieldValue<CharSequence>(id, name, value)
+) : FieldValue<CharSequence>(id, name, value, CharSequence::class)
 
+/** Represents the value of a boolean field, like a Switch or Checkbox. */
 data class BooleanFieldValue(
   @IdRes override val id: Int,
   override val name: String,
   override val value: Boolean
-) : FieldValue<Boolean>(id, name, value)
+) : FieldValue<Boolean>(id, name, value, Boolean::class)

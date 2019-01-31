@@ -21,9 +21,9 @@ import android.widget.CompoundButton
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.checkable.CompoundButtonAssertions.CheckedStateAssertion
+import com.afollestad.vvalidator.field.BooleanFieldValue
+import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.field.value.BooleanFieldValue
-import com.afollestad.vvalidator.field.value.FieldValue
 
 /**
  * Represents a compound button field, like a checkbox or radio button.
@@ -48,7 +48,15 @@ class CheckableField internal constructor(
     matcher: (CompoundButton) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
 
-  /** Return value of CompoundButton.isChecked() **/
-  override fun obtainValue(id: Int, name: String): FieldValue<Boolean> =
-    BooleanFieldValue(id, name, view.isChecked)
+  /** Return value of [CompoundButton.isChecked] **/
+  override fun obtainValue(
+    id: Int,
+    name: String
+  ): FieldValue<Boolean>? {
+    return BooleanFieldValue(
+        id = id,
+        name = name,
+        value = view.isChecked
+    )
+  }
 }

@@ -266,6 +266,9 @@ val isSuccess: Boolean = result.success()
 val hasErrors: Boolean = result.hasErrors()
 
 val errors: List<FieldError> = result.errors()
+
+val values: List<FieldValue<*>> = result.values()
+val singleValue: FieldValue<*> = result["Field Name"]
 ```
 
 Each instance of `FieldError` contains additional information:
@@ -386,15 +389,15 @@ assertions and form fields.
 First, you'd need an assertion class that goes with your view.
 
 ```kotlin
-class MyView(context: Context) : View(context, null)
+class MyView(context: Context) : EditText(context, null)
 
 class MyAssertion : Assertion<MyView, MyAssertion>() {
   override fun isValid(view: MyView): Boolean {
-    return true
+    return view.text.isNotEmpty()
   }
 
   override fun defaultDescription(): String {
-    return "does something"
+    return "edit text should not be empty"
   }
 }
 ```
@@ -406,7 +409,7 @@ class MyField(
   container: ValidationContainer,
   view: MyView,
   name: String
-) : FormField<MyField, MyView>(container, id, name) {
+) : FormField<MyField, MyView, CharSequence>(container, id, name) {
   init {
     onErrors { myView, errors ->
       // Do some sort of default error handling with views
@@ -415,6 +418,18 @@ class MyField(
   
   // Your first custom assertion
   fun myAssertion() = assert(MyAssertion())
+  
+  override fun obtainValue(
+    id: Int,
+    name: String
+  ): FieldValue<CharSequence>? {
+    val currentValue = view.text as? CharSequence ?: return null
+    return TextFieldValue(
+        id = id,
+        name = name,
+        value = currentValue
+    )
+  }
 }
 ```
 

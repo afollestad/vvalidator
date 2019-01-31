@@ -21,9 +21,9 @@ import android.widget.Spinner
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
+import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
-import com.afollestad.vvalidator.field.value.FieldValue
-import com.afollestad.vvalidator.field.value.NumericFieldValue
+import com.afollestad.vvalidator.field.IntFieldValue
 
 /**
  * Represents a spinner (dropdown) field.
@@ -45,7 +45,15 @@ class SpinnerField internal constructor(
     matcher: (Spinner) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
 
-  /** Returns selected position on Spinner **/
-  override fun obtainValue(id: Int, name: String): FieldValue<Int> =
-    NumericFieldValue(id, name, view.selectedItemPosition)
+  /** Returns a snapshot of [Spinner.getSelectedItemPosition]. **/
+  override fun obtainValue(
+    id: Int,
+    name: String
+  ): FieldValue<Int>? {
+    return IntFieldValue(
+        id = id,
+        name = name,
+        value = view.selectedItemPosition
+    )
+  }
 }
