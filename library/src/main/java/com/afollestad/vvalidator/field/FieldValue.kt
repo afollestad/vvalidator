@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.afollestad.vvalidator.field
 
 import androidx.annotation.IdRes
@@ -33,8 +35,27 @@ open class FieldValue<T : Any>(
   /** The class type of the value, e.g. a String, Int, etc. */
   open val valueType: KClass<T>
 ) {
-  /** Returns the [value]. */
-  override fun toString() = value.toString()
+
+  /** Coerces the value to a string. */
+  fun asString(): String = value.toString()
+
+  /** Coerces the value to a int. */
+  fun asInt(): Int? = (value as? Int) ?: value.toString().toIntOrNull()
+
+  /** Coerces the value to a long. */
+  fun asLong(): Long? = (value as? Long) ?: value.toString().toLongOrNull()
+
+  /** Coerces the value to a float. */
+  fun asFloat(): Float? = (value as? Float) ?: value.toString().toFloatOrNull()
+
+  /** Coerces the value to a double. */
+  fun asDouble(): Double? = (value as? Double) ?: value.toString().toDoubleOrNull()
+
+  /** Coerces the value to a boolean. */
+  fun asBoolean(): Boolean = (value as? Boolean) ?: value.toString().toBoolean()
+
+  /** Returns the [value] as a string. */
+  override fun toString() = asString()
 }
 
 /** Represents the value of a numeric field such as a progress bar or seek bar. */
