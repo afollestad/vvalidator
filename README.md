@@ -37,7 +37,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
   
-  implementation 'com.afollestad:vvalidator:0.3.0'
+  implementation 'com.afollestad:vvalidator:0.3.1'
 }
 ```
 
@@ -269,6 +269,13 @@ val errors: List<FieldError> = result.errors()
 
 val values: List<FieldValue<*>> = result.values()
 val singleValue: FieldValue<*> = result["Field Name"]
+
+singleValue.asString()
+singleValue.asInt()
+singleValue.asLong()
+singleValue.asFloat()
+singleValue.asDouble()
+singleValue.asBoolean()
 ```
 
 Each instance of `FieldError` contains additional information:
