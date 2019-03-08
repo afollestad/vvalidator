@@ -23,6 +23,7 @@ import android.widget.AbsSeekBar
 import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Spinner
+import androidx.annotation.CheckResult
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.checkAttached
@@ -37,19 +38,25 @@ import com.afollestad.vvalidator.getViewOrThrow
 import com.google.android.material.textfield.TextInputLayout
 
 typealias FormBuilder = Form.() -> Unit
+typealias GenericFormField = FormField<*, *, *>
+
+@DslMarker
+annotation class FormMarker
 
 /** @author Aidan Follestad (@afollestad) */
+@FormMarker
 class Form internal constructor(validationContainer: ValidationContainer) {
   var container: ValidationContainer? = validationContainer
-  private val fields = mutableListOf<FormField<*, *, *>>()
+  private val fields = mutableListOf<GenericFormField>()
 
   /** Adds a field to the form. */
-  fun appendField(field: FormField<*, *, *>) {
+  @CheckResult fun appendField(field: GenericFormField): GenericFormField {
     fields.add(field)
+    return field
   }
 
   /** Retrieves fields that have been added to the form. */
-  fun getFields(): List<FormField<*, *, *>> = fields
+  fun getFields(): List<GenericFormField> = fields
 
   /** Adds an input field, which must be a [android.widget.EditText]. */
   fun input(
@@ -57,7 +64,7 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     name: String? = null,
     optional: Boolean = false,
     builder: FieldBuilder<InputField>
-  ) {
+  ): GenericFormField {
     val newField = InputField(
         container = container.checkAttached(),
         view = view,
@@ -66,9 +73,9 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     if (optional) {
       newField.isEmptyOr(builder)
     } else {
-      builder(newField)
+      newField.builder()
     }
-    appendField(newField)
+    return appendField(newField)
   }
 
   /** Adds an input field, which must be a [android.widget.EditText]. */
@@ -93,7 +100,7 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     name: String? = null,
     optional: Boolean = false,
     builder: FieldBuilder<InputLayoutField>
-  ) {
+  ): GenericFormField {
     val newField = InputLayoutField(
         container = container.checkAttached(),
         view = view,
@@ -102,9 +109,9 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     if (optional) {
       newField.isEmptyOr(builder)
     } else {
-      builder(newField)
+      newField.builder()
     }
-    appendField(newField)
+    return appendField(newField)
   }
 
   /**
@@ -128,14 +135,14 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     view: Spinner,
     name: String? = null,
     builder: FieldBuilder<SpinnerField>
-  ) {
+  ): GenericFormField {
     val newField = SpinnerField(
         container = container.checkAttached(),
         view = view,
         name = name
     )
-    builder(newField)
-    appendField(newField)
+    newField.builder()
+    return appendField(newField)
   }
 
   /** Adds a dropdown field, which must be a [android.widget.Spinner]. */
@@ -157,14 +164,14 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     view: CompoundButton,
     name: String? = null,
     builder: FieldBuilder<CheckableField>
-  ) {
+  ): GenericFormField {
     val newField = CheckableField(
         container = container.checkAttached(),
         view = view,
         name = name
     )
-    builder(newField)
-    appendField(newField)
+    newField.builder()
+    return appendField(newField)
   }
 
   /**
@@ -186,14 +193,14 @@ class Form internal constructor(validationContainer: ValidationContainer) {
     view: AbsSeekBar,
     name: String? = null,
     builder: FieldBuilder<SeekField>
-  ) {
+  ): GenericFormField {
     val newField = SeekField(
         container = container.checkAttached(),
         view = view,
         name = name
     )
-    builder(newField)
-    appendField(newField)
+    newField.builder()
+    return appendField(newField)
   }
 
   /** Adds a AbsSeekBar field, like a [android.widget.SeekBar] or [android.widget.RatingBar]. */

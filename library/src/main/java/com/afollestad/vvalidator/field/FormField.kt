@@ -27,12 +27,14 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.Assertion
 import com.afollestad.vvalidator.form.Condition
 import com.afollestad.vvalidator.form.ConditionStack
+import com.afollestad.vvalidator.form.FormMarker
 
 typealias FieldBuilder<T> = T.() -> Unit
 typealias OnError<V> = (view: V, errors: List<FieldError>) -> Unit
 typealias OnValue<V, T> = (view: V, value: FieldValue<T>) -> Unit
 
 /** @author Aidan Follestad (@afollestad) */
+@FormMarker
 abstract class FormField<F, V : View, T : Any>(
   /** The container which provides Context, view lookup, etc. */
   val container: ValidationContainer,
@@ -69,21 +71,24 @@ abstract class FormField<F, V : View, T : Any>(
   fun conditional(
     condition: Condition,
     builder: F.() -> Unit
-  ) {
+  ): FormField<F, V, T> {
     conditionStack.push(condition)
     @Suppress("UNCHECKED_CAST")
-    builder(this as F)
+    (this as F).builder()
     conditionStack.pop()
+    return this
   }
 
   /** Sets custom logic for displaying errors for the field. */
-  fun onErrors(errors: OnError<V>?) {
+  fun onErrors(errors: OnError<V>?): FormField<F, V, T> {
     this.onErrors = errors
+    return this
   }
 
   /** Sets a callback that is invoked when this field becomes validated successfully and has a value. */
-  fun onValue(onValue: OnValue<V, T>?) {
+  fun onValue(onValue: OnValue<V, T>?): FormField<F, V, T> {
     this.onValue = onValue
+    return this
   }
 
   /** Validates the field, returning the result. */
