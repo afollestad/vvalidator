@@ -505,6 +505,6 @@ text changes. *Note that this does work with all field types, not just input fie
 
 `useRealTimeValidation()` has an optional `Int` parameter that lets you set a custom debounce delay. 
 This delay is how much of a gap there is between a field's value changing and validation being 
-performed. This prevents too many validations from occurring in a row, like as a user is typing in 
+performed. This prevents too many validations from occurring in a row, such as a user is typing in 
 an input field - you wouldn't want to validate with every single letter input. *The default value 
 is 500 (milliseconds), or a half second.*
