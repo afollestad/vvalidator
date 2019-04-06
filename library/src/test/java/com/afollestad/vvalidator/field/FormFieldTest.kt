@@ -53,6 +53,8 @@ private class TestField(
   ): FieldValue<CharSequence>? {
     return TextFieldValue(id, name, view.text)
   }
+
+  override fun startRealTimeValidation(debounce: Int) = Unit
 }
 
 /** @author Aidan Follestad (@afollestad) */

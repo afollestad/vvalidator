@@ -16,8 +16,9 @@
 package com.afollestad.vvalidator.field.checkable
 
 import android.widget.CompoundButton
-import com.afollestad.vvalidator.assertion.checkable.CompoundButtonAssertions.CheckedStateAssertion
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
+import com.afollestad.vvalidator.assertion.checkable.CompoundButtonAssertions.CheckedStateAssertion
+import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_CHECKABLE
@@ -26,6 +27,8 @@ import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
+import com.afollestad.vvalidator.testutil.assertNull
+import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
 import org.junit.Before
@@ -84,5 +87,31 @@ class CheckableFieldTest {
         .single()
         .assertEqualTo(assertion)
     assertion.conditions.assertEmpty()
+  }
+
+  @Test fun `real time validation off`() {
+    field.isChecked()
+
+    field.view.isChecked = true
+    field.view.error.assertNull()
+
+    field.view.isChecked = false
+    field.view.error.assertNull()
+  }
+
+  @Test fun `real time validation on`() {
+    val errorsList = mutableListOf<FieldError>()
+    field.onErrors { _, errors -> errorsList.addAll(errors) }
+
+    field.startRealTimeValidation(0)
+    field.isChecked()
+
+    field.view.isChecked = true
+    errorsList.assertEmpty()
+
+    field.view.isChecked = false
+    errorsList.assertSize(1)
+    errorsList.single()
+        .description.assertEqualTo("should be checked")
   }
 }

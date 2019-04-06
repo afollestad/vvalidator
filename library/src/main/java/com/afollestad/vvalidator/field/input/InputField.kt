@@ -37,7 +37,7 @@ import com.afollestad.vvalidator.util.onTextChanged
  *
  * @author Aidan Follestad (@afollestad)
  */
-class InputField internal constructor(
+open class InputField internal constructor(
   container: ValidationContainer,
   view: EditText,
   name: String?

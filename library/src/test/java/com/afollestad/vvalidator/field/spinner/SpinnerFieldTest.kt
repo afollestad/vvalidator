@@ -15,9 +15,11 @@
  */
 package com.afollestad.vvalidator.field.spinner
 
+import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
+import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_SPINNER
@@ -25,6 +27,7 @@ import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
+import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertType
 import org.junit.Before
 import org.junit.Test
@@ -45,6 +48,16 @@ class SpinnerFieldTest {
         .apply {
           create()
         }
+
+    activity.get()
+        .findViewById<Spinner>(ID_SPINNER)
+        .apply {
+          adapter =
+            ArrayAdapter<String>(activity.get(), android.R.layout.simple_list_item_1).apply {
+              addAll("One", "Two", "Three", "Four", "Five", "Six")
+            }
+        }
+
     form = activity.get()
         .form {
           spinner(ID_SPINNER, name = "Spinner") {}
@@ -71,5 +84,37 @@ class SpinnerFieldTest {
         .single()
         .assertEqualTo(assertion)
     assertion.conditions.assertEmpty()
+  }
+
+  @Test fun `real time validation off`() {
+    val errorsList = mutableListOf<FieldError>()
+    field.onErrors { _, errors -> errorsList.addAll(errors) }
+
+    field.selection()
+        .atLeast(4)
+
+    field.view.setSelection(5)
+    errorsList.assertEmpty()
+
+    field.view.setSelection(3)
+    errorsList.assertEmpty()
+  }
+
+  @Test fun `real time validation on`() {
+    field.startRealTimeValidation(0)
+
+    val errorsList = mutableListOf<FieldError>()
+    field.onErrors { _, errors -> errorsList.addAll(errors) }
+
+    field.selection()
+        .atLeast(4)
+
+    field.view.setSelection(5)
+    errorsList.assertEmpty()
+
+    field.view.setSelection(3)
+    errorsList.assertSize(1)
+    errorsList.single()
+        .description.assertEqualTo("selection must be at least 4")
   }
 }

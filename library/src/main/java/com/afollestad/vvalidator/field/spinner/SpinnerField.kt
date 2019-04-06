@@ -17,6 +17,9 @@
 
 package com.afollestad.vvalidator.field.spinner
 
+import android.annotation.SuppressLint
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Spinner
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
@@ -58,9 +61,18 @@ class SpinnerField internal constructor(
   }
 
   override fun startRealTimeValidation(debounce: Int) {
-    view.setOnItemLongClickListener { _, _, _, _ ->
-      validate()
-      true
+    view.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+      override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+
+      @SuppressLint("CheckResult")
+      override fun onItemSelected(
+        parent: AdapterView<*>?,
+        view: View?,
+        position: Int,
+        id: Long
+      ) {
+        validate()
+      }
     }
   }
 }

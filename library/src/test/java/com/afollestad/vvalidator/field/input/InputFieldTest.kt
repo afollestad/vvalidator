@@ -34,9 +34,11 @@ import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertNotNull
+import com.afollestad.vvalidator.testutil.assertNull
 import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
+import com.afollestad.vvalidator.testutil.triggerTextChanged
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -191,5 +193,26 @@ class InputFieldTest {
     )
     field.propagateErrors(errors)
     field.view.error.assertEqualTo("must not be empty")
+  }
+
+  @Test fun `real time validation off`() {
+    field.isNotEmpty()
+
+    field.view.triggerTextChanged("hello")
+    field.view.error.assertNull()
+
+    field.view.triggerTextChanged("")
+    field.view.error.assertNull()
+  }
+
+  @Test fun `real time validation on`() {
+    field.startRealTimeValidation(0)
+    field.isNotEmpty()
+
+    field.view.triggerTextChanged("hello")
+    field.view.error.assertNull()
+
+    field.view.triggerTextChanged("")
+    field.view.error.assertEqualTo("cannot be empty")
   }
 }

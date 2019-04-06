@@ -18,6 +18,7 @@ package com.afollestad.vvalidator.field.seeker
 import android.widget.AbsSeekBar
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.seeker.SeekBarAssertions.ProgressAssertion
+import com.afollestad.vvalidator.field.FieldError
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_SEEKER
@@ -25,6 +26,7 @@ import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
 import com.afollestad.vvalidator.testutil.assertEmpty
 import com.afollestad.vvalidator.testutil.assertEqualTo
+import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertType
 import org.junit.Before
 import org.junit.Test
@@ -71,5 +73,39 @@ class SeekFieldTest {
         .single()
         .assertEqualTo(assertion)
     assertion.conditions.assertEmpty()
+  }
+
+  @Test fun `real time validation off`() {
+    val errorsList = mutableListOf<FieldError>()
+    field.onErrors { _, errors -> errorsList.addAll(errors) }
+
+    field.view.max = 100
+    field.progress()
+        .atLeast(50)
+
+    field.view.progress = 50
+    errorsList.assertEmpty()
+
+    field.view.progress = 49
+    errorsList.assertEmpty()
+  }
+
+  @Test fun `real time validation on`() {
+    field.startRealTimeValidation(0)
+
+    val errorsList = mutableListOf<FieldError>()
+    field.onErrors { _, errors -> errorsList.addAll(errors) }
+
+    field.view.max = 100
+    field.progress()
+        .atLeast(50)
+
+    field.view.progress = 50
+    errorsList.assertEmpty()
+
+    field.view.progress = 49
+    errorsList.assertSize(1)
+    errorsList.single()
+        .description.assertEqualTo("progress must be at least 50")
   }
 }

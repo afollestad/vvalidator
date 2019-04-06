@@ -89,9 +89,9 @@ fun <T> Iterable<T>.second(): T {
     else -> {
       val iterator = iterator()
       if (!iterator.hasNext())
-        throw NoSuchElementException("Collection is empty.")
+        throw AssertionError("Collection is empty.")
       if (!iterator.hasNext())
-        throw NoSuchElementException("There is no second element.")
+        throw AssertionError("There is no second element.")
       iterator.next()
     }
   }
@@ -103,11 +103,11 @@ fun <T> Iterable<T>.third(): T {
     else -> {
       val iterator = iterator()
       if (!iterator.hasNext())
-        throw NoSuchElementException("Collection is empty.")
+        throw AssertionError("Collection is empty.")
       if (!iterator.hasNext())
-        throw NoSuchElementException("There is no second element.")
+        throw AssertionError("There is no second element.")
       if (!iterator.hasNext())
-        throw NoSuchElementException("There is no third element.")
+        throw AssertionError("There is no third element.")
       iterator.next()
     }
   }
