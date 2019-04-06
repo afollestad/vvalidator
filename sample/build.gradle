@@ -23,7 +23,7 @@ dependencies {
   implementation 'androidx.appcompat:appcompat:' + versions.androidxCore
   implementation 'com.google.android.material:material:' + versions.googleMaterial
 
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:' + versions.kotlin
+  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
 }
 
 apply from: '../spotless.gradle'
