@@ -30,6 +30,7 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
 import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.field.TextFieldValue
+import com.afollestad.vvalidator.util.onTextChanged
 
 /**
  * Represents an edit text field.
@@ -102,4 +103,7 @@ class InputField internal constructor(
         value = currentValue
     )
   }
+
+  override fun startRealTimeValidation(debounce: Int) =
+    view.onTextChanged(debounce) { validate() }
 }

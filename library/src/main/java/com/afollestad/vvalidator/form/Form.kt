@@ -48,6 +48,7 @@ annotation class FormMarker
 class Form internal constructor(validationContainer: ValidationContainer) {
   var container: ValidationContainer? = validationContainer
   internal var useRealTimeValidation: Boolean = false
+  internal var realTimeValidationDebounce: Int = -1
   private val fields = mutableListOf<GenericFormField>()
 
   /** Adds a field to the form. */
@@ -62,9 +63,15 @@ class Form internal constructor(validationContainer: ValidationContainer) {
   /**
    * Enables real-time validation. Views will be observed in real time rather than
    * waiting for Form submission.
+   *
+   * @param debounce Must be >= 0. Sets a custom delay between a user pausing
+   *  interaction with a view and the view being validated. Defaults to a half second (500).
+   *  NOTE that certain fields can choose to IGNORE this, like a checkbox.
    */
-  fun useRealTimeValidation(): Form {
+  fun useRealTimeValidation(debounce: Int = 500): Form {
+    require(debounce >= 0) { "Debounce must be >= 0." }
     useRealTimeValidation = true
+    realTimeValidationDebounce = debounce
     return this
   }
 
@@ -283,6 +290,14 @@ class Form internal constructor(validationContainer: ValidationContainer) {
       }
       true
     }
+  }
+
+  /** Signals that the form is finished being built. */
+  @CheckResult internal fun start(): Form {
+    if (useRealTimeValidation) {
+      fields.forEach { it.startRealTimeValidation(realTimeValidationDebounce) }
+    }
+    return this
   }
 
   /** Destroys the form by removing all fields and freeing up references. */

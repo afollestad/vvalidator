@@ -30,6 +30,7 @@ import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.field.TextFieldValue
+import com.afollestad.vvalidator.util.onTextChanged
 import com.google.android.material.textfield.TextInputLayout
 
 /**
@@ -108,5 +109,9 @@ class InputLayoutField internal constructor(
         name = name,
         value = currentValue
     )
+  }
+
+  override fun startRealTimeValidation(debounce: Int) {
+    view.editText?.onTextChanged(debounce) { validate() }
   }
 }

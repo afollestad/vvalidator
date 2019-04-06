@@ -36,6 +36,7 @@ fun FragmentActivity.form(builder: FormBuilder): Form {
   return Form(container)
       .apply(builder)
       .also { lifecycle.addObserver(DestroyLifecycleObserver(it)) }
+      .start()
 }
 
 /**
@@ -51,4 +52,5 @@ fun Fragment.form(builder: FormBuilder): Form {
   return Form(container)
       .apply(builder)
       .also { lifecycle.addObserver(DestroyLifecycleObserver(it)) }
+      .start()
 }

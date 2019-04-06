@@ -19,11 +19,15 @@ package com.afollestad.vvalidator.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.AbsSeekBar
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.RatingBar
+import android.widget.SeekBar
 import android.widget.Spinner
 import androidx.annotation.IntRange
 
@@ -33,9 +37,7 @@ fun EditText.onTextChanged(
   cb: (String) -> Unit
 ) {
   addTextChangedListener(object : TextWatcher {
-    val callbackRunner = Runnable {
-      cb(text.trim().toString())
-    }
+    val callbackRunner = Runnable { cb(text.trim().toString()) }
 
     override fun afterTextChanged(s: Editable?) = Unit
 
@@ -60,6 +62,58 @@ fun EditText.onTextChanged(
       }
     }
   })
+}
+
+fun AbsSeekBar.onProgressChanged(
+  @IntRange(from = 0, to = 10000) debounce: Int = 0,
+  cb: (Int) -> Unit
+) {
+  when (this) {
+    is SeekBar -> {
+      setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        val callbackRunner = Runnable { cb(progress) }
+
+        override fun onProgressChanged(
+          seekBar: SeekBar,
+          progress: Int,
+          fromUser: Boolean
+        ) {
+          removeCallbacks(callbackRunner)
+          if (debounce == 0) {
+            callbackRunner.run()
+          } else {
+            postDelayed(callbackRunner, debounce.toLong())
+          }
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
+      })
+    }
+    is RatingBar -> {
+      onRatingBarChangeListener = object : RatingBar.OnRatingBarChangeListener {
+        val callbackRunner = Runnable { cb(progress) }
+
+        override fun onRatingChanged(
+          ratingBar: RatingBar?,
+          rating: Float,
+          fromUser: Boolean
+        ) {
+          if (!fromUser) return
+          removeCallbacks(callbackRunner)
+          if (debounce == 0) {
+            callbackRunner.run()
+          } else {
+            postDelayed(callbackRunner, debounce.toLong())
+          }
+        }
+      }
+    }
+    else -> {
+      Log.w("SeekField", "Don't know how to do real-time validation for ${this::class.java.name}")
+    }
+  }
 }
 
 /** Listens for item selection in a Spinner, sending the position to a callback. */

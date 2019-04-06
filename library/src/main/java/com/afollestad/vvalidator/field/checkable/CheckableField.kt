@@ -59,4 +59,8 @@ class CheckableField internal constructor(
         value = view.isChecked
     )
   }
+
+  override fun startRealTimeValidation(debounce: Int) {
+    view.setOnCheckedChangeListener { _, _ -> validate() }
+  }
 }

@@ -49,6 +49,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     form {
+      useRealTimeValidation(250)
+
       inputLayout(R.id.input_layout_name, name = "Name") {
         isNotEmpty().description("Enter your name!")
         length().atLeast(3)

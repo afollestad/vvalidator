@@ -56,4 +56,11 @@ class SpinnerField internal constructor(
         value = view.selectedItemPosition
     )
   }
+
+  override fun startRealTimeValidation(debounce: Int) {
+    view.setOnItemLongClickListener { _, _, _, _ ->
+      validate()
+      true
+    }
+  }
 }

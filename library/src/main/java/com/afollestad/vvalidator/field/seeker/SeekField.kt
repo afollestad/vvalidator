@@ -24,6 +24,7 @@ import com.afollestad.vvalidator.assertion.seeker.SeekBarAssertions.ProgressAsse
 import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.field.IntFieldValue
+import com.afollestad.vvalidator.util.onProgressChanged
 
 /**
  * Represents an AbsSeekBar field.
@@ -56,4 +57,7 @@ class SeekField internal constructor(
         value = view.progress
     )
   }
+
+  override fun startRealTimeValidation(debounce: Int) =
+    view.onProgressChanged(debounce) { validate() }
 }

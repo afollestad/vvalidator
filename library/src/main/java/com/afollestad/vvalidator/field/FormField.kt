@@ -27,6 +27,7 @@ import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.Assertion
 import com.afollestad.vvalidator.form.Condition
 import com.afollestad.vvalidator.form.ConditionStack
+import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.form.FormMarker
 
 typealias FieldBuilder<T> = T.() -> Unit
@@ -127,6 +128,12 @@ abstract class FormField<F, V : View, T : Any>(
     id: Int,
     name: String
   ): FieldValue<T>?
+
+  /**
+   * The containing [Form] is built, and real time validation was requested. Begin observing
+   * the view and running real-time validation.
+   */
+  abstract fun startRealTimeValidation(debounce: Int)
 
   /** Sends errors through the field's error callback if there is one. */
   @VisibleForTesting(otherwise = PRIVATE)
