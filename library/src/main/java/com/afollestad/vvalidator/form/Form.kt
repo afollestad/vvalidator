@@ -47,6 +47,7 @@ annotation class FormMarker
 @FormMarker
 class Form internal constructor(validationContainer: ValidationContainer) {
   var container: ValidationContainer? = validationContainer
+  internal var useRealTimeValidation: Boolean = false
   private val fields = mutableListOf<GenericFormField>()
 
   /** Adds a field to the form. */
@@ -57,6 +58,15 @@ class Form internal constructor(validationContainer: ValidationContainer) {
 
   /** Retrieves fields that have been added to the form. */
   fun getFields(): List<GenericFormField> = fields
+
+  /**
+   * Enables real-time validation. Views will be observed in real time rather than
+   * waiting for Form submission.
+   */
+  fun useRealTimeValidation(): Form {
+    useRealTimeValidation = true
+    return this
+  }
 
   /** Adds an input field, which must be a [android.widget.EditText]. */
   fun input(
