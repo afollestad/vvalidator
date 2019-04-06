@@ -192,7 +192,7 @@ class InputLayoutFieldTest {
             assertionType = NotEmptyAssertion::class
         )
     )
-    field.propagateErrors(errors)
+    field.propagateErrors(false, errors)
     field.view.error.assertEqualTo("must not be empty")
   }
 

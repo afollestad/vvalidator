@@ -17,6 +17,7 @@ package com.afollestad.vvalidator.form
 
 import android.app.Activity
 import android.view.View
+import android.widget.Button
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.field.checkable.CheckableField
 import com.afollestad.vvalidator.field.input.InputField
@@ -43,6 +44,8 @@ import com.afollestad.vvalidator.testutil.assertSize
 import com.afollestad.vvalidator.testutil.assertTrue
 import com.afollestad.vvalidator.testutil.assertType
 import com.afollestad.vvalidator.testutil.second
+import com.afollestad.vvalidator.testutil.triggerTextChanged
+import com.afollestad.vvalidator.util.onTextChanged
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -242,6 +245,37 @@ class FormTest {
 
     dummyField.assertDidStartRealTimeValidation(2500)
   }
+
+  @Test fun `start - use real time validation - disable submit with`() {
+    val button = activity.get()
+        .findViewById<Button>(ID_BUTTON)
+    var didSubmit = false
+    form.submitWith(ID_BUTTON) { didSubmit = true }
+    button.isEnabled.assertTrue()
+
+    form.useRealTimeValidation(
+        debounce = 2500,
+        disableSubmit = true
+    )
+
+    val dummyField = DummyInputField(activity.get())
+    form.appendField(dummyField)
+    form.start()
+
+    button.isEnabled.assertFalse()
+    button.performClick()
+    didSubmit.assertFalse()
+
+    dummyField.view.triggerTextChanged("")
+    button.isEnabled.assertFalse()
+    button.performClick()
+    didSubmit.assertFalse()
+
+    dummyField.view.triggerTextChanged("Hello")
+    button.isEnabled.assertTrue()
+    button.performClick()
+    didSubmit.assertTrue()
+  }
 }
 
 class DummyValidationContainer(
@@ -257,12 +291,17 @@ class DummyInputField(
     activity.findViewById(ID_INPUT),
     "dummy input"
 ) {
+  init {
+    isNotEmpty()
+  }
+
   private var didStartRealTimeValidation: Boolean = false
   private var realTimeDebounce: Int? = null
 
   override fun startRealTimeValidation(debounce: Int) {
     didStartRealTimeValidation = true
     realTimeDebounce = debounce
+    view.onTextChanged { validate() }
   }
 
   fun assertDidStartRealTimeValidation(withDebounce: Int) {

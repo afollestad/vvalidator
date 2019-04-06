@@ -38,7 +38,7 @@ Add this to your module's `build.gradle` file:
 ```gradle
 dependencies {
   
-  implementation 'com.afollestad:vvalidator:0.4.0'
+  implementation 'com.afollestad:vvalidator:0.4.1'
 }
 ```
 
@@ -508,3 +508,21 @@ This delay is how much of a gap there is between a field's value changing and va
 performed. This prevents too many validations from occurring in a row, such as a user is typing in 
 an input field - you wouldn't want to validate with every single letter input. *The default value 
 is 500 (milliseconds), or a half second.*
+
+---
+
+Another optional parameter on `useRealTimeValidation() is `disableSubmit`. When true,
+the `submitWith` view or item you set will be enabled or disabled based on the real time 
+valid state of the overall form.
+
+```kotlin
+form {
+  useRealTimeValidation(disableSubmit = true)
+  input(R.id.your_edit_text) {
+    isNotEmpty()
+  }
+  submitWith(R.id.my_button) {
+    // Do something
+  }
+}
+```

@@ -22,7 +22,9 @@ import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAsserti
 import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.form.Condition
+import com.afollestad.vvalidator.form.Form
 import com.afollestad.vvalidator.testutil.ID_INPUT
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.TestActivity
@@ -62,6 +64,7 @@ private class TestField(
 class FormFieldTest {
 
   private lateinit var activity: ActivityController<TestActivity>
+  private lateinit var form: Form
   private lateinit var field: TestField
 
   @Before fun setup() {
@@ -80,6 +83,8 @@ class FormFieldTest {
       }
     }
     field = TestField(container, activity.get().input, "Test Input")
+    form = activity.get()
+        .form { appendField(field) }
   }
 
   @Test fun assert() {
@@ -187,8 +192,10 @@ class FormFieldTest {
           hasErrors().assertFalse()
           errors().assertEmpty()
 
-          value!!.value.toString().assertEqualTo("Hello")
-          emittedValue!!.value.toString().assertEqualTo("Hello")
+          value!!.value.toString()
+              .assertEqualTo("Hello")
+          emittedValue!!.value.toString()
+              .assertEqualTo("Hello")
 
           onErrorsCalled.assertNull()
         }

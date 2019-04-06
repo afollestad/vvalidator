@@ -49,6 +49,8 @@ abstract class FormField<F, V : View, T : Any>(
 
   /** The name of the field. The name of the resource ID if not overridden by the user. */
   val name = getFormFieldName(container, name, nameRes, view.id)
+  /** The parent [Form] that the field belongs to. */
+  lateinit var form: Form
 
   private val assertions = mutableListOf<Assertion<V, *>>()
   private val conditionStack = ConditionStack()
@@ -94,7 +96,7 @@ abstract class FormField<F, V : View, T : Any>(
 
   /** Validates the field, returning the result. */
   @CheckResult
-  fun validate(): FieldResult<T> {
+  fun validate(silent: Boolean = false): FieldResult<T> {
     val result = FieldResult(
         name = name,
         value = obtainValue(view.id, name)
@@ -115,8 +117,13 @@ abstract class FormField<F, V : View, T : Any>(
       }
     }
 
-    propagateErrors(result.errors())
-    propagateValue(result.value)
+    propagateErrors(
+        silent = silent,
+        errors = result.errors()
+    )
+    if (!silent) {
+      propagateValue(result.value)
+    }
     return result
   }
 
@@ -132,13 +139,21 @@ abstract class FormField<F, V : View, T : Any>(
   /**
    * The containing [Form] is built, and real time validation was requested. Begin observing
    * the view and running real-time validation.
+   *
+   * @param debounce The wanted delay between value changes and validation.
    */
   abstract fun startRealTimeValidation(debounce: Int)
 
   /** Sends errors through the field's error callback if there is one. */
   @VisibleForTesting(otherwise = PRIVATE)
-  fun propagateErrors(errors: List<FieldError>) {
-    onErrors?.invoke(view, errors)
+  fun propagateErrors(
+    silent: Boolean,
+    errors: List<FieldError>
+  ) {
+    form.setFieldIsValid(this, errors.isEmpty())
+    if (!silent) {
+      onErrors?.invoke(view, errors)
+    }
   }
 
   /** Sends value through the field's value callback if there is one. */
