@@ -29,14 +29,13 @@ import com.afollestad.vvalidator.form.FormBuilder
  * @author Aidan Follestad (@afollestad)
  */
 fun FragmentActivity.form(builder: FormBuilder): Form {
-  val activity = this
-  val container = object : ValidationContainer(activity) {
-    override fun <T : View> findViewById(id: Int): T? = activity.findViewById(id)
-  }
-  val newForm = Form(container)
-  builder(newForm)
-  lifecycle.addObserver(DestroyLifecycleObserver(newForm))
-  return newForm
+    val activity = this
+    val container = object : ValidationContainer(activity) {
+        override fun <T : View> findViewById(id: Int): T? = activity.findViewById(id)
+    }
+    return Form(container)
+        .apply(builder)
+        .also { lifecycle.addObserver(DestroyLifecycleObserver(it)) }
 }
 
 /**
@@ -45,12 +44,11 @@ fun FragmentActivity.form(builder: FormBuilder): Form {
  * @author Aidan Follestad (@afollestad)
  */
 fun Fragment.form(builder: FormBuilder): Form {
-  val activity = this.activity ?: throw IllegalStateException("Fragment is not attached.")
-  val container = object : ValidationContainer(activity) {
-    override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
-  }
-  val newForm = Form(container)
-  builder(newForm)
-  lifecycle.addObserver(DestroyLifecycleObserver(newForm))
-  return newForm
+    val activity = this.activity ?: throw IllegalStateException("Fragment is not attached.")
+    val container = object : ValidationContainer(activity) {
+        override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
+    }
+    return Form(container)
+        .apply(builder)
+        .also { lifecycle.addObserver(DestroyLifecycleObserver(it)) }
 }
