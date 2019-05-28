@@ -1,5 +1,4 @@
-0.4.1
+0.4.2
 
-0.4.0 - Real time validation capabilities; allows you to perform validation as views are changing in real 
-time, like the text of an input field. Checkout the README for details.
-0.4.1 - You can automatically enable/disable your submit view based on the real time valid state of the overall form.
+Length and value number assertions use all bounds in validation, e.g. you can use `atMost` and 
+`lessThan` at the same time.
