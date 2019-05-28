@@ -117,7 +117,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("must be a number")
+        .assertEqualTo("value must be a number")
   }
 
   @Test fun isNumber_exactly() {
@@ -133,7 +133,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("must equal 5")
+        .assertEqualTo("value must be exactly 5")
   }
 
   @Test fun isNumber_lessThan() {
@@ -149,7 +149,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("must be less than 5")
+        .assertEqualTo("value must be less than 5")
   }
 
   @Test fun isNumber_atMost() {
@@ -169,7 +169,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("must be at most 5")
+        .assertEqualTo("value must be at most 5")
   }
 
   @Test fun isNumber_atLeast() {
@@ -189,7 +189,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("must be at least 5")
+        .assertEqualTo("value must be at least 5")
   }
 
   @Test fun isNumber_greaterThan() {
@@ -209,7 +209,7 @@ class InputAssertionsTest {
     assertion.isValid(view)
         .assertFalse()
     assertion.defaultDescription()
-        .assertEqualTo("must be greater than 5")
+        .assertEqualTo("value must be greater than 5")
   }
 
   @Test fun length() {
@@ -217,7 +217,7 @@ class InputAssertionsTest {
 
     view.text = "1".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertTrue()
     assertion.defaultDescription()
         .assertEqualTo("no length bound set")
   }
@@ -229,11 +229,11 @@ class InputAssertionsTest {
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertFalse(assertion.defaultDescription())
     assertion.defaultDescription()
         .assertEqualTo("length must be exactly 5")
 
@@ -251,17 +251,17 @@ class InputAssertionsTest {
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertFalse(assertion.defaultDescription())
     assertion.defaultDescription()
         .assertEqualTo("length must be less than 5")
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertFalse(assertion.defaultDescription())
     assertion.defaultDescription()
         .assertEqualTo("length must be less than 5")
   }
@@ -273,15 +273,15 @@ class InputAssertionsTest {
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertFalse(assertion.defaultDescription())
     assertion.defaultDescription()
         .assertEqualTo("length must be at most 5")
   }
@@ -293,15 +293,15 @@ class InputAssertionsTest {
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hell".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertFalse(assertion.defaultDescription())
     assertion.defaultDescription()
         .assertEqualTo("length must be at least 5")
   }
@@ -313,13 +313,47 @@ class InputAssertionsTest {
 
     view.text = "hello,".toEditable()
     assertion.isValid(view)
-        .assertTrue()
+        .assertTrue(assertion.defaultDescription())
 
     view.text = "hello".toEditable()
     assertion.isValid(view)
-        .assertFalse()
+        .assertFalse(assertion.defaultDescription())
     assertion.defaultDescription()
         .assertEqualTo("length must be greater than 5")
+  }
+
+  @Test fun length_chained_range() {
+    val assertion = LengthAssertion().apply {
+      greaterThan(5)
+      lessThan(7)
+    }
+
+    view.text = "hello,".toEditable()
+    assertion.isValid(view)
+        .assertTrue(assertion.defaultDescription())
+
+    view.text = "hello,.".toEditable()
+    assertion.isValid(view)
+        .assertFalse(assertion.defaultDescription())
+    assertion.defaultDescription()
+        .assertEqualTo("length must be greater than 5, less than 7")
+  }
+
+  @Test fun length_chained_range_atMost() {
+    val assertion = LengthAssertion().apply {
+      atMost(5)
+      lessThan(7)
+    }
+
+    view.text = "hello".toEditable()
+    assertion.isValid(view)
+        .assertTrue(assertion.defaultDescription())
+
+    view.text = "hello,.".toEditable()
+    assertion.isValid(view)
+        .assertFalse(assertion.defaultDescription())
+    assertion.defaultDescription()
+        .assertEqualTo("length must be at most 5, less than 7")
   }
 
   @Test fun contains() {

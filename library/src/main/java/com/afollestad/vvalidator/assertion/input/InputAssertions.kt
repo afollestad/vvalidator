@@ -127,23 +127,27 @@ sealed class InputAssertions {
 
     override fun isValid(view: EditText): Boolean {
       val intValue = view.text().toIntOrNull() ?: return false
-      return when {
-        exactly != null && intValue != exactly!! -> false
-        lessThan != null && intValue >= lessThan!! -> false
-        atMost != null && intValue > atMost!! -> false
-        atLeast != null && intValue < atLeast!! -> false
-        greaterThan != null && intValue <= greaterThan!! -> false
-        else -> true
-      }
+      if (exactly != null && intValue != exactly!!) return false
+      if (lessThan != null && intValue >= lessThan!!) return false
+      if (atMost != null && intValue > atMost!!) return false
+      if (atLeast != null && intValue < atLeast!!) return false
+      if (greaterThan != null && intValue <= greaterThan!!) return false
+      return true
     }
 
-    override fun defaultDescription() = when {
-      exactly != null -> "must equal $exactly"
-      lessThan != null -> "must be less than $lessThan"
-      atMost != null -> "must be at most $atMost"
-      atLeast != null -> "must be at least $atLeast"
-      greaterThan != null -> "must be greater than $greaterThan"
-      else -> "must be a number"
+    override fun defaultDescription(): String {
+      val descriptionBuilder = StringBuilder().apply {
+        appendIf(exactly != null, "exactly $exactly")
+        appendIf(lessThan != null, "less than $lessThan")
+        appendIf(atMost != null, "at most $atMost")
+        appendIf(atLeast != null, "at least $atLeast")
+        appendIf(greaterThan != null, "greater than $greaterThan")
+      }
+      if (descriptionBuilder.isEmpty()) {
+        return "value must be a number"
+      }
+      return descriptionBuilder.insert(0, "value must be ")
+          .toString()
     }
   }
 
@@ -188,23 +192,32 @@ sealed class InputAssertions {
     override fun isValid(view: EditText): Boolean {
       val length = view.text()
           .length
-      return when {
-        exactly != null -> length == exactly!!
-        lessThan != null -> length < lessThan!!
-        atMost != null -> length <= atMost!!
-        atLeast != null -> length >= atLeast!!
-        greaterThan != null -> length > greaterThan!!
-        else -> false
+      if (exactly != null) {
+        return length == exactly!!
       }
+      if (lessThan != null && length >= lessThan!!) return false
+      if (atMost != null && length > atMost!!) return false
+      if (atLeast != null && length < atLeast!!) return false
+      if (greaterThan != null && length <= greaterThan!!) return false
+      return true
     }
 
-    override fun defaultDescription() = when {
-      exactly != null -> "length must be exactly $exactly"
-      lessThan != null -> "length must be less than $lessThan"
-      atMost != null -> "length must be at most $atMost"
-      atLeast != null -> "length must be at least $atLeast"
-      greaterThan != null -> "length must be greater than $greaterThan"
-      else -> "no length bound set"
+    override fun defaultDescription(): String {
+      val descriptionBuilder = StringBuilder().apply {
+        if (exactly != null) {
+          append("exactly $exactly")
+        } else {
+          appendIf(atMost != null, "at most $atMost")
+          appendIf(atLeast != null, "at least $atLeast")
+          appendIf(greaterThan != null, "greater than $greaterThan")
+          appendIf(lessThan != null, "less than $lessThan")
+        }
+      }
+      if (descriptionBuilder.isEmpty()) {
+        return "no length bound set"
+      }
+      return descriptionBuilder.insert(0, "length must be ")
+          .toString()
     }
   }
 
@@ -240,6 +253,19 @@ sealed class InputAssertions {
     }
 
     override fun defaultDescription() = "must match regex \"$regexString\""
+  }
+}
+
+private fun StringBuilder.appendIf(
+  condition: Boolean,
+  s: String,
+  separator: String = ", "
+) {
+  if (condition) {
+    if (isNotEmpty()) {
+      append(separator)
+    }
+    append(s)
   }
 }
 

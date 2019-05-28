@@ -30,9 +30,13 @@ fun <T> T?.assertNotNull(): T {
   return this
 }
 
-fun <T : Any> T?.assertEqualTo(value: T?) {
+fun <T : Any> T?.assertEqualTo(
+  value: T?,
+  withMessage: String? = null
+) {
   if (this != value) {
-    throw AssertionError("Expected value: \"$value\"\nActual: \"$this\"")
+    val suffix = if (withMessage != null) ". $withMessage" else ""
+    throw AssertionError("Expected value: \"$value\", actual: \"$this\"$suffix")
   }
 }
 
@@ -56,9 +60,9 @@ inline fun <reified T : Any> Any.assertType(): T {
   return this
 }
 
-fun Boolean.assertTrue() = assertEqualTo(true)
+fun Boolean.assertTrue(withMessage: String? = null) = assertEqualTo(true, withMessage)
 
-fun Boolean.assertFalse() = assertEqualTo(false)
+fun Boolean.assertFalse(withMessage: String? = null) = assertEqualTo(false, withMessage)
 
 fun Collection<*>?.assertEmpty() {
   if (this != null && this.isNotEmpty()) {
