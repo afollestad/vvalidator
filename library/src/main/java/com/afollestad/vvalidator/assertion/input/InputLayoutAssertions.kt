@@ -148,6 +148,66 @@ sealed class InputLayoutAssertions {
     }
   }
 
+  /** @author Chen Lei (@cooppor) */
+  class NumberDecimalAssertion internal constructor() : Assertion<TextInputLayout, NumberDecimalAssertion>() {
+    private var exactly: Double? = null
+    private var lessThan: Double? = null
+    private var atMost: Double? = null
+    private var atLeast: Double? = null
+    private var greaterThan: Double? = null
+
+    /** Asserts the number is an exact (=) value. */
+    fun exactly(length: Double): NumberDecimalAssertion {
+      exactly = length
+      return this
+    }
+
+    /** Asserts the number is less than (<) a value. */
+    fun lessThan(length: Double): NumberDecimalAssertion {
+      lessThan = length
+      return this
+    }
+
+    /** Asserts the number is at most (<=) a value. */
+    fun atMost(length: Double): NumberDecimalAssertion {
+      atMost = length
+      return this
+    }
+
+    /** Asserts the number is at least (>=) a value. */
+    fun atLeast(length: Double): NumberDecimalAssertion {
+      atLeast = length
+      return this
+    }
+
+    /** Asserts the number is greater (>) than a value. */
+    fun greaterThan(length: Double): NumberDecimalAssertion {
+      greaterThan = length
+      return this
+    }
+
+    override fun isValid(view: TextInputLayout): Boolean {
+      val intValue = view.text().toDoubleOrNull() ?: return false
+      return when {
+        exactly != null && intValue != exactly!! -> false
+        lessThan != null && intValue >= lessThan!! -> false
+        atMost != null && intValue > atMost!! -> false
+        atLeast != null && intValue < atLeast!! -> false
+        greaterThan != null && intValue <= greaterThan!! -> false
+        else -> true
+      }
+    }
+
+    override fun defaultDescription() = when {
+      exactly != null -> "must equal $exactly"
+      lessThan != null -> "must be less than $lessThan"
+      atMost != null -> "must be at most $atMost"
+      atLeast != null -> "must be at least $atLeast"
+      greaterThan != null -> "must be greater than $greaterThan"
+      else -> "must be a number"
+    }
+  }
+
   /** @author Aidan Follestad (@afollestad) */
   class LengthAssertion internal constructor() : Assertion<TextInputLayout, LengthAssertion>() {
     private var exactly: Int? = null

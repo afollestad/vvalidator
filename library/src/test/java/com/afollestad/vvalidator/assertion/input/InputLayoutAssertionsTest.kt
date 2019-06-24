@@ -26,6 +26,7 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.EmailAsse
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberDecimalAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
 import com.afollestad.vvalidator.testutil.NoManifestTestRunner
@@ -218,6 +219,112 @@ class InputLayoutAssertionsTest {
         .assertFalse()
     assertion.defaultDescription()
         .assertEqualTo("must be greater than 5")
+  }
+
+  @Test fun isDecimal() {
+    val assertion = NumberDecimalAssertion()
+
+    editText.text = "1.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "a".toEditable()
+    assertion.isValid(view)
+        .assertFalse()
+    assertion.defaultDescription()
+        .assertEqualTo("must be a number")
+  }
+
+  @Test fun isDecimal_exactly() {
+    val assertion = NumberDecimalAssertion().apply {
+        exactly(5.0)
+    }
+
+    editText.text = "5.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "1.0".toEditable()
+    assertion.isValid(view)
+        .assertFalse()
+    assertion.defaultDescription()
+        .assertEqualTo("must equal 5.0")
+  }
+
+  @Test fun isDecimal_lessThan() {
+    val assertion = NumberDecimalAssertion().apply {
+        lessThan(5.0)
+    }
+
+    editText.text = "4.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "5.0".toEditable()
+    assertion.isValid(view)
+        .assertFalse()
+    assertion.defaultDescription()
+        .assertEqualTo("must be less than 5.0")
+  }
+
+  @Test fun isDecimal_atMost() {
+    val assertion = NumberDecimalAssertion().apply {
+        atMost(5.0)
+    }
+
+    editText.text = "4.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "5.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "6.0".toEditable()
+    assertion.isValid(view)
+        .assertFalse()
+    assertion.defaultDescription()
+        .assertEqualTo("must be at most 5.0")
+  }
+
+  @Test fun isDecimal_atLeast() {
+val assertion = NumberDecimalAssertion().apply {
+        atLeast(5.0)
+    }
+
+    editText.text = "5.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "6.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "4.0".toEditable()
+    assertion.isValid(view)
+        .assertFalse()
+    assertion.defaultDescription()
+        .assertEqualTo("must be at least 5.0")
+  }
+
+  @Test fun isDecimal_greaterThan() {
+    val assertion = NumberDecimalAssertion().apply {
+        greaterThan(5.0)
+    }
+
+    editText.text = "6.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "7.0".toEditable()
+    assertion.isValid(view)
+        .assertTrue()
+
+    editText.text = "5.0".toEditable()
+    assertion.isValid(view)
+        .assertFalse()
+    assertion.defaultDescription()
+        .assertEqualTo("must be greater than 5.0")
   }
 
   @Test fun length() {

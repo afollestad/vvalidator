@@ -21,6 +21,7 @@ import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.EmailAsse
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberDecimalAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
 import com.afollestad.vvalidator.field.FieldError
@@ -132,6 +133,15 @@ class InputLayoutFieldTest {
   @Test fun isNumber() {
     val assertion = field.isNumber()
         .assertType<NumberAssertion>()
+    field.assertions()
+        .single()
+        .assertEqualTo(assertion)
+    assertion.conditions.assertEmpty()
+  }
+
+  @Test fun isDecimal() {
+    val assertion = field.isDecimal()
+        .assertType<NumberDecimalAssertion>()
     field.assertions()
         .single()
         .assertEqualTo(assertion)

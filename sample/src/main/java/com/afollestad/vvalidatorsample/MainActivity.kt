@@ -66,6 +66,11 @@ class MainActivity : AppCompatActivity() {
         isNumber()
       }
 
+      input(R.id.input_weight, name = "Weight") {
+        isNotEmpty()
+        isDecimal().atMost(9999.99)
+      }
+
       spinner(R.id.input_spinner, name = "Have a website") {
         selection()
             .atLeast(1)
