@@ -61,6 +61,19 @@
         style="@style/Form.InputField"
         />
 
+    <!-- Weight -->
+    <TextView
+        android:text="Weight"
+        style="@style/Form.Label"
+        />
+
+    <EditText
+        android:id="@+id/input_weight"
+        android:hint="Your weight"
+        android:inputType="numberDecimal"
+        style="@style/Form.InputField"
+        />
+
     <!-- Spinner -->
     <Spinner
         android:id="@+id/input_spinner"

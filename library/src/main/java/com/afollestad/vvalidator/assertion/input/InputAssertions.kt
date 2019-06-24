@@ -151,6 +151,70 @@ sealed class InputAssertions {
     }
   }
 
+  /** @author Chen Lei (@cooppor) */
+  class NumberDecimalAssertion internal constructor() : Assertion<EditText, NumberDecimalAssertion>() {
+    private var exactly: Double? = null
+    private var lessThan: Double? = null
+    private var atMost: Double? = null
+    private var atLeast: Double? = null
+    private var greaterThan: Double? = null
+
+    /** Asserts the number is an exact (=) value. */
+    fun exactly(length: Double): NumberDecimalAssertion {
+      exactly = length
+      return this
+    }
+
+    /** Asserts the number is less than (<) a value. */
+    fun lessThan(length: Double): NumberDecimalAssertion {
+      lessThan = length
+      return this
+    }
+
+    /** Asserts the number is at most (<=) a value. */
+    fun atMost(length: Double): NumberDecimalAssertion {
+      atMost = length
+      return this
+    }
+
+    /** Asserts the number is at least (>=) a value. */
+    fun atLeast(length: Double): NumberDecimalAssertion {
+      atLeast = length
+      return this
+    }
+
+    /** Asserts the number is greater (>) than a value. */
+    fun greaterThan(length: Double): NumberDecimalAssertion {
+      greaterThan = length
+      return this
+    }
+
+    override fun isValid(view: EditText): Boolean {
+      val doubleValue = view.text().toDoubleOrNull() ?: return false
+      if (exactly != null && doubleValue != exactly!!) return false
+      if (lessThan != null && doubleValue >= lessThan!!) return false
+      if (atMost != null && doubleValue > atMost!!) return false
+      if (atLeast != null && doubleValue < atLeast!!) return false
+      if (greaterThan != null && doubleValue <= greaterThan!!) return false
+      return true
+    }
+
+    override fun defaultDescription(): String {
+      val descriptionBuilder = StringBuilder().apply {
+        appendIf(exactly != null, "exactly $exactly")
+        appendIf(lessThan != null, "less than $lessThan")
+        appendIf(atMost != null, "at most $atMost")
+        appendIf(atLeast != null, "at least $atLeast")
+        appendIf(greaterThan != null, "greater than $greaterThan")
+      }
+      if (descriptionBuilder.isEmpty()) {
+        return "value must be a number"
+      }
+      return descriptionBuilder.insert(0, "value must be ")
+        .toString()
+    }
+  }
+
   /** @author Aidan Follestad (@afollestad) */
   class LengthAssertion internal constructor() : Assertion<EditText, LengthAssertion>() {
     private var exactly: Int? = null
