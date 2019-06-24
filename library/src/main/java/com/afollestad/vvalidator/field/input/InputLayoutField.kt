@@ -84,7 +84,7 @@ class InputLayoutField internal constructor(
   /** Asserts that the input text is a valid number. */
   fun isNumber() = assert(NumberAssertion())
 
-  /** Asserts that the input text is a valid number. */
+  /** Asserts that the input text is a valid decimal. */
   fun isDecimal() = assert(NumberDecimalAssertion())
 
   /** Asserts that the input text contains a string. */

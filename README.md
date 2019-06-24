@@ -98,6 +98,13 @@ form {
     isNumber().atLeast(5)
     isNumber().greaterThan(5)
     
+    isDecimal()
+    isDecimal().lessThan(5.2)
+    isDecimal().atMost(5.2)
+    isDecimal().exactly(5.2)
+    isDecimal().atLeast(5.2)
+    isDecimal().greaterThan(5.2)
+    
     length().lessThan(5)
     length().atMost(5)
     length().exactly(5)
@@ -140,6 +147,13 @@ form {
     isNumber().exactly(5)
     isNumber().atLeast(5)
     isNumber().greaterThan(5)
+    
+    isDecimal()
+    isDecimal().lessThan(5.2)
+    isDecimal().atMost(5.2)
+    isDecimal().exactly(5.2)
+    isDecimal().atLeast(5.2)
+    isDecimal().greaterThan(5.2)
     
     length().lessThan(5)
     length().atMost(5)

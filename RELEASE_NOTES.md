@@ -1,4 +1,5 @@
-0.4.2
+0.5.0
 
-Length and value number assertions use all bounds in validation, e.g. you can use `atMost` and 
-`lessThan` at the same time.
+* `isDecimal` assertions on input fields.
+* Kotlin 1.3.40.
+* compileSdk 29.
