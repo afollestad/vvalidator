@@ -89,49 +89,49 @@ sealed class InputAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
   class NumberAssertion internal constructor() : Assertion<EditText, NumberAssertion>() {
-    private var exactly: Int? = null
-    private var lessThan: Int? = null
-    private var atMost: Int? = null
-    private var atLeast: Int? = null
-    private var greaterThan: Int? = null
+    private var exactly: Long? = null
+    private var lessThan: Long? = null
+    private var atMost: Long? = null
+    private var atLeast: Long? = null
+    private var greaterThan: Long? = null
 
     /** Asserts the number is an exact (=) value. */
-    fun exactly(length: Int): NumberAssertion {
+    fun exactly(length: Long): NumberAssertion {
       exactly = length
       return this
     }
 
     /** Asserts the number is less than (<) a value. */
-    fun lessThan(length: Int): NumberAssertion {
+    fun lessThan(length: Long): NumberAssertion {
       lessThan = length
       return this
     }
 
     /** Asserts the number is at most (<=) a value. */
-    fun atMost(length: Int): NumberAssertion {
+    fun atMost(length: Long): NumberAssertion {
       atMost = length
       return this
     }
 
     /** Asserts the number is at least (>=) a value. */
-    fun atLeast(length: Int): NumberAssertion {
+    fun atLeast(length: Long): NumberAssertion {
       atLeast = length
       return this
     }
 
     /** Asserts the number is greater (>) than a value. */
-    fun greaterThan(length: Int): NumberAssertion {
+    fun greaterThan(length: Long): NumberAssertion {
       greaterThan = length
       return this
     }
 
     override fun isValid(view: EditText): Boolean {
-      val intValue = view.text().toIntOrNull() ?: return false
-      if (exactly != null && intValue != exactly!!) return false
-      if (lessThan != null && intValue >= lessThan!!) return false
-      if (atMost != null && intValue > atMost!!) return false
-      if (atLeast != null && intValue < atLeast!!) return false
-      if (greaterThan != null && intValue <= greaterThan!!) return false
+      val longValue = view.text().toLongOrNull() ?: return false
+      if (exactly != null && longValue != exactly!!) return false
+      if (lessThan != null && longValue >= lessThan!!) return false
+      if (atMost != null && longValue > atMost!!) return false
+      if (atLeast != null && longValue < atLeast!!) return false
+      if (greaterThan != null && longValue <= greaterThan!!) return false
       return true
     }
 
