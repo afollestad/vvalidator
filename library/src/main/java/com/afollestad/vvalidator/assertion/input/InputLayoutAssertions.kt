@@ -127,13 +127,13 @@ sealed class InputLayoutAssertions {
     }
 
     override fun isValid(view: TextInputLayout): Boolean {
-      val intValue = view.text().toLongOrNull() ?: return false
+      val longValue = view.text().toLongOrNull() ?: return false
       return when {
-        exactly != null && intValue != exactly!! -> false
-        lessThan != null && intValue >= lessThan!! -> false
-        atMost != null && intValue > atMost!! -> false
-        atLeast != null && intValue < atLeast!! -> false
-        greaterThan != null && intValue <= greaterThan!! -> false
+        exactly != null && longValue != exactly!! -> false
+        lessThan != null && longValue >= lessThan!! -> false
+        atMost != null && longValue > atMost!! -> false
+        atLeast != null && longValue < atLeast!! -> false
+        greaterThan != null && longValue <= greaterThan!! -> false
         else -> true
       }
     }
@@ -187,13 +187,13 @@ sealed class InputLayoutAssertions {
     }
 
     override fun isValid(view: TextInputLayout): Boolean {
-      val intValue = view.text().toDoubleOrNull() ?: return false
+      val doubleValue = view.text().toDoubleOrNull() ?: return false
       return when {
-        exactly != null && intValue != exactly!! -> false
-        lessThan != null && intValue >= lessThan!! -> false
-        atMost != null && intValue > atMost!! -> false
-        atLeast != null && intValue < atLeast!! -> false
-        greaterThan != null && intValue <= greaterThan!! -> false
+        exactly != null && doubleValue != exactly!! -> false
+        lessThan != null && doubleValue >= lessThan!! -> false
+        atMost != null && doubleValue > atMost!! -> false
+        atLeast != null && doubleValue < atLeast!! -> false
+        greaterThan != null && doubleValue <= greaterThan!! -> false
         else -> true
       }
     }

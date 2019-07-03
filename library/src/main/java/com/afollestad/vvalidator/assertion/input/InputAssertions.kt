@@ -126,12 +126,12 @@ sealed class InputAssertions {
     }
 
     override fun isValid(view: EditText): Boolean {
-      val intValue = view.text().toLongOrNull() ?: return false
-      if (exactly != null && intValue != exactly!!) return false
-      if (lessThan != null && intValue >= lessThan!!) return false
-      if (atMost != null && intValue > atMost!!) return false
-      if (atLeast != null && intValue < atLeast!!) return false
-      if (greaterThan != null && intValue <= greaterThan!!) return false
+      val longValue = view.text().toLongOrNull() ?: return false
+      if (exactly != null && longValue != exactly!!) return false
+      if (lessThan != null && longValue >= lessThan!!) return false
+      if (atMost != null && longValue > atMost!!) return false
+      if (atLeast != null && longValue < atLeast!!) return false
+      if (greaterThan != null && longValue <= greaterThan!!) return false
       return true
     }
 
