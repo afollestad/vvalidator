@@ -90,44 +90,44 @@ sealed class InputLayoutAssertions {
 
   /** @author Aidan Follestad (@afollestad) */
   class NumberAssertion internal constructor() : Assertion<TextInputLayout, NumberAssertion>() {
-    private var exactly: Int? = null
-    private var lessThan: Int? = null
-    private var atMost: Int? = null
-    private var atLeast: Int? = null
-    private var greaterThan: Int? = null
+    private var exactly: Long? = null
+    private var lessThan: Long? = null
+    private var atMost: Long? = null
+    private var atLeast: Long? = null
+    private var greaterThan: Long? = null
 
     /** Asserts the number is an exact (=) value. */
-    fun exactly(length: Int): NumberAssertion {
+    fun exactly(length: Long): NumberAssertion {
       exactly = length
       return this
     }
 
     /** Asserts the number is less than (<) a value. */
-    fun lessThan(length: Int): NumberAssertion {
+    fun lessThan(length: Long): NumberAssertion {
       lessThan = length
       return this
     }
 
     /** Asserts the number is at most (<=) a value. */
-    fun atMost(length: Int): NumberAssertion {
+    fun atMost(length: Long): NumberAssertion {
       atMost = length
       return this
     }
 
     /** Asserts the number is at least (>=) a value. */
-    fun atLeast(length: Int): NumberAssertion {
+    fun atLeast(length: Long): NumberAssertion {
       atLeast = length
       return this
     }
 
     /** Asserts the number is greater (>) than a value. */
-    fun greaterThan(length: Int): NumberAssertion {
+    fun greaterThan(length: Long): NumberAssertion {
       greaterThan = length
       return this
     }
 
     override fun isValid(view: TextInputLayout): Boolean {
-      val intValue = view.text().toIntOrNull() ?: return false
+      val intValue = view.text().toLongOrNull() ?: return false
       return when {
         exactly != null && intValue != exactly!! -> false
         lessThan != null && intValue >= lessThan!! -> false
