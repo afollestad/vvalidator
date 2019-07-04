@@ -1,5 +1,4 @@
-0.5.0
+0.5.1
 
-* `isDecimal` assertions on input fields.
-* Kotlin 1.3.40.
-* compileSdk 29.
+* `isNumber()` assertions take a `Long` instead of an `Int`.
+* Kotlin 1.3.41.
