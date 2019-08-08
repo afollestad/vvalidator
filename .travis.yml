@@ -1,6 +1,5 @@
 language: android
-jdk: openjdk8
-
+dist: trusty
 android:
   components:
   - tools
