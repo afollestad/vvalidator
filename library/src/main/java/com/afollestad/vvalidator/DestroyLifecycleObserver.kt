@@ -26,7 +26,7 @@ import com.afollestad.vvalidator.form.Form
  * Attaches to a Lifecycle and destroys the given Form when the
  * Lifecycle owner is being destroyed.
  */
-internal class DestroyLifecycleObserver(
+class DestroyLifecycleObserver(
   private val form: Form
 ) : LifecycleObserver {
 

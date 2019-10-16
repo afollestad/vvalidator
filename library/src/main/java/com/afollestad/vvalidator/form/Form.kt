@@ -45,7 +45,7 @@ annotation class FormMarker
 
 /** @author Aidan Follestad (@afollestad) */
 @FormMarker
-class Form internal constructor(validationContainer: ValidationContainer) {
+class Form constructor(validationContainer: ValidationContainer) {
   var container: ValidationContainer? = validationContainer
 
   internal var useRealTimeValidation: Boolean = false
@@ -324,7 +324,7 @@ class Form internal constructor(validationContainer: ValidationContainer) {
   }
 
   /** Signals that the form is finished being built. */
-  @CheckResult internal fun start(): Form {
+  @CheckResult fun start(): Form {
     if (useRealTimeValidation) {
       // Notify all fields that we are using real time validation and they should start observing.
       fields.forEach { it.startRealTimeValidation(realTimeValidationDebounce) }
