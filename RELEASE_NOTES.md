@@ -1,4 +1,4 @@
-0.5.1
+0.5.2
 
-* `isNumber()` assertions take a `Long` instead of an `Int`.
-* Kotlin 1.3.41.
+* Dependency upgrades.
+* `Form` constructor is public to make the library more extensible.
