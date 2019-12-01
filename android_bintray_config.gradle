@@ -1,20 +1,22 @@
 if (!project.rootProject.file('local.properties').exists()) {
-  println "Not applying bintrayconfig.gradle"
+  logger.warn("local.properties not found. Skipping Bintray Release setup.")
   return
 }
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: "com.novoda.bintray-release"
 
 def getBintrayUserAndKey() {
   Properties properties = new Properties()
-  properties.load(project.rootProject.file('local.properties').newDataInputStream())
+  properties.load(project.rootProject.file("local.properties").newDataInputStream())
   return [
       properties.getProperty("bintray.user"),
       properties.getProperty("bintray.apikey")
   ]
 }
 
-if (versions == null || versions.publishVersion == null) {
-  throw new IllegalStateException("Unable to reference publishVersion")
+if (versions == null || versions.publish_version == null) {
+  throw new IllegalStateException("Unable to reference publish_version!")
+} else if (module_group == null || module_name == null) {
+  throw new IllegalStateException("Must provide module_group and module_name!")
 }
 
 task checkBintrayConfig {
@@ -35,12 +37,11 @@ def (user, key) = getBintrayUserAndKey()
 publish {
   bintrayUser = user
   bintrayKey = key
-  userOrg = 'drummer-aidan'
+  userOrg = "drummer-aidan"
   groupId = 'com.afollestad'
   artifactId = 'vvalidator'
-  publishVersion = versions.publishVersion
-  desc =
-      'An easy to use form validator for Kotlin & Android.'
-  website = 'https://github.com/afollestad/vvalidator'
+  publishVersion = versions.publish_version
+  desc = "An easy to use form validator for Kotlin & Android."
+  website = "https://github.com/afollestad/vvalidator"
   dryRun = false
 }

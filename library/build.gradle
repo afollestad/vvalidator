@@ -1,42 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply from: '../dependencies.gradle'
+ext.module_group = "com.afollestad"
+ext.module_name = "vvalidator"
 
-apply from: '../bintrayconfig.gradle'
-
-android {
-  compileSdkVersion versions.compileSdk
-  buildToolsVersion versions.buildTools
-
-  defaultConfig {
-    minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
-    versionCode versions.publishVersionCode
-    versionName versions.publishVersion
-  }
-
-  testOptions.unitTests.includeAndroidResources = true
-
-  compileOptions {
-    kotlinOptions.freeCompilerArgs += ['-module-name', "com.afollestad.vvalidator"]
-  }
-
-  lintOptions {
-    abortOnError false
-  }
-}
+apply from: rootProject.file("android_library_config.gradle")
 
 dependencies {
-  implementation 'androidx.annotation:annotation:' + versions.androidxAnnotations
-  implementation 'androidx.appcompat:appcompat:' + versions.androidxCore
-  implementation 'com.google.android.material:material:' + versions.googleMaterial
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
+  implementation deps.androidx.annotations
+  implementation deps.androidx.core
+  implementation deps.google_material
+  implementation deps.kotlin.stdlib8
 
-  testImplementation 'org.robolectric:robolectric:' + versions.robolectric
-  testImplementation 'junit:junit:' + versions.junit
-  testImplementation 'androidx.test:core:' + versions.androidxTest
-  testImplementation 'org.mockito:mockito-core:' + versions.mockito
-  testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:' + versions.mockitoKotlin
+  testImplementation deps.androidx.test
+  testImplementation deps.kotlin.test.mockito
+  testImplementation deps.test.junit
+  testImplementation deps.test.mockito_core
+  testImplementation deps.test.robolectric
 }
-
-apply from: '../spotless.gradle'

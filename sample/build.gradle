@@ -1,29 +1,13 @@
-apply from: '../dependencies.gradle'
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+ext.module_group = "com.afollestad"
+ext.module_name = "vvalidator-sample"
 
-android {
-  compileSdkVersion versions.compileSdk
-  buildToolsVersion versions.buildTools
-
-  defaultConfig {
-    applicationId "com.afollestad.vvalidatorsample"
-    minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
-    versionCode versions.publishVersionCode
-    versionName versions.publishVersion
-  }
-}
+apply from: rootProject.file("android_application_config.gradle")
 
 dependencies {
   implementation project(':library')
 
-  implementation 'androidx.annotation:annotation:' + versions.androidxAnnotations
-  implementation 'androidx.appcompat:appcompat:' + versions.androidxCore
-  implementation 'com.google.android.material:material:' + versions.googleMaterial
-
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
+  implementation deps.androidx.annotations
+  implementation deps.androidx.core
+  implementation deps.google_material
+  implementation deps.kotlin.stdlib8
 }
-
-apply from: '../spotless.gradle'
