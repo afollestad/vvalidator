@@ -15,11 +15,12 @@
  */
 package com.afollestad.vvalidator.testutil
 
+import android.os.Build
 import java.lang.reflect.Method
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-@Config(manifest = Config.NONE, sdk = [28], application = TestApp::class)
+@Config(manifest = Config.NONE, sdk = [Build.VERSION_CODES.P], application = TestApp::class)
 class NoManifestTestRunner(testClass: Class<*>) : RobolectricTestRunner(testClass) {
 
   override fun getConfig(method: Method): Config {

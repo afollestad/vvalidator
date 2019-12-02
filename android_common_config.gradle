@@ -27,4 +27,8 @@ android {
         "src/main/res-public"
     ]
   }
+
+  testOptions {
+    unitTests.includeAndroidResources = true
+  }
 }
