@@ -17,19 +17,23 @@ package com.afollestad.vvalidatorsample
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.afollestad.vvalidator.form
 import com.afollestad.vvalidator.util.onItemSelected
 import com.afollestad.vvalidator.util.showOrHide
-import kotlinx.android.synthetic.main.activity_main.error_checkBox as checkBoxError
-import kotlinx.android.synthetic.main.activity_main.error_seekBar as seekBarError
-import kotlinx.android.synthetic.main.activity_main.error_spinner as spinnerError
-import kotlinx.android.synthetic.main.activity_main.input_site as inputSite
-import kotlinx.android.synthetic.main.activity_main.input_spinner as spinner
-import kotlinx.android.synthetic.main.activity_main.label_site as labelSite
 
 /** @author Aidan Follestad (@afollestad) */
 class MainActivity : AppCompatActivity() {
+  private val checkBoxError by lazy { findViewById<CheckBox>(R.id.error_checkBox) }
+  private val seekBarError by lazy { findViewById<TextView>(R.id.error_seekBar) }
+  private val spinnerError by lazy { findViewById<TextView>(R.id.error_spinner) }
+  private val inputSite by lazy { findViewById<EditText>(R.id.input_site) }
+  private val spinner by lazy { findViewById<Spinner>(R.id.input_spinner) }
+  private val labelSite by lazy { findViewById<TextView>(R.id.label_site) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -40,7 +44,7 @@ class MainActivity : AppCompatActivity() {
       inputSite.showOrHide(it > 0)
     }
 
-    spinner.adapter = ArrayAdapter<String>(
+    spinner.adapter = ArrayAdapter(
         this,
         R.layout.list_item_spinner,
         arrayOf("Select an option…", "I do not have a website", "I have a website!")
