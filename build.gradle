@@ -1,7 +1,7 @@
-apply from: "versions_plugin_config.gradle"
+apply from: rootProject.file("gradle/versions_plugin_config.gradle")
 
 buildscript {
-  apply from: "dependencies.gradle"
+  apply from: rootProject.file("dependencies.gradle")
 
   repositories {
     google()
@@ -27,7 +27,7 @@ allprojects {
 subprojects {
   tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions {
-      freeCompilerArgs += ['-module-name', project.path.replace('/', '.').replace(':', '_')]
+      freeCompilerArgs += ['-module-name', project.path.replace(':', '')]
     }
   }
 }

@@ -3,7 +3,7 @@ logger.info("Package ID: $module_package_id")
 
 apply plugin: "kotlin-android"
 apply from: rootProject.file("dependencies.gradle")
-apply from: rootProject.file("spotless_plugin_config.gradle")
+apply from: rootProject.file("gradle/spotless_plugin_config.gradle")
 
 android {
   compileSdkVersion versions.compile_sdk

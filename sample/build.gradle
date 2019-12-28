@@ -1,7 +1,7 @@
 ext.module_group = "com.afollestad"
 ext.module_name = "vvalidatorsample"
 
-apply from: rootProject.file("android_application_config.gradle")
+apply from: rootProject.file("gradle/android_application_config.gradle")
 
 dependencies {
   implementation project(':library')
