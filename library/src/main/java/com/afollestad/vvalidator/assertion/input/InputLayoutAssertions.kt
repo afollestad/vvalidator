@@ -73,9 +73,9 @@ sealed class InputLayoutAssertions {
     override fun defaultDescription() = defaultDescription ?: "must be a valid Uri"
 
     private fun List<String>.displayString() = joinToString(
-        prefix = "[",
-        postfix = "]",
-        transform = { "'$it'" }
+      prefix = "[",
+      postfix = "]",
+      transform = { "'$it'" }
     )
   }
 
@@ -86,6 +86,14 @@ sealed class InputLayoutAssertions {
     override fun isValid(view: TextInputLayout) = regex.matcher(view.text()).matches()
 
     override fun defaultDescription() = "must be a valid email address"
+  }
+
+  class PhoneAssertion internal constructor() : Assertion<TextInputLayout, PhoneAssertion>() {
+    private val regex = Patterns.PHONE
+
+    override fun isValid(view: TextInputLayout): Boolean = regex.matcher(view.text()).matches()
+
+    override fun defaultDescription(): String = "must be a valid phone number"
   }
 
   /** @author Aidan Follestad (@afollestad) */
@@ -149,7 +157,8 @@ sealed class InputLayoutAssertions {
   }
 
   /** @author Chen Lei (@cooppor) */
-  class NumberDecimalAssertion internal constructor() : Assertion<TextInputLayout, NumberDecimalAssertion>() {
+  class NumberDecimalAssertion internal constructor() :
+    Assertion<TextInputLayout, NumberDecimalAssertion>() {
     private var exactly: Double? = null
     private var lessThan: Double? = null
     private var atMost: Double? = null
@@ -248,7 +257,7 @@ sealed class InputLayoutAssertions {
 
     override fun isValid(view: TextInputLayout): Boolean {
       val length = view.text()
-          .length
+        .length
       return when {
         exactly != null -> length == exactly!!
         lessThan != null -> length < lessThan!!
@@ -295,6 +304,23 @@ sealed class InputLayoutAssertions {
     override fun isValid(view: TextInputLayout) = view.text().matches(regex)
 
     override fun defaultDescription() = "must match regex \"$regexString\""
+  }
+
+  class ComparesAssertion internal constructor(
+    private val targetView: TextInputLayout
+  ) : Assertion<TextInputLayout, ComparesAssertion>() {
+    private var ignoreCase: Boolean = false
+
+    fun ignoreCase(): ComparesAssertion {
+      ignoreCase = true
+      return this
+    }
+
+    override fun isValid(view: TextInputLayout): Boolean {
+      return view.text().compareTo(targetView.text(), ignoreCase = ignoreCase) == 0
+    }
+
+    override fun defaultDescription(): String = "does not match"
   }
 }
 

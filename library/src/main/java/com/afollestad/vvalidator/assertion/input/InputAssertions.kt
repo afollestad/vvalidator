@@ -87,6 +87,14 @@ sealed class InputAssertions {
     override fun defaultDescription() = "must be a valid email address"
   }
 
+  class PhoneAssertion internal constructor() : Assertion<EditText, PhoneAssertion>() {
+    private val regex = Patterns.PHONE
+
+    override fun isValid(view: EditText): Boolean = regex.matcher(view.text()).matches()
+
+    override fun defaultDescription(): String = "must be a valid phone number"
+  }
+
   /** @author Aidan Follestad (@afollestad) */
   class NumberAssertion internal constructor() : Assertion<EditText, NumberAssertion>() {
     private var exactly: Long? = null
@@ -317,6 +325,23 @@ sealed class InputAssertions {
     }
 
     override fun defaultDescription() = "must match regex \"$regexString\""
+  }
+
+  class ComparesAssertion internal constructor(
+    private val targetView: EditText
+  ) : Assertion<EditText, ComparesAssertion>() {
+    private var ignoreCase: Boolean = false
+
+    fun ignoreCase(): ComparesAssertion {
+      ignoreCase = true
+      return this
+    }
+
+    override fun isValid(view: EditText): Boolean {
+      return view.text().compareTo(targetView.text(), ignoreCase = ignoreCase) == 0
+    }
+
+    override fun defaultDescription(): String = "does not match"
   }
 }
 

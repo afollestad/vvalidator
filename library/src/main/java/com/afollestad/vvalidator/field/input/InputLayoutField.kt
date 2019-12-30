@@ -19,14 +19,7 @@ package com.afollestad.vvalidator.field.input
 
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.ContainsAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.EmailAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.LengthAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberDecimalAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.*
 import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
@@ -81,6 +74,9 @@ class InputLayoutField internal constructor(
   /** Asserts that the input text is a valid email address. */
   fun isEmail() = assert(EmailAssertion())
 
+  /** Asserts that the input text is a valid phone number */
+  fun isPhone() = assert(PhoneAssertion())
+
   /** Asserts that the input text is a valid number. */
   fun isNumber() = assert(NumberAssertion())
 
@@ -95,6 +91,9 @@ class InputLayoutField internal constructor(
 
   /** Asserts that the input text matches a regular expression. */
   fun matches(regex: String) = assert(RegexAssertion(regex))
+
+  /** Asserts that the input text matches the target input text. */
+  fun compareTo(targetView: TextInputLayout) = assert(ComparesAssertion(targetView))
 
   /** Adds a custom inline assertion for the input layout field. */
   fun assert(
