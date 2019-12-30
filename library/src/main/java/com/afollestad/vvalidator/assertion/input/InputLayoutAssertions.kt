@@ -88,6 +88,7 @@ sealed class InputLayoutAssertions {
     override fun defaultDescription() = "must be a valid email address"
   }
 
+  /** @author Suu SoJeat (@suusojeat) */
   class PhoneAssertion internal constructor() : Assertion<TextInputLayout, PhoneAssertion>() {
     private val regex = Patterns.PHONE
 
@@ -306,11 +307,13 @@ sealed class InputLayoutAssertions {
     override fun defaultDescription() = "must match regex \"$regexString\""
   }
 
+  /** @author Suu SoJeat (@suusojeat) */
   class ComparesAssertion internal constructor(
     private val targetView: TextInputLayout
   ) : Assertion<TextInputLayout, ComparesAssertion>() {
     private var ignoreCase: Boolean = false
 
+    /** Case is ignored when comparing the two input text. */
     fun ignoreCase(): ComparesAssertion {
       ignoreCase = true
       return this
