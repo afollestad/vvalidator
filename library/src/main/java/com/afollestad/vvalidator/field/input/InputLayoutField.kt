@@ -19,7 +19,16 @@ package com.afollestad.vvalidator.field.input
 
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.*
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.ComparesAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.NumberDecimalAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.PhoneAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions.UriAssertion
 import com.afollestad.vvalidator.assertion.input.text
 import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField

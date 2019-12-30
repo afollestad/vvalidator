@@ -20,14 +20,20 @@ package com.afollestad.vvalidator.field.input
 import android.widget.EditText
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
-import com.afollestad.vvalidator.assertion.input.InputAssertions
-import com.afollestad.vvalidator.assertion.input.InputAssertions.*
-import com.afollestad.vvalidator.assertion.input.InputLayoutAssertions
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ComparesAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.EmailAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberDecimalAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.PhoneAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
 import com.afollestad.vvalidator.field.FieldValue
 import com.afollestad.vvalidator.field.FormField
 import com.afollestad.vvalidator.field.TextFieldValue
 import com.afollestad.vvalidator.util.onTextChanged
-import com.google.android.material.textfield.TextInputLayout
 
 /**
  * Represents an edit text field.
