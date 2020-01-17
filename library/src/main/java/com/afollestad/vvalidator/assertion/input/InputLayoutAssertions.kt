@@ -320,7 +320,7 @@ sealed class InputLayoutAssertions {
     }
 
     override fun isValid(view: TextInputLayout): Boolean {
-      return view.text().compareTo(targetView.text(), ignoreCase = ignoreCase) == 0
+      return view.text().equals(targetView.text(), ignoreCase = ignoreCase)
     }
 
     override fun defaultDescription(): String = "does not match"

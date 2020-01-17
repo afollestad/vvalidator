@@ -341,7 +341,7 @@ sealed class InputAssertions {
     }
 
     override fun isValid(view: EditText): Boolean {
-      return view.text().compareTo(targetView.text(), ignoreCase = ignoreCase) == 0
+      return view.text().equals(targetView.text(), ignoreCase = ignoreCase)
     }
 
     override fun defaultDescription(): String = "does not match"
