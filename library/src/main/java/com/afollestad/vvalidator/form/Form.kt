@@ -293,7 +293,7 @@ class Form constructor(validationContainer: ValidationContainer) {
     onSubmit: (FormResult) -> Unit
   ) {
     val currentContainer = container.checkAttached()
-    val view = currentContainer.findViewById<View>(id) ?: throw IllegalArgumentException(
+    val view = currentContainer.findViewById<View>(id) ?: error(
         "Unable to find view ${currentContainer.getFieldName(id)} in your container."
     )
     submitWith(view, onSubmit)
@@ -310,7 +310,7 @@ class Form constructor(validationContainer: ValidationContainer) {
     onSubmit: (FormResult) -> Unit
   ) {
     val currentContainer = container.checkAttached()
-    val item = menu.findItem(itemId) ?: throw IllegalArgumentException(
+    val item = menu.findItem(itemId) ?: error(
         "Didn't find item ${currentContainer.getFieldName(itemId)} in the given Menu."
     )
     item.setOnMenuItemClickListener {
