@@ -54,7 +54,7 @@ class InputLayoutField internal constructor(
   }
 
   /** The TextInputEditText that's inside of the TextInputLayout. */
-  val editText = view.editText ?: throw IllegalStateException(
+  val editText = view.editText ?: error(
       "TextInputLayout ${container.getFieldName(view.id)} should have a child EditText."
   )
 

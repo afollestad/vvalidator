@@ -24,7 +24,7 @@ class CustomViewAssertion<T>(
 ) : Assertion<T, CustomViewAssertion<T>>() where T : View {
   init {
     if (assertionDescription.trim().isEmpty()) {
-      throw IllegalArgumentException("Custom assertion descriptions should not be empty.")
+      error("Custom assertion descriptions should not be empty.")
     }
     description(assertionDescription)
   }

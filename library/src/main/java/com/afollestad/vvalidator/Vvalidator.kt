@@ -45,7 +45,7 @@ fun FragmentActivity.form(builder: FormBuilder): Form {
  * @author Aidan Follestad (@afollestad)
  */
 fun Fragment.form(builder: FormBuilder): Form {
-  val activity = this.activity ?: throw IllegalStateException("Fragment is not attached.")
+  val activity = this.activity ?: error("Fragment is not attached.")
   val container = object : ValidationContainer(activity) {
     override fun <T : View> findViewById(id: Int): T? = view?.findViewById(id)
   }
