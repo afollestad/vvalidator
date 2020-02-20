@@ -4,7 +4,7 @@
 
 [ ![jCenter](https://api.bintray.com/packages/drummer-aidan/maven/vvalidator/images/download.svg) ](https://bintray.com/drummer-aidan/maven/vvalidator/_latestVersion)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d1f2118793443ecbf2df4d7af7d6fec)](https://www.codacy.com/app/drummeraidan_50/vvalidator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=afollestad/vvalidator&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/afollestad/vvalidator.svg)](https://travis-ci.org/afollestad/vvalidator)
+[![Android CI](https://github.com/afollestad/vvalidator/workflows/Android%20CI/badge.svg)](https://github.com/afollestad/vvalidator/actions?query=workflow%3A%22Android+CI%22)
 [![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 <img src="https://raw.githubusercontent.com/afollestad/vvalidator/master/images/showcase4.png" width="600" />
