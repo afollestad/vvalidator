@@ -18,12 +18,16 @@ package com.afollestad.vvalidator.assertion
 import android.content.Context
 import android.view.View
 import com.afollestad.vvalidator.ValidationContainer
+import com.afollestad.vvalidator.testutil.NoManifestTestRunner
 import com.afollestad.vvalidator.testutil.assertEqualTo
 import com.afollestad.vvalidator.testutil.assertFalse
 import com.afollestad.vvalidator.testutil.assertTrue
+import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
+import org.junit.runner.RunWith
 
 open class TestView(context: Context) : View(context, null)
 
@@ -33,15 +37,14 @@ class TestBaseAssertion : Assertion<TestView, TestBaseAssertion>() {
   override fun defaultDescription() = "Hello, World!"
 }
 
-/** @author Aidan Follestad (@afollestad) */
-class AssertionTest {
-  companion object {
-    private const val VIEW_ID = 1
-    private const val STRING_ID = 2
-  }
+private const val VIEW_ID = 1
+private const val STRING_ID = 2
 
+/** @author Aidan Follestad (@afollestad) */
+@RunWith(NoManifestTestRunner::class)
+class AssertionTest {
   private val context = mock<Context> {
-    on { getString(STRING_ID) } doReturn "Hello, Resource!"
+    on { getString(eq(STRING_ID), anyOrNull()) } doReturn "Hello, Resource!"
   }
   private val view = mock<TestView> {
     on { id } doReturn VIEW_ID
