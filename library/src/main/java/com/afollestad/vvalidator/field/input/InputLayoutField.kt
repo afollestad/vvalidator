@@ -39,7 +39,7 @@ import com.google.android.material.textfield.TextInputLayout
  *
  * @author Aidan Follestad (@afollestad)
  */
-class InputLayoutField internal constructor(
+class InputLayoutField(
   container: ValidationContainer,
   view: TextInputLayout,
   name: String?
@@ -52,9 +52,8 @@ class InputLayoutField internal constructor(
   }
 
   /** The TextInputEditText that's inside of the TextInputLayout. */
-  val editText = view.editText ?: error(
-      "TextInputLayout ${container.getFieldName(view.id)} should have a child EditText."
-  )
+  val editText = view.editText
+      ?: error("TextInputLayout ${container.getFieldName(view.id)} should have a child EditText.")
 
   /** Asserts that the input text is not empty. */
   fun isNotEmpty() = assert(NotEmptyAssertion())
@@ -73,7 +72,9 @@ class InputLayoutField internal constructor(
   )
 
   /** Asserts that the input text is a valid web address (HTTP or HTTPS). */
-  fun isUrl() = assert(UriAssertion()).hasScheme("http", "https").that { !it.host.isNullOrEmpty() }
+  fun isUrl() = assert(UriAssertion())
+      .hasScheme("http", "https")
+      .that { !it.host.isNullOrEmpty() }
 
   /** Asserts that the input text is a valid URI. */
   fun isUri() = assert(UriAssertion())

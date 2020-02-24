@@ -17,6 +17,7 @@
 
 package com.afollestad.vvalidator.field
 
+import androidx.annotation.CheckResult
 import androidx.annotation.IdRes
 import kotlin.reflect.KClass
 
@@ -37,21 +38,27 @@ open class FieldValue<T : Any>(
 ) {
 
   /** Coerces the value to a string. */
+  @CheckResult
   fun asString(): String = value.toString()
 
   /** Coerces the value to a int. */
+  @CheckResult
   fun asInt(): Int? = (value as? Int) ?: value.toString().toIntOrNull()
 
   /** Coerces the value to a long. */
+  @CheckResult
   fun asLong(): Long? = (value as? Long) ?: value.toString().toLongOrNull()
 
   /** Coerces the value to a float. */
+  @CheckResult
   fun asFloat(): Float? = (value as? Float) ?: value.toString().toFloatOrNull()
 
   /** Coerces the value to a double. */
+  @CheckResult
   fun asDouble(): Double? = (value as? Double) ?: value.toString().toDoubleOrNull()
 
   /** Coerces the value to a boolean. */
+  @CheckResult
   fun asBoolean(): Boolean = (value as? Boolean) ?: value.toString().toBoolean()
 
   /** Returns the [value] as a string. */

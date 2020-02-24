@@ -38,7 +38,7 @@ import com.afollestad.vvalidator.util.onTextChanged
  *
  * @author Aidan Follestad (@afollestad)
  */
-open class InputField internal constructor(
+open class InputField(
   container: ValidationContainer,
   view: EditText,
   name: String?
@@ -66,7 +66,9 @@ open class InputField internal constructor(
   )
 
   /** Asserts that the input text is a valid web address (HTTP or HTTPS). */
-  fun isUrl() = assert(UriAssertion()).hasScheme("http", "https").that { !it.host.isNullOrEmpty() }
+  fun isUrl() = assert(UriAssertion())
+      .hasScheme("http", "https")
+      .that { !it.host.isNullOrEmpty() }
 
   /** Asserts that the input text is a valid URI. */
   fun isUri() = assert(UriAssertion())

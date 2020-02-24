@@ -59,7 +59,7 @@ abstract class FormField<F, V : View, T : Any>(
   internal var onValue: OnValue<V, T>? = null
 
   /** Adds an assertion to the field to be used during validation. */
-  @CheckResult fun <T : Assertion<V, *>> assert(assertion: T): T {
+  fun <T : Assertion<V, *>> assert(assertion: T): T {
     assertions.add(assertion.apply {
       this.container = this@FormField.container
       this.conditions = conditionStack.asList()
@@ -68,30 +68,28 @@ abstract class FormField<F, V : View, T : Any>(
   }
 
   /** Gets all assertions added to the field. */
-  @CheckResult fun assertions(): List<Assertion<V, *>> = assertions
+  @CheckResult
+  fun assertions(): List<Assertion<V, *>> = assertions
 
   /** Makes inner assertions optional based on a condition. */
   fun conditional(
     condition: Condition,
     builder: F.() -> Unit
-  ): FormField<F, V, T> {
+  ): FormField<F, V, T> = apply {
     conditionStack.push(condition)
     @Suppress("UNCHECKED_CAST")
     (this as F).builder()
     conditionStack.pop()
-    return this
   }
 
   /** Sets custom logic for displaying errors for the field. */
-  fun onErrors(errors: OnError<V>?): FormField<F, V, T> {
+  fun onErrors(errors: OnError<V>?): FormField<F, V, T> = apply {
     this.onErrors = errors
-    return this
   }
 
   /** Sets a callback that is invoked when this field becomes validated successfully and has a value. */
-  fun onValue(onValue: OnValue<V, T>?): FormField<F, V, T> {
+  fun onValue(onValue: OnValue<V, T>?): FormField<F, V, T> = apply {
     this.onValue = onValue
-    return this
   }
 
   /** Validates the field, returning the result. */
@@ -131,6 +129,7 @@ abstract class FormField<F, V : View, T : Any>(
    * Generates a [FieldValue] instance of the field, should contain a snapshot of the field's
    * current value.
    */
+  @CheckResult
   protected abstract fun obtainValue(
     id: Int,
     name: String

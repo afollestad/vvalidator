@@ -17,6 +17,7 @@
 
 package com.afollestad.vvalidator.field
 
+import androidx.annotation.CheckResult
 import androidx.annotation.IdRes
 import com.afollestad.vvalidator.assertion.Assertion
 import kotlin.reflect.KClass
@@ -50,15 +51,19 @@ class FieldResult<T : Any>(
   private val errors = mutableListOf<FieldError>()
 
   /** Returns true if validation passed with no errors. */
+  @CheckResult
   fun success() = errors.isEmpty()
 
   /** Returns true if validation failed with errors. */
+  @CheckResult
   fun hasErrors() = errors.isNotEmpty()
 
   /** Returns errors that occurred during validation. */
+  @CheckResult
   fun errors(): List<FieldError> = errors
 
   /** Appends an error to the validation result. */
+  @CheckResult
   internal fun addError(error: FieldError) = errors.add(error)
 
   override fun toString(): String {

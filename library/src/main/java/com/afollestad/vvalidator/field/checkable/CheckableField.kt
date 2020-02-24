@@ -30,7 +30,7 @@ import com.afollestad.vvalidator.field.FormField
  *
  * @author Aidan Follestad (@afollestad)
  */
-class CheckableField internal constructor(
+class CheckableField(
   container: ValidationContainer,
   view: CompoundButton,
   name: String?

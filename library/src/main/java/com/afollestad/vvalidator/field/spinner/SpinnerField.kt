@@ -21,6 +21,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
+import androidx.annotation.CheckResult
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
 import com.afollestad.vvalidator.assertion.spinner.SpinnerAssertions.SelectionAssertion
@@ -33,22 +34,25 @@ import com.afollestad.vvalidator.field.IntFieldValue
  *
  * @author Aidan Follestad (@afollestad)
  */
-class SpinnerField internal constructor(
+class SpinnerField(
   container: ValidationContainer,
   view: Spinner,
   name: String?
 ) : FormField<SpinnerField, Spinner, Int>(container, view, name) {
 
   /** Asserts on the spinner's selection. */
+  @CheckResult
   fun selection() = assert(SelectionAssertion())
 
   /** Adds a custom inline assertion for the spinner. */
+  @CheckResult
   fun assert(
     description: String,
     matcher: (Spinner) -> Boolean
   ) = assert(CustomViewAssertion(description, matcher))
 
   /** Returns a snapshot of [Spinner.getSelectedItemPosition]. **/
+  @CheckResult
   override fun obtainValue(
     id: Int,
     name: String
