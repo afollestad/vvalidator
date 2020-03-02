@@ -1,14 +1,10 @@
 ext.versions = [
-    min_sdk: 16,
-    compile_sdk: 29,
-    build_tools: '29.0.0',
-    publish_version: '0.5.2',
-    publish_version_code: 22
+    build_tools: '29.0.0'
 ]
 
 ext.deps = [
     gradle_plugins: [
-        android: "com.android.tools.build:gradle:3.5.3",
+        android: "com.android.tools.build:gradle:3.6.1",
         spotless: "com.diffplug.spotless:spotless-plugin-gradle:3.27.1",
         versions: "com.github.ben-manes:gradle-versions-plugin:0.28.0",
         bintray_release: "com.novoda:bintray-release:0.9.2",
@@ -32,7 +28,7 @@ ext.deps = [
 
     test: [
         junit: "junit:junit:4.13",
-        mockito_core: "org.mockito:mockito-core:3.3.0",
+        mockito_core: "org.mockito:mockito-core:3.3.1",
         truth: "com.google.truth:truth:1.0",
         robolectric: "org.robolectric:robolectric:4.3.1"
     ]

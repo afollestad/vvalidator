@@ -5,4 +5,4 @@ if (module_package_id == null) {
   throw new IllegalStateException("module_package_id is missing!")
 }
 
-android.defaultConfig.applicationId = module_package_id
+android.defaultConfig.applicationId = module_package_id.replace('-', '')

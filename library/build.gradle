@@ -1,6 +1,4 @@
-ext.module_group = "com.afollestad"
 ext.module_name = "vvalidator"
-
 apply from: rootProject.file("gradle/android_library_config.gradle")
 
 dependencies {

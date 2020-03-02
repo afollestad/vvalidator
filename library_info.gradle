@@ -1,0 +1,11 @@
+ext.library = [
+    min_sdk: 16,
+    compile_sdk: 29,
+
+    publish_group: "com.afollestad",
+    publish_version: '0.5.2',
+    publish_version_code: 22,
+
+    description: "An easy to use form validator for Kotlin & Android.",
+    website: "https://github.com/afollestad/vvalidator"
+]

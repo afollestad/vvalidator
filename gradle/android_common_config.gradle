@@ -1,12 +1,12 @@
-ext.module_package_id = "${module_group}.${module_name}"
-logger.info("Package ID: $module_package_id")
-
 apply plugin: "kotlin-android"
 apply from: rootProject.file("dependencies.gradle")
 apply from: rootProject.file("gradle/spotless_plugin_config.gradle")
 
+apply from: rootProject.file("library_info.gradle")
+ext.module_package_id = "${library.publish_group}.${module_name}"
+
 android {
-  compileSdkVersion versions.compile_sdk
+  compileSdkVersion library.compile_sdk
   buildToolsVersion versions.build_tools
 
   compileOptions {
@@ -15,10 +15,10 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion versions.min_sdk
-    targetSdkVersion versions.compile_sdk
-    versionCode versions.publish_version_code
-    versionName versions.publish_version
+    minSdkVersion library.min_sdk
+    targetSdkVersion library.compile_sdk
+    versionCode library.publish_version_code
+    versionName library.publish_version
   }
 
   sourceSets {
@@ -26,9 +26,5 @@ android {
         "src/main/res",
         "src/main/res-public"
     ]
-  }
-
-  testOptions {
-    unitTests.includeAndroidResources = true
   }
 }
