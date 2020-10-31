@@ -28,7 +28,7 @@ import com.afollestad.vvalidator.util.showOrHide
 
 /** @author Aidan Follestad (@afollestad) */
 class MainActivity : AppCompatActivity() {
-  private val checkBoxError by lazy { findViewById<CheckBox>(R.id.error_checkBox) }
+  private val checkBoxError by lazy { findViewById<TextView>(R.id.error_checkBox) }
   private val seekBarError by lazy { findViewById<TextView>(R.id.error_seekBar) }
   private val spinnerError by lazy { findViewById<TextView>(R.id.error_spinner) }
   private val inputSite by lazy { findViewById<EditText>(R.id.input_site) }
