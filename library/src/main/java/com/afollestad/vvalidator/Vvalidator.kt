@@ -51,6 +51,6 @@ fun Fragment.form(builder: FormBuilder): Form {
   }
   return Form(container)
       .apply(builder)
-      .also { lifecycle.addObserver(DestroyLifecycleObserver(it)) }
+      .also { viewLifecycleOwner.lifecycle.addObserver(DestroyLifecycleObserver(it)) }
       .start()
 }
