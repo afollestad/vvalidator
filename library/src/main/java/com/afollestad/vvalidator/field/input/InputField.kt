@@ -20,12 +20,14 @@ package com.afollestad.vvalidator.field.input
 import android.widget.EditText
 import com.afollestad.vvalidator.ValidationContainer
 import com.afollestad.vvalidator.assertion.CustomViewAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.ComparesAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.ContainsAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.EmailAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.LengthAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NotEmptyAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.NumberDecimalAssertion
+import com.afollestad.vvalidator.assertion.input.InputAssertions.PhoneAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.RegexAssertion
 import com.afollestad.vvalidator.assertion.input.InputAssertions.UriAssertion
 import com.afollestad.vvalidator.field.FieldValue
@@ -46,7 +48,7 @@ open class InputField(
   init {
     onErrors { _, errors ->
       view.error = errors.firstOrNull()
-          ?.toString()
+        ?.toString()
     }
   }
 
@@ -58,11 +60,11 @@ open class InputField(
    * input text is not empty.
    */
   fun isEmptyOr(builder: InputField.() -> Unit) = conditional(
-      condition = {
-        view.text.trim()
-            .isNotEmpty()
-      },
-      builder = builder
+    condition = {
+      view.text.trim()
+        .isNotEmpty()
+    },
+    builder = builder
   )
 
   /** Asserts that the input text is a valid web address (HTTP or HTTPS). */
@@ -75,6 +77,9 @@ open class InputField(
 
   /** Asserts that the input text is a valid email address. */
   fun isEmail() = assert(EmailAssertion())
+
+  /** Asserts that the input text is a valid phone number */
+  fun isPhone() = assert(PhoneAssertion())
 
   /** Asserts that the input text is a valid number. */
   fun isNumber() = assert(NumberAssertion())
@@ -91,6 +96,9 @@ open class InputField(
   /** Asserts that the input text matches a regular expression. */
   fun matches(regex: String) = assert(RegexAssertion(regex))
 
+  /** Asserts that the input text matches the target input text. */
+  fun compareTo(targetView: EditText) = assert(ComparesAssertion(targetView))
+
   /** Adds a custom inline assertion for the input field. */
   fun assert(
     description: String,
@@ -104,9 +112,9 @@ open class InputField(
   ): FieldValue<CharSequence>? {
     val currentValue = view.text as? CharSequence ?: return null
     return TextFieldValue(
-        id = id,
-        name = name,
-        value = currentValue
+      id = id,
+      name = name,
+      value = currentValue
     )
   }
 
